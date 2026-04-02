@@ -1,0 +1,49 @@
+﻿@model Domain.ViewModel.Restaurant.Table.RsTableSearchVm
+@{
+    ViewData["Title"] = "Table Search";
+    Layout = "_Layout";
+    var isSuperAdmin = User.Claims.Any(c => c.Type == "Permission" && c.Value == "Permissions.SuperAdmin");
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <form>
+            <div class="card">
+            </div>
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Table List</h5>
+                    <div class="setting-list">
+                        <input class="btn btn-primary" type="button" id="TableSearchBtn" value="Search" />
+                        <a asp-action="Create" asp-controller="Table" class="btn btn-primary">New Table</a>
+                        @*<input type="button" id="LedgerReportBtn" class="btn btn-primary" value="Search" />*@
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table table-responsive">
+                        <table id="TableSearchTable" class="display" style="width:100%; text-align: left">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th style="width: 5%">Sl</th>
+                                    <th>Table No</th>
+                                    <th>Active Status</th>
+                                    <th>Capacity</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        window.isSuperAdmin = "@isSuperAdmin.ToString().ToLower()";
+        // console.log('SuperAdmin:', window.isSuperAdmin);
+    </script>
+    <script src="~/js/ETL/Table/TableSearch.js"></script>
+}

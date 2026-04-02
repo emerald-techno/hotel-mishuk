@@ -1,0 +1,478 @@
+﻿@model Domain.ViewModel.Payroll.PrSalaryMst.PrSalaryMstVm
+@using Domain.Utility
+@{
+    var enableAdditionParts = Model.EnablePrSalaryParts.Where(c => c.PartType == "A").ToList();
+    var enableDiductionParts = Model.EnablePrSalaryParts.Where(c => c.PartType == "D").ToList();
+    var addCount = enableAdditionParts.Count();
+    var diductCount = enableDiductionParts.Count();
+}
+
+<style>
+    .fixTableHead {
+        overflow-y: auto;
+        height: 600px;
+    }
+
+        .fixTableHead thead {
+            position: sticky;
+            top: 0;
+        }
+
+    #PayrollTable {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+        #PayrollTable th,
+        td {
+            border: 2px solid #529432;
+        }
+
+        #PayrollTable th {
+            background-color: #24695c !important;
+            color: #fff;
+        }
+</style>
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <form asp-controller="PrSalaryMst" asp-action="SetPayroll" method="post" id="PayrollForm">
+                <div class="card-header p-3">
+                    <h4 class="px-3">Employee Payroll</h4>
+                </div>
+                <div class="card-body py-3 px-0">
+                    <div class="table-responsive">
+                        <div class="fixTableHead">
+                            <input type="hidden" asp-for="Year" />
+                            <input type="hidden" asp-for="Month" />
+                            <input type="hidden" asp-for="DateFrom" />
+                            <input type="hidden" asp-for="DateTo" />
+                            <input type="hidden" asp-for="SalaryDateStr" />
+
+                            <table id="PayrollTable" class="table table-bordered" style="width:100%; text-align: center">
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2" style="width: 5%">Serial</th>
+                                        <th rowspan="2">Employee Name</th>
+                                        <th rowspan="2">Employee Code</th>
+                                        <th rowspan="2">Designation</th>
+                                        <th colspan="@addCount">Addition</th>
+                                        <th rowspan="2">Groos Salary</th>
+                                        <th colspan="@diductCount">Deduction</th>
+                                        <th rowspan="2">Deduction Total</th>
+                                        <th rowspan="2">Net Salary</th>
+                                    </tr>
+                                    <tr>
+                                        @if (enableAdditionParts.Count > 0)
+                                        {
+                                            enableAdditionParts = enableAdditionParts.OrderBy(c => c.SlNo).ToList();
+
+                                            foreach (var addItem in enableAdditionParts)
+                                            {
+                                                <th>@(addItem.PartName)</th>
+                                            }
+                                        }
+                                        @if (enableDiductionParts.Count > 0)
+                                        {
+                                            enableDiductionParts = enableDiductionParts.OrderBy(c => c.SlNo).ToList();
+
+                                            foreach (var deductItem in enableDiductionParts)
+                                            {
+                                                <th>@(deductItem.PartName)</th>
+                                            }
+                                        }
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.PrSalaryDtls.Count > 0)
+                                    {
+                                        var groupedDepartments = Model.PrSalaryDtls
+                                                .GroupBy(x => new { x.EmpDepartmentName, x.EmpDepartmentCode, x.EmpDepartmentSlNo })
+                                                .OrderBy(g => g.Key.EmpDepartmentSlNo);
+
+                                        enableAdditionParts = enableAdditionParts.OrderBy(c => c.SlNo).ToList();
+                                        enableDiductionParts = enableDiductionParts.OrderBy(c => c.SlNo).ToList();
+                                        var totalSalarySpan = ((addCount + diductCount) + 6);
+
+                                        var i = 0;
+
+                                        foreach (var (departmentGroup, j) in groupedDepartments.GetItemWithIndex())
+                                        {
+                                            var departmentName = departmentGroup.Key.EmpDepartmentName;
+                                            var dptTotal = departmentGroup.Sum(x => x.NetSalary);
+
+                                            <!-- Department Heading Row -->
+                                            <tr>
+                                                <td colspan="@(totalSalarySpan + 2)" style="font-weight: bold; background-color: #f2f2f2;">
+                                                    @departmentName
+                                                </td>
+                                            </tr>
+
+                                            foreach (var (employee, index) in departmentGroup.OrderBy(x => x.EmpDesignationCode).GetItemWithIndex())
+                                            {
+                                                <tr>
+                                                    <td style="width: 5%">@(i + 1)</td>
+                                                    <td>
+                                                        <input type="hidden" name="PrSalaryDtls[@i].EmployeeId" value="@employee.EmployeeId" />
+                                                        @employee.EmployeeName
+                                                    </td>
+                                                    <td>
+                                                        @employee.EmployeeCode
+                                                    </td>
+                                                    <td>
+                                                        @employee.EmpDesignationName
+                                                    </td>
+
+                                                    @foreach (var item in enableAdditionParts)
+                                                    {
+                                                        if (item.PartCode == "BASIC")
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" name="PrSalaryDtls[@i].BasicSalary" value="@employee.BasicSalary" />
+                                                                @(employee.BasicSalary)
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColA))
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" name="PrSalaryDtls[@i].ColA" value="@employee.ColA" />
+                                                                @(employee.ColA)
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColB))
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" name="PrSalaryDtls[@i].ColB" value="@employee.ColB" />
+                                                                @(employee.ColB)
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColC))
+                                                        {
+                                                            <td>
+                                                                <input type="number" class="form-control text-center pay-cal" data-index="@i" id="A_ColC_@i" name="PrSalaryDtls[@i].ColC" value="@employee.ColC" />
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColD))
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" name="PrSalaryDtls[@i].ColD" value="@employee.ColD" />
+                                                                @(employee.ColD)
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColE))
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" name="PrSalaryDtls[@i].ColE" value="@employee.ColE" />
+                                                                @(employee.ColE)
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColF))
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" name="PrSalaryDtls[@i].ColF" value="@employee.ColF" />
+                                                                @(employee.ColF)
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColG))
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" name="PrSalaryDtls[@i].ColG" value="@employee.ColG" />
+                                                                @(employee.ColG)
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColH))
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" name="PrSalaryDtls[@i].ColH" value="@employee.ColH" />
+                                                                @(employee.ColH)
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColI))
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" name="PrSalaryDtls[@i].ColI" value="@employee.ColI" />
+                                                                @(employee.ColI)
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColK))
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" name="PrSalaryDtls[@i].ColK" value="@employee.ColK" />
+                                                                @(employee.ColK)
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColL))
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" name="PrSalaryDtls[@i].ColL" value="@employee.ColL" />
+                                                                @(employee.ColL)
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColM))
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" name="PrSalaryDtls[@i].ColM" value="@employee.ColM" />
+                                                                @(employee.ColM)
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColN))
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" name="PrSalaryDtls[@i].ColN" value="@employee.ColN" />
+                                                                @(employee.ColN)
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColO))
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" name="PrSalaryDtls[@i].ColO" value="@employee.ColO" />
+                                                                @(employee.ColO)
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColP))
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" name="PrSalaryDtls[@i].ColP" value="@employee.ColP" />
+                                                                @(employee.ColP)
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColQ))
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" name="PrSalaryDtls[@i].ColQ" value="@employee.ColQ" />
+                                                                @(employee.ColQ)
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColR))
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" name="PrSalaryDtls[@i].ColR" value="@employee.ColR" />
+                                                                @(employee.ColR)
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColS))
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" name="PrSalaryDtls[@i].ColS" value="@employee.ColS" />
+                                                                @(employee.ColS)
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColT))
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" name="PrSalaryDtls[@i].ColT" value="@employee.ColT" />
+                                                                @(employee.ColT)
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColU))
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" name="PrSalaryDtls[@i].ColU" value="@employee.ColU" />
+                                                                @(employee.ColU)
+                                                            </td>
+                                                        }
+                                                    }
+
+                                                    <td>
+                                                        <input type="hidden" id="FGrossSalary_@i" value="@employee.GrossSalary" />
+                                                        <input type="number" class="form-control text-center" id="GrossSalary_@i" name="PrSalaryDtls[@i].GrossSalary" value="@employee.GrossSalary" readonly />
+                                                    </td>
+
+                                                    @foreach (var item in enableDiductionParts)
+                                                    {
+                                                        if (item.PartCode == nameof(employee.ColA))
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" name="PrSalaryDtls[@i].ColA" value="@employee.ColA" />
+                                                                @(employee.ColA)
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColB))
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" name="PrSalaryDtls[@i].ColB" value="@employee.ColB" />
+                                                                @(employee.ColB)
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColC))
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" name="PrSalaryDtls[@i].ColC" value="@employee.ColC" />
+                                                                @(employee.ColC)
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColD))
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" name="PrSalaryDtls[@i].ColD" value="@employee.ColD" />
+                                                                @(employee.ColD)
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColE))
+                                                        {
+                                                            @if (AppUtility.IsAutoFoodBill == true)
+                                                            {
+                                                                <td>
+                                                                    <input type="number" class="form-control text-center" id="D_ColE_@i" name="PrSalaryDtls[@i].ColE" value="@employee.ColE" readonly />
+                                                                </td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td>
+                                                                    <input type="number" class="form-control text-center pay-cal" data-index="@i" id="D_ColE_@i" name="PrSalaryDtls[@i].ColE" value="@employee.ColE" />
+                                                                </td>
+                                                            }
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColF))
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" name="PrSalaryDtls[@i].ColF" value="@employee.ColF" />
+                                                                @(employee.ColF)
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColG))
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" name="PrSalaryDtls[@i].ColG" value="@employee.ColG" />
+                                                                @(employee.ColG)
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColH))
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" name="PrSalaryDtls[@i].ColH" value="@employee.ColH" />
+                                                                @(employee.ColH)
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColJ))
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" id="D_ColJ_@i" name="PrSalaryDtls[@i].ColJ" value="@employee.ColJ" />
+                                                                @(employee.ColJ)
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColK))
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" name="PrSalaryDtls[@i].ColK" value="@employee.ColK" />
+                                                                @(employee.ColK)
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColL))
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" name="PrSalaryDtls[@i].ColL" value="@employee.ColL" />
+                                                                @(employee.ColL)
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColM))
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" name="PrSalaryDtls[@i].ColM" value="@employee.ColM" />
+                                                                @(employee.ColM)
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColN))
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" name="PrSalaryDtls[@i].ColN" value="@employee.ColN" />
+                                                                @(employee.ColN)
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColO))
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" name="PrSalaryDtls[@i].ColO" value="@employee.ColO" />
+                                                                @(employee.ColO)
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColP))
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" name="PrSalaryDtls[@i].ColP" value="@employee.ColP" />
+                                                                @(employee.ColP)
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColQ))
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" name="PrSalaryDtls[@i].ColQ" value="@employee.ColQ" />
+                                                                @(employee.ColQ)
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColR))
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" name="PrSalaryDtls[@i].ColR" value="@employee.ColR" />
+                                                                @(employee.ColR)
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColS))
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" name="PrSalaryDtls[@i].ColS" value="@employee.ColS" />
+                                                                @(employee.ColS)
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColT))
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" name="PrSalaryDtls[@i].ColT" value="@employee.ColT" />
+                                                                @(employee.ColT)
+                                                            </td>
+                                                        }
+                                                        else if (item.PartCode == nameof(employee.ColU))
+                                                        {
+                                                            <td>
+                                                                <input type="number" class="form-control text-center pay-cal" data-index="@i" id="D_ColU_@i" name="PrSalaryDtls[@i].ColU" value="@employee.ColU" />
+                                                            </td>
+                                                        }
+                                                    }
+                                                    <td>
+                                                        <input type="hidden" id="FTotalDeduction_@i" value="@employee.DeductionValue" />
+                                                        <input type="number" class="form-control text-center" id="TotalDeduction_@i" name="PrSalaryDtls[@i].TotalDeduction" value="@employee.DeductionValue" readonly />
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" class="form-control text-end" id="NetSalary_@i" data-dpt-index="@(j)" name="PrSalaryDtls[@i].NetSalary" value="@employee.NetSalary" readonly />
+                                                    </td>
+                                                </tr>
+
+                                                i++;
+                                            }
+
+                                            <!-- Department Footer Row -->
+                                            <tr>
+                                                <td colspan="@(totalSalarySpan)" style="font-weight: bold; background-color: lightblue;text-align:end;">
+                                                    Total
+                                                </td>
+                                                <td style="font-weight: bold; background-color: lightblue;text-align:end;">
+                                                    <input type="number" class="form-control text-end subtotal" id="DptTotalSalary_@(j)" value="@(dptTotal)" readonly />
+                                                </td>
+                                            </tr>
+                                        }
+
+                                        <tr>
+                                            <td class="text-end" colspan="@totalSalarySpan">Total Salary</td>
+                                            <td>
+                                                <input type="number" class="form-control text-end" id="GrandTotalSalary" value="@Model.TotalSalary" readonly />
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="button" class="btn btn-primary float-left" id="SavePayrollBtn">Save Payroll</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/ETL/PrSalaryMst/PrSalaryMstSave.js"></script>
+<script src="~/theme/assets/js/sweet-alert/sweetalert.min.js"></script>

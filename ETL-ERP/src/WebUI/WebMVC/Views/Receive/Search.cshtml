@@ -1,0 +1,90 @@
+﻿@model Domain.ViewModel.Inventory.Transaction.TransactionSearchVm
+@{
+    ViewData["Title"] = "Receive Order Item Search";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkInventory" />
+        <div class="card mb-3">
+            <div class="card-header bg-primary">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed text-white" data-bs-toggle="collapse" data-bs-target="#collapseicon2" aria-expanded="false" aria-controls="collapseicon2"><i class="fa fa-filter"></i>Filter</button>
+                </h5>
+            </div>
+            <div class="collapse" id="collapseicon2" data-bs-parent="#accordionoc">
+                <form>
+                    <div class="card-body">
+                        <input asp-for="TranType" type="hidden" />
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label class="col-form-label">Supplier</label>
+                                <select asp-for="SupplierId" asp-items="Model.SupplierLookUp" class="dd-type"></select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="col-form-label">Order No</label>
+                                <select asp-for="OrderId" asp-items="Model.OrderLookUp" class="dd-type"></select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="col-form-label">Form Date</label>
+                                <input class="form-control from_dt" asp-for="SFromDate" type="text" placeholder="Enter start date" autocomplete="off" data-language="en" />
+                            </div>
+                            <div class="col-md-3">
+                                <label class="col-form-label">To Date</label>
+                                <input asp-for="SToDate" class="form-control to_dt" placeholder="Enter end date" autocomplete="off" data-language="en" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-end p-3">
+                        <div>
+                            <button type="button" id="SearchBtn" class="btn btn-primary">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header d-flex">
+                <h5>Receive List</h5>
+                <div class="setting-list">
+                    <a asp-action="DirectCreate" asp-controller="Receive" class="btn btn-primary">New Direct Receive Order</a>
+                    <a asp-action="Create" asp-controller="Receive" class="btn btn-primary">New Receive Order</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table table-responsive">
+                    <table id="ReceiveSearchTable" class="display" style="width:100%; text-align: center">
+                        <thead class="bg-primary">
+                            <tr>
+                                <th style="width: 5%">Serial</th>
+                                <th>Receive No</th>
+                                <th>Receive Date</th>
+                                <th>Order No</th>
+                                <th>Order Date</th>
+                                <th>Supplier</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts
+{
+    <script>
+        $(".from_dt").datepicker({
+            dateFormat: 'dd/mm/yyyy'
+        });
+        $(".to_dt").datepicker({
+            dateFormat: 'dd/mm/yyyy'
+        });
+    </script>
+
+    <script src="~/js/ETL/Transaction/ReceiveSearch.js?v=@DateTime.UtcNow.Ticks"></script>
+}

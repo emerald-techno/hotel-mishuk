@@ -1,0 +1,157 @@
+﻿@model Domain.ViewModel.Pf.PfSettlement.PfSettlementVm
+@{
+    ViewData["Title"] = "PF Settlement Edit";
+}
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkPf" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Edit Pf Settlement</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="PfSettlement" asp-route-id="@Model.Id" class="btn btn-primary">Search Pf Settlement</a>
+                </div>
+            </div>
+            <form asp-action="Edit" class="form theme-form">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Employee *</label>
+                                <select asp-for="EmployeeId" asp-items="Model.EmployeeLookUp" class="dd-type"></select>
+                                <span asp-validation-for="Employee.Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Status Date *</label>
+                                <input class="form-control datepickerStatus" asp-for="StatusDateStr" type="text" data-language="en">
+                                <span asp-validation-for="StatusDateStr" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Total Amount *</label>
+                                <input class="form-control" asp-for="TotalAmount" type="number" placeholder="Enter total amount">
+                                <span asp-validation-for="TotalAmount" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Company Contribution *</label>
+                                <input class="form-control" asp-for="CompCon" type="number" placeholder="Enter company contribution">
+                                <span asp-validation-for="CompCon" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Tax *</label>
+                                <input class="form-control" asp-for="Tax" type="number" placeholder="Enter tax">
+                                <span asp-validation-for="Tax" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Approve Date *</label>
+                                <input class="form-control datepickerApprove" asp-for="ApproveDateStr" type="text" data-language="en">
+                                <span asp-validation-for="ApproveDateStr" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Status *</label>
+                                <select asp-for="Status" asp-items="Model.PfSettlementStatusLookUp" class="dd-type"></select>
+                                <span asp-validation-for="StatusText" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Pf Start Date</label>
+                                <input class="form-control datepickerPfStart" asp-for="PfStartDateStr" type="text" data-language="en">
+                                <span asp-validation-for="PfStartDateStr" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Interest *</label>
+                                <input class="form-control" asp-for="Interest" type="number" placeholder="Enter interest">
+                                <span asp-validation-for="Interest" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Employee Contribution *</label>
+                                <input class="form-control" asp-for="EmpCon" type="number" placeholder="Enter employee contribution">
+                                <span asp-validation-for="EmpCon" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Vat *</label>
+                                <input class="form-control" asp-for="Vat" type="number" placeholder="Enter vat">
+                                <span asp-validation-for="Vat" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">File Upload *</label>
+                                <input class="form-control" asp-for="FileDocUrl" type="file">
+                                <span asp-validation-for="FileDocUrl" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Settlement Date *</label>
+                                <input class="form-control datepickerSettlement" asp-for="SettlementDateStr" type="text" data-language="en">
+                                <span asp-validation-for="SettlementDateStr" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Pf End Date</label>
+                                <input class="form-control datepickerPfEnd" asp-for="PfEndDateStr" type="text" data-language="en">
+                                <span asp-validation-for="PfEndDateStr" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Company Contribution Type</label>
+                                <select asp-for="CompConType" asp-items="Model.CompanyContributionTypeLookUp" class="dd-type"></select>
+                                <span asp-validation-for="CompConTypeText" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Pf Length <small>(In Month)</small> *</label>
+                                <input class="form-control" asp-for="PfLength" type="number" placeholder="Enter provident fund length">
+                                <span asp-validation-for="PfLength" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Net Amount *</label>
+                                <input class="form-control" asp-for="NetAmount" type="number" placeholder="Enter net amount">
+                                <span asp-validation-for="NetAmount" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Remarks</label>
+                                <textarea class="form-control" rows="4" asp-for="Remarks"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Update</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script>
+        var SettlementDate = @Model.SettlementDateStr;
+        var StatusDate = @Model.StatusDateStr;
+        var PfStartDate = @Model.PfStartDateStr;
+        var PfEndDate = @Model.PfEndDateStr;
+        var ApproveDate = @Model.ApproveDateStr;
+
+        $(".datepickerSettlement").datepicker({
+            setDate: SettlementDate,
+            dateFormat: 'dd/mm/yy',
+        });
+        $(".datepickerStatus").datepicker({
+            setDate: StatusDate,
+            dateFormat: 'dd/mm/yy',
+        });
+        $(".datepickerPfStart").datepicker({
+            setDate: PfStartDate,
+            dateFormat: 'dd/mm/yy',
+        });
+
+        $(".datepickerPfEnd").datepicker({
+            setDate: PfEndDate,
+            dateFormat: 'dd/mm/yy',
+        });
+        $(".datepickerApprove").datepicker({
+            setDate: ApproveDate,
+            dateFormat: 'dd/mm/yy',
+        });
+    </script>
+}

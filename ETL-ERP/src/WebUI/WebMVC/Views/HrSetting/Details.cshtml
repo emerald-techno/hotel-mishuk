@@ -1,0 +1,134 @@
+﻿@model Domain.ViewModel.Hr.HrSetting.HrSettingVm
+@{
+    ViewData["Title"] = "Office Time Setup";
+    Layout = "_Layout";
+}
+@Html.HiddenFor(c => c.Id);
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <div class="row">
+                    <h4>Office Time Setup</h4>
+                    <div class="setting-list">
+                        <a asp-action="Edit" asp-controller="HrSetting" asp-route-id="@Model.Id" class="btn btn-primary">Update Office Time</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8">
+                            <div class="row">
+                                <label class="col-form-label col-md-4">Office Start Time</label>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input asp-for="OfficeStartTime" type="text" class="form-control" readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <label class="col-form-label col-md-4">Office End Time</label>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+
+                                        <input asp-for="OfficeEndTime" type="text" class="form-control" readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <label class="col-form-label col-md-4">Holiday One</label>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input asp-for="HolidayOne" type="text" class="form-control" readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <label class="col-form-label col-md-4">Holiday Two</label>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input asp-for="HolidayTwo" type="text" class="form-control" readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <label class="col-form-label col-md-4">Holiday One Type</label>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+
+                                        <input asp-for="HolidayOneTypeText" type="text" class="form-control" readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <label class="col-form-label col-md-4">Holiday Two Type</label>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+
+                                        <input asp-for="HolidayTwoTypeText" type="text" class="form-control" readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="">
+                                    <div class="media">
+                                        <label class="col-form-label col-md-4">Is Special Time</label>
+                                        <div class="media-body icon-state">
+                                            <label class="switch col-md-6">
+                                                @if (Model.IsSpecialTime)
+                                                {
+                                                    <input type="checkbox" asp-action="Details" asp-controller="HrSetting" asp-for="IsSpecialTime" checked />
+
+                                                    <span class="switch-state"></span>
+                                                }
+                                                else
+                                                {
+                                                    <input type="checkbox" asp-action="Details" asp-controller="HrSetting" asp-for="IsSpecialTime" />
+
+                                                    <span class="switch-state"></span>
+                                                }
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <label class="col-form-label col-md-4">Special Office Start Time</label>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+
+                                        <input asp-for="SpOfficeStartTime" type="text" class="form-control" readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <label class="col-form-label col-md-4">Special Office End Time</label>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+
+                                        <input asp-for="SpOfficeEndTime" type="text" class="form-control" readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="col-md-2"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

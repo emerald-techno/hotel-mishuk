@@ -1,0 +1,21 @@
+﻿@* Accounts *@
+    <div class="scroll-bar-wrap">
+        <div class="horizontal-scroll scroll-demo" style="height:auto">
+            <div class="horz-scroll-content">
+                <div class="row">
+                <div class="col" style="display:flex; gap:5px">
+                    <button style="white-space: nowrap;" onclick="location.href='@Url.Action("AccOpeningCreate", "AccTranMst")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Accounting Opening</button>
+                    <button style="white-space: nowrap;" onclick="location.href='@Url.Action("BankDebitVoucher", "AccTranMst")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Bank Receive Voucher</button>
+                    <button style="white-space: nowrap;" onclick="location.href='@Url.Action("BankCreditVoucher", "AccTranMst")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Bank Payment Voucher</button>
+                    <button style="white-space: nowrap;" onclick="location.href='@Url.Action("CashDebitVoucher", "AccTranMst")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Cash Receive Voucher</button>
+                    <button style="white-space: nowrap;" onclick="location.href='@Url.Action("CashCreditVoucher", "AccTranMst")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Cash Payment Voucher</button>
+                    <button style="white-space: nowrap;" onclick="location.href='@Url.Action("VoucherSearch", "AccTranMst")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Voucher Search</button>
+                    <button style="white-space: nowrap;" onclick="location.href='@Url.Action("LedgerReport", "AccTranMst")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Ledger Report</button>
+                    <button style="white-space: nowrap;" onclick="location.href='@Url.Action("TrialBalance", "AccTranMst")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Trial Balance</button>
+                    <button style="white-space: nowrap;" onclick="location.href='@Url.Action("ReceiptAndPayments", "AccTranMst")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Recept and Payments</button>
+                    <button style="white-space: nowrap;" onclick="location.href='@Url.Action("ProfitOrLossStatement", "AccTranMst")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Profit or Loss</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,39 @@
+﻿@model Domain.ViewModel.Pf.EmpLoan.EmpLoanMstSearchVm
+@{
+    ViewData["Title"] = "Employee Loan List";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <h4>Loan List</h4>
+                <div class="setting-list">
+                    <a asp-action="Create" asp-controller="EmpLoanMst" class="btn btn-primary">Loan Setup</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <table id="LoanSearchTable" class="display" style="width:100%; text-align: left">
+                    <thead>
+                        <tr>
+                            <th style="width: 5%">Serial</th>
+                            <th style="width: 20%">Employee</th>
+                            <th style="width: 10%">Pass Date</th>
+                            <th style="width: 10%">Pay Date</th>
+                            <th style="width: 10%">Loan Amount</th>
+                            <th style="width: 15%">First Installment Date</th>
+                            <th style="width: 10%">Installment Total</th>
+                            <th style="width: 10%">Action</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/js/ETL/EmpLoan/EmpLoanSearch.js"></script>
+}

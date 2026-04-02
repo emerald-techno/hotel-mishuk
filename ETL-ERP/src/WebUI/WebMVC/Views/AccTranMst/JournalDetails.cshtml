@@ -1,0 +1,228 @@
+﻿@model Domain.ViewModel.Accounting.AccTranMst.AccTranMstVm
+@using Domain.Utility
+@using Domain.Entities.Identity
+@using Domain.Enums.AppEnums
+@using Domain.Utility.Common
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "Journal Details";
+    Layout = "_Layout";
+    var user = await UserManager.GetUserAsync(User);
+}
+@Html.HiddenFor(c => c.Id)
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkAccounts" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>JOURNAL VOUCHER</h5><br />
+                <div class="setting-list">
+                    @if (user.FullName == UserCode.Development)
+                    {
+                        <a class="voucher_delete_btn btn btn-outline-danger" data-id="@(Model.Id)" style="font-size:18px;" href="#" title='Remove Voucher'><i class="fa fa-trash"></i></a>
+                    }
+                    <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#noteModal">Add Note</button>
+                    <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#fileModal">Add File</button>
+                    <button class="btn btn-primary" id="VoucherPrintBtn">Print</button>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="row mb-3 px-3">
+                    <table class="table table-borderless w-100">
+                        <tbody>
+                            <tr>
+                                <td style="width: 10%;"><b>Voucher Date</b></td>
+                                <td class="text-start" style="width: 20%;">@Utility.ConvertDateToStr(Model.VcDate)</td>
+                                <td style="width: 10%;"><b>Voucher No</b></td>
+                                <td class="text-start" style="width: 20%;">@(Model.VcNo)</td>
+                                <td style="width: 10%;"><b>Ref No</b></td>
+                                <td class="text-start" style="width: 20%;">@(Model.RefNo)</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 10%;"><b>Currency</b></td>
+                                <td class="text-start" style="width: 20%;">@(Model.CurrencyName)</td>
+                                <td style="width: 10%;"><b>Financial Year</b></td>
+                                <td class="text-start" style="width: 20%;">@(Model.FinYearName)</td>
+                                <td style="width: 10%;"><b>Ex Rate</b></td>
+                                <td class="text-start" style="width: 20%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 10%;"><b>Narration</b></td>
+                                <td class="text-start" style="width: 20%;">@(Model.Narration)</td>
+                                @if (Model.AccAccountId > 0)
+                                {
+                                    <td style="width: 10%;"><b>Account</b></td>
+                                    <td class="text-start" style="width:20%;">@(Model.AccAccountName)</td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                    <td></td>
+                                }
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row mb-3">
+                    <div class=" col-md-12">
+                        <table class="table table-bordered">
+                            <thead style=" background-color: gainsboro;">
+                                <tr>
+                                    <th rowspan="2" class="text-center">Ledger Code</th>
+                                    <th rowspan="2" class="text-center">Ledger Name</th>
+                                    <th colspan="2" class="text-center">Amount</th>
+                                </tr>
+                                <tr>
+                                    <th class="text-center">Debit</th>
+                                    <th class="text-center">Credit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.JournalDtlVms.Count > 0)
+                                {
+                                    foreach (var dtl in Model.JournalDtlVms)
+                                    {
+                                        <tr>
+                                            <td>@(dtl.LedgerCode)</td>
+                                            <td>@(dtl.LedgerName)</td>
+                                            <td class="text-end">@(dtl.AmountDr > 0 ? dtl.AmountDr.ToString("N2") : "")</td>
+                                            <td class="text-end">@(dtl.AmountCr > 0 ? dtl.AmountCr.ToString("N2") : "")</td>
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <td colspan="2" class="text-end"><b>Total:</b></td>
+                                        <td class="text-end"><b>@(Model.JournalDtlVms.Sum(c=>c.AmountDr).ToString("N2"))</b></td>
+                                        <td class="text-end"><b>@(Model.JournalDtlVms.Sum(c=>c.AmountCr).ToString("N2"))</b></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+
+                    <div class="col-md-6">
+                        <table class="table table-bordered">
+                            <thead style="background-color: gainsboro;">
+                                <tr class="bg-white">
+                                    <th colspan="4"><h5>Voucher Notes</h5></th>
+                                </tr>
+                                <tr>
+                                    <th class="text-center">Date</th>
+                                    <th class="text-center">Type</th>
+                                    <th class="text-center">Description</th>
+                                    <th class="text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="VcNoteTBody">
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="col-md-6">
+                        <table class="table table-bordered">
+                            <thead style="background-color: gainsboro;">
+                                <tr class="bg-white">
+                                    <th colspan="4"><h5>Voucher Files</h5></th>
+                                </tr>
+                                <tr>
+                                    <th class="text-center">Date</th>
+                                    <th class="text-center">Name</th>
+                                    <th class="text-center">File</th>
+                                    <th class="text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="VcFileTBody">
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+            @*note_modal_start*@
+
+            <div class="modal fade modal-bookmark" id="noteModal" tabindex="-1" role="dialog" aria-labelledby="noteModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="noteModalLabel">Add Note</h5>
+                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-bookmark needs-validation" id="FileFrom" novalidate="">
+                                <input type="hidden" id="IsAjaxPost" value="true" />
+                                <input type="hidden" id="VcId" value="@(Model.Id)" />
+
+                                <div class="form-group row">
+                                    <div class="col-md-12">
+                                        <label>Note Type</label>
+                                        <select id="NoteType" asp-items="Model.NoteTypeLookup" class="dd-type"></select>
+                                        <span class="text-danger" id="NoteTypeErrMsg"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-md-12">
+                                        <label>Note Description</label>
+                                        <textarea class="form-control" id="NoteDesc" type="text" rows="3"></textarea>
+                                    </div>
+                                </div>
+                                <button class="btn btn-secondary" id="VcNoteSave" type="button">Save</button>
+                                <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Cancel</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @*note_modal_end*@
+
+            @*file_modal_start*@
+
+            <div class="modal fade modal-bookmark" id="fileModal" tabindex="-1" role="dialog" aria-labelledby="fileModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="educationModalLabel">Add File</h5>
+                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-bookmark needs-validation" id="FileFrom" novalidate="">
+                                <input type="hidden" id="IsAjaxPost" value="true" />
+                                <input type="hidden" id="VcId" value="@(Model.Id)" />
+
+                                <div class="row form-group">
+                                    <label>File Name</label>
+                                    <input class="form-control" id="FileName" type="text" required="" autocomplete="off">
+                                </div>
+                                <div class="row form-group">
+                                    <label>Document File</label>
+                                    <input class="form-control" type="file" id="UploadFile">
+                                </div>
+                                <div class="form-group row">
+                                    <label>Remarks</label>
+                                    <input class="form-control" id="FileRemarks" type="text" required="" autocomplete="off">
+                                </div>
+                                <button class="btn btn-secondary" id="VcFileSave" type="button">Save</button>
+                                <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Cancel</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @*file_modal_end*@
+
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/ETL/AccTranMst/JournalDetails.js"></script>
+}

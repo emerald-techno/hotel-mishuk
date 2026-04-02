@@ -1,0 +1,308 @@
+﻿@model Domain.ViewModel.Restaurant.FoodItem.FoodItemVm
+@{
+    ViewData["Title"] = "Food Item Details";
+}
+@section styles {
+    <style>
+        /* Chrome, Safari, Edge, Opera */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
+}
+<div class="row p-0">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <img src="@Model.PhotoUrl" style="height:25vh;width:100%;">
+                    </div>
+                    <div class="col-md-4">
+                        <h3>
+                            @Model.ItemName - (@Model.ItemCode)
+                            @if (Model.IsSetMenuItem)
+                            {
+                                <span class="badge badge-primary">Set Menu</span>
+                            }
+                        </h3>
+                        <h5>@Model.CategoryName</h5>
+                        <h6><span><b>Price: &#160; @Model.NetRate</b></span></h6>
+                        @if (!string.IsNullOrEmpty(Model.Description))
+                        {
+                            <div>
+                                <b>Description</b>
+                                <p>@(Model.Description)</p>
+                            </div>
+                        }
+                    </div>
+                    <div class="col-md-6">
+
+                        @if (Model.IsSetMenuItem)
+                        {
+                            <table class="table table-bordered" style="width:100%;">
+                                <thead>
+                                    <tr>
+                                        <th colspan="5">
+                                            <div class="d-flex justify-content-between">
+                                                <h5>Set Menu Items</h5>
+                                                <div>
+                                                    <a class="btn btn-primary" asp-action="CreateCopy" asp-controller="FoodItem" asp-route-id="@Model.Id">Copy SetMenu</a>
+                                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#setItemEntryModal">Add Set Menu Item</button>
+                                                </div>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th style="width:40%;">Item</th>
+                                        <th class="text-center" style="width:15%;">Price</th>
+                                        <th class="text-center" style="width:15%;">Qty</th>
+                                        <th class="text-center" style="width:15%;">Total</th>
+                                        <th class="text-center" style="width:15%;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.FoodSetItemVms.Count > 0)
+                                    {
+                                        foreach (var (setItem, i) in Model.FoodSetItemVms.GetItemWithIndex())
+                                        {
+                                            <tr>
+                                                <td>@(setItem.SetFoodItemName)</td>
+                                                <td class="text-center">@(setItem.SetFoodItemPrice)</td>
+                                                <td class="text-center">@(setItem.Quantity)</td>
+                                                <td class="text-end">@((setItem.Quantity * setItem.SetFoodItemPrice).ToString("N2"))</td>
+                                                <td>
+                                                    <div class="row align-items-baseline">
+                                                        <div class="col-md-3"></div>
+                                                        <div class="col-md-3">
+                                                            <div class="media">
+                                                                <div class="icon-state switch-sm">
+                                                                    <label class="switch">
+                                                                        <input type="checkbox" class="SetIsEnable" data-index="@i" data-id="@setItem.Id" id="SetIsEnable_@i" checked="@(setItem.IsEnable)"><span class="switch-state bg-primary"></span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <i class='fa fa-times' style="font-size: 22px;" onclick="removeSetItem(@setItem.Id)"></i>
+                                                        </div>
+                                                        <div class="col-md-3"></div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                        <tr>
+                                            <td colspan="3" class="text-end"><b>Total Set Menu Actual Price</b></td>
+                                            <td class="text-end"><b>@Model.FoodSetItemVms.Sum(x => x.Quantity * x.SetFoodItemPrice).ToString("N2")</b></td>
+                                            <td></td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="5" class="text-center"><b>No Set Menu Item Added Yet...!!</b></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th colspan="5">
+                                        <div class="d-flex justify-content-between">
+                                            <h5>Food Ingredients</h5>
+                                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#itemEntryModal">Add Food Ingredient</button>
+                                        </div>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th style="width:40%;">Item</th>
+                                    <th class="text-center" style="width:15%;">Qty</th>
+                                    <th class="text-center" style="width:15%;">Price</th>
+                                    <th class="text-center" style="width:15%;">Total Cost</th>
+                                    <th class="text-center" style="width:15%;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.FoodIngredientVMs.Count > 0)
+                                {
+                                    foreach (var (ingredient, i) in Model.FoodIngredientVMs.GetItemWithIndex())
+                                    {
+                                        <tr>
+                                            <td>@ingredient.ItemName - (@ingredient.UnitName)</td>
+                                            <td class="text-center">@ingredient.Quantity</td>
+                                            <td class="text-center">@ingredient.Price</td>
+                                            <td class="text-end">@ingredient.Amount </td>
+                                            <td>
+                                                <div class="row align-items-baseline">
+                                                    <div class="col-md-3"></div>
+                                                    <div class="col-md-3">
+                                                        <div class="media">
+                                                            <div class="icon-state switch-sm">
+                                                                <label class="switch">
+                                                                    <input type="checkbox" class="IsActive" data-index="@i" data-id="@ingredient.Id" id="IsActive_@i" checked="@(ingredient.IsActive)"><span class="switch-state bg-primary"></span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <i class='fa fa-times' style="font-size: 22px;" onclick="removeIngredient(@ingredient.Id)"></i>
+                                                    </div>
+                                                    <div class="col-md-3"></div>
+                                                </div>
+
+                                            </td>
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <td colspan="3" class="text-end"><b>Total Food Cost</b></td>
+                                        <td class="text-end"><b>@Model.FoodIngredientVMs.Sum(x => x.Amount).ToString("N2")</b></td>
+                                        <td></td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="5" class="text-center"><b>No Ingredients Added Yet...!!</b></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                        @*modal*@
+
+                        <div class="modal fade" id="itemEntryModal" tabindex="-1" role="dialog" aria-labelledby="itemEntryModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel2">New Ingredient</h5>
+                                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <input class="form-control" asp-for="Id" type="hidden">
+
+                                                        <div class="mb-3 row">
+                                                            <label class="col-sm-3 col-form-label">Item</label>
+                                                            <div class="col-sm-9">
+                                                                <select class="dd-type" id="ItemId" asp-items="Model.ItemLookup"></select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="mb-3 row">
+                                                            <label class="col-sm-3 col-form-label">Unit</label>
+                                                            <div class="col-sm-9">
+                                                                <select class="dd-type" id="UnitId" asp-items="Model.UnitLookup"></select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="mb-3 row">
+                                                            <label class="col-sm-3 col-form-label">Price</label>
+                                                            <div class="col-sm-9">
+                                                                <input class="form-control" id="Price" type="number" placeholder="Enter Price" value="0">
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="mb-3 row">
+                                                            <label class="col-sm-3 col-form-label">Quantity</label>
+                                                            <div class="col-sm-9">
+                                                                <input class="form-control" id="Quantity" type="number" placeholder="Enter Quantity" value="1">
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="mb-3 row">
+                                                            <label class="col-sm-3 col-form-label">Amount</label>
+                                                            <div class="col-sm-9">
+                                                                <input class="form-control" id="Amount" type="number" placeholder="Enter Price" readonly />
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button class="btn btn-primary" id="ItemEntryBtn" type="button">Entry</button>
+                                        <button class="btn btn-secondary close" type="button" data-bs-dismiss="modal">Close</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        @*modal_end*@
+
+                        @*modal_set_item*@
+
+                        <div class="modal fade" id="setItemEntryModal" tabindex="-1" role="dialog" aria-labelledby="setItemEntryModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel2">New Set Menu Item</h5>
+                                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <input class="form-control" asp-for="Id" type="hidden">
+
+                                                        <div class="mb-3 row">
+                                                            <label class="col-sm-3 col-form-label">Set Item</label>
+                                                            <div class="col-sm-9">
+                                                                <select class="dd-type" id="SetFoodItemId" asp-items="Model.FoodItemLookup"></select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="mb-3 row">
+                                                            <label class="col-sm-3 col-form-label">Quantity</label>
+                                                            <div class="col-sm-9">
+                                                                <input class="form-control" id="SetItemQuantity" type="number" placeholder="Enter Quantity">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button class="btn btn-primary" id="SetItemEntryBtn" type="button">Entry</button>
+                                        <button class="btn btn-secondary close" type="button" data-bs-dismiss="modal">Close</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        @*modal_set_item_end*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts
+{
+    <script src="~/js/ETL/FoodItem/FoodItemDetails.js"></script>
+}
+

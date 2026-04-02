@@ -1,0 +1,43 @@
+﻿@model Domain.ViewModel.HotelManagement.Complementary.HtComplementarySearchVm
+@{
+    ViewData["Title"] = "Complementary Search";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkHt" />
+        <form>
+            <div class="card">
+            </div>
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Complementary List</h5>
+                    <div class="setting-list">
+                        <input class="btn btn-primary" type="button" id="ComplementarySearchBtn" value="Search" />
+                        <a asp-action="Create" asp-controller="Complementary" class="btn btn-primary">New Complementary</a>
+                        @*<input type="button" id="LedgerReportBtn" class="btn btn-primary" value="Search" />*@
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table table-responsive">
+                        <table id="ComplementarySearchTable" class="display" style="width:100%; text-align: left">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th style="width: 5%">Sl</th>
+                                    <th>Name</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/ETL/Complementary/ComplementarySearch.js"></script>
+}

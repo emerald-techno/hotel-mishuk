@@ -1,0 +1,71 @@
+﻿@model Domain.ViewModel.Inventory.ItemConsumptionReportVm
+@{
+    ViewData["Title"] = "Item Consumption Report";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <form>
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Food Sales & Raw Material Usage Report</h5>
+                    <div class="setting-list">
+                        <input type="button" id="ShowReportBtn" class="btn btn-primary" value="Show Report" />
+                    </div>
+                </div>
+                <div class="card-body table-responsive">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                
+                                <div class="col-md-2">
+                                    <label class="col-form-label">From Date</label>
+                                    <input class="form-control from_dt" asp-for="StrFromDate" placeholder="Enter start date" data-language="en" />
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="col-form-label">To Date</label>
+                                    <input asp-for="StrToDate" class="form-control to_dt" placeholder="Enter end date" data-language="en" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Item Consumption Report</h5>
+                    <div class="setting-list">
+                        <button class="btn btn-primary" id="ReportPrintBtn">PDF</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <dvi class="table-responsive">
+                        <div style="text-align: center;">
+                            <div style="text-align: center; font-weight: bold; font-size: 16px; line-height: 20px">Food Sales & Raw Material Usage Report</div>
+                        </div>
+                        <div id="ReportContainer"></div>
+                    </dvi>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        $(".from_dt").datepicker({
+            dateFormat: 'dd/mm/yyyy',
+            autoClose: true
+        });
+
+        $(".to_dt").datepicker({
+            dateFormat: 'dd/mm/yyyy',
+            autoClose: true
+        });
+    </script>
+
+    <script src="~/js/ETL/ItemConsumptionReport/ItemConsumptionReport.js"></script>
+}

@@ -1,0 +1,83 @@
+﻿@model Domain.ViewModel.Admin.FinancialYear.SetFincYearVm
+@{
+    ViewData["Title"] = "Edit Financial Year";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkAccounts" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Edit Financial Year</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="SetFincYear" class="btn btn-primary">Search Financial Year</a>
+                </div>
+            </div>
+            <form asp-action="Edit" class="form theme-form">
+                @Html.HiddenFor(c => c.Id)
+                @Html.Hidden("InitYear", Model.YearName)
+                <input type="hidden" id="yearStart" value="@Model.YearStartDateStr" />
+                <input type="hidden" id="yearEnd" value="@Model.YearEndDateStr" />
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Year Name</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="YearName" type="text" placeholder="Enter Year name">
+                                    <span asp-validation-for="YearName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Year Start Date</label>
+                                <div class="col-sm-9">
+                                    <input class="year-start form-control" asp-for="YearStartDateStr" type="text" data-language="en" placeholder="Enter Year Start Date">
+                                    <span asp-validation-for="YearStartDateStr" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Year End Date</label>
+                                <div class="col-sm-9">
+                                    <input class="year-end form-control" asp-for="YearEndDateStr" type="text" data-language="en" placeholder="Enter Year End Date">
+                                    <span asp-validation-for="YearEndDateStr" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Is Active*</label>
+                                <div class="col-sm-9">
+                                    <div class="form-group">
+                                        <input asp-for="IsActive" type="checkbox" />
+                                    </div>
+                                    <span asp-validation-for="IsActive" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        const yearStart = $("#yearStart").val();
+        const yearEnd = $("#yearEnd").val();
+
+        $(".year-start").datepicker({
+            setDate: yearStart,
+            dateFormat: 'dd/mm/yyyy',
+        });
+
+        $(".year-end").datepicker({
+            setDate: yearEnd,
+            dateFormat: 'dd/mm/yyyy',
+        });
+    </script>
+}

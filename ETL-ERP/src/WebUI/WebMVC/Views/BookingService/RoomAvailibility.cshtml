@@ -1,0 +1,111 @@
+﻿@model Domain.ViewModel.HotelManagement.HotelReport.RoomAvailabilityVm
+@{
+    ViewData["Title"] = "Available Rooms";
+    Layout = "_Layout";
+}
+
+@section styles
+{
+    <style>
+        #room-section {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .room-card-box {
+            width: 150px; /* Set width */
+            background-color: #24695C; /* Set background color */
+            border: 2px solid #333; /* Add border */
+            border-radius: 10px; /* Add border radius for rounded corners */
+            padding: 20px; /* Add padding inside the box */
+            box-sizing: border-box; /* Include padding and border in box dimensions */
+            margin-right: 5px; /* Add margin between boxes */
+            margin-bottom: 3px; /* Add margin between boxes */
+            display: inline-block; /* Display boxes side by side */
+            text-align: center;
+        }
+
+            .room-card-box h5 {
+                color: white !important;
+            }
+
+            .room-card-box b {
+                color: lightblue !important;
+            }
+    </style>
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkHt" />
+        <form>
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Available Room By Date Range</h5>
+                    <div class="setting-list">
+                        <input type="button" id="ShowRoomBtn" class="btn btn-primary" value="Show Rooms" />
+                    </div>
+                </div>
+                <div class="card-body table-responsive">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label class="col-form-label">From Date</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input class="form-control" id="date-time-picker-from" asp-for="FromDateStr" type="text" autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label class="col-form-label">To Date</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input class="form-control" id="date-time-picker-to" asp-for="ToDateStr" type="text" data-language="en" autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label class="col-form-label">Room Category</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <select asp-for="CategoryId" asp-items="Model.CategoryLookup" class="form-control dd-type"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Available Rooms</h5>
+                </div>
+                <div class="card-body">
+                    <div id="room-section"></div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        $("#date-time-picker-from").datetimepicker({
+            timepicker: false,
+            defaultTime: '12:00'
+        });
+
+        $("#date-time-picker-to").datetimepicker({
+            timepicker: false,
+            defaultTime: '12:00'
+        });
+    </script>
+
+    <script src="~/js/ETL/BookingService/RoomAvailibility.js"></script>
+}

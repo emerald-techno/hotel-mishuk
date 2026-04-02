@@ -1,0 +1,356 @@
+﻿@model Domain.ViewModel.HotelManagement.OnlineBooking.OnlineBookingVm
+@using Domain.Utility
+@{
+    ViewData["Title"] = "CheckOut";
+}
+@section styles
+{
+    <style>
+        * {
+            font-family: "Montserrat", sans-serif;
+        }
+
+
+        .success-body {
+            text-align: center;
+            /* margin-top: 5%; */
+        }
+
+        .check_out_details {
+            margin-top: 5%;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .success-h1 {
+            color: #5cb85c;
+            font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+            font-weight: 900;
+            font-size: 30px;
+            margin-bottom: 5px;
+        }
+
+        .success-p {
+            color: #404F5E;
+            font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+            font-size: 20px;
+            margin: 0;
+        }
+
+        .checkmark {
+            color: #5cb85c;
+            font-size: 80px;
+            margin-left: -15px;
+        }
+
+        .card {
+            background: white;
+            padding: 60px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            margin: 0 auto;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-top: 10%;
+        }
+
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            }
+
+        .checkout_head {
+            margin-bottom: 20px;
+        }
+
+            .checkout_head h3 {
+                font-size: 24px;
+                color: #333;
+                margin-bottom: 0;
+            }
+
+            .checkout_head .btn {
+                background-color: #5cb85c;
+                border: none;
+                padding: 10px 20px;
+                font-size: 16px;
+                border-radius: 5px;
+                transition: background-color 0.3s ease;
+            }
+
+                .checkout_head .btn:hover {
+                    background-color: #4cae4c;
+                }
+
+        .checkout_form .row {
+            margin-bottom: 15px;
+        }
+
+        .checkout_form b {
+            color: #333;
+            font-size: 16px;
+        }
+
+        .checkout_form .text-end {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .section-checkout {
+            padding: 60px 0;
+        }
+
+            .section-checkout .container {
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+
+            .section-checkout .row {
+                align-items: center;
+            }
+
+            .section-checkout .col-md-6 {
+                padding: 15px;
+            }
+
+            .section-checkout .success-body {
+                padding: 30px;
+            }
+
+            .section-checkout .check_out_details {
+                padding: 30px;
+            }
+
+
+        .checkout .checkout_form [class*="col-"] {
+            margin-top: 0px;
+        }
+
+        .checkout_form .row {
+            margin-bottom: 0px;
+        }
+
+        /* st */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin-bottom: 20px;
+        }
+
+
+            .table thead {
+                background-color: #28a745;
+                color: white;
+                position: sticky;
+                top: 0;
+                z-index: 1;
+            }
+
+                .table thead th {
+                    padding: 12px;
+                    text-align: left;
+                    font-weight: 600;
+                }
+
+
+            .table tbody tr {
+                border-bottom: 1px solid #ddd;
+            }
+
+                .table tbody tr:nth-child(even) {
+                    background-color: #f9f9f9;
+                }
+
+                .table tbody tr:hover {
+                    background-color: #f1f1f1;
+                }
+
+            .table tbody td {
+                padding: 12px;
+                color: #555;
+            }
+
+
+            .table tfoot {
+                background-color: #f8f9fa;
+                font-weight: bold;
+            }
+
+        /* .table tfoot td {
+                            padding: 12px;
+                            text-align: right;
+                        } */
+
+
+    </style>
+
+
+}
+
+<!-- SUB BANNER -->
+@*<section class="section-sub-banner bg-9">
+        <div class="awe-overlay"></div>
+        <div class="sub-banner">
+            <div class="container">
+                <div class="text text-center">
+                    <h2>CheckOut</h2>
+                    <p>As your stay concludes, we thank you and look forward to welcoming you back soon.</p>
+                </div>
+            </div>
+        </div>
+    </section>*@
+<!-- END / SUB BANNER -->
+<!-- BLOG -->
+<section class="section-checkout">
+    <div class="container">
+        <div class="checkout">
+            <div class="row">
+
+                <div class="col-md-12">
+                    <div class="check_out_details">
+                        @*  <div class="checkout_head row justify-content-between">
+                        <div class="col-md-10">
+                        <h5 style="color:blue">BILLING DETAILS</h5>
+                        </div>
+                        <div class="col-md-2">
+                        <a type="submit" id="printbtn" class="btn btn-success" >Print</a>
+                        <a class="btn btn-outline-success" asp-controller="Home" target="_blank" asp-action="OnlineBookingBillPrint" asp-route-id="@Model.Id" type="button">Print</a>
+                        </div>
+                        </div> *@
+                        <div class="alert alert-success d-flex align-items-center text-center" style="margin-bottom:2%" role="alert">
+                            <div>
+                                <span><i class="fa fa-check-circle"></i></span>
+                                We received your booking request. We'll contact with you via SMS as soon as possible..!!
+                            </div>
+                        </div>
+                        <div style="display:flex;justify-content:end">
+                            <a class="btn btn-success" asp-controller="Home" target="_blank" asp-action="OnlineBookingBillPrint" asp-route-id="@Model.Id" type="button">Print</a>
+                        </div>
+                        <div class="checkout_form">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="row">
+                                        <label class="col-sm-4 col-form-label"><b>Booking No</b></label>
+                                        <div class="col-sm-8">
+                                            @(Model.OnlineBookingNumber)
+                                            @* <a target="_blank" href="../../BookingService/Details/@Model.BookingId"><b>@Model.BookingNo</b></a> *@
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <label class="col-sm-4 col-form-label"><b>Booking Date</b></label>
+                                        <div class="col-sm-8">
+                                            @Utility.GetDate(Model.OnlineBookingDate)
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <label class="col-sm-4 col-form-label"><b>Arrival Date</b></label>
+                                        <div class="col-sm-8">
+                                            @Utility.GetDate(Model.ArrivalDate)
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <label class="col-sm-4 col-form-label"><b>Departure Date</b></label>
+                                        <div class="col-sm-8">
+                                            @Utility.GetDate(Model.DepartureDate)
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <label class="col-sm-4 col-form-label"><b>Remarks</b></label>
+                                        <div class="col-sm-8">
+                                            @(Model.Remarks)
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3"></div>
+
+                                <div class="col-md-4">
+                                    <div class="row">
+                                        <label class="col-sm-4 col-form-label"><b>Name</b></label>
+                                        <div class="col-sm-8">
+                                            @(Model.GuestName)
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <label class="col-sm-4 col-form-label"><b>Phone</b></label>
+                                        <div class="col-sm-8">
+                                            @(Model.GuestMobile)
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <label class="col-sm-4 col-form-label"><b>Email</b></label>
+                                        <div class="col-sm-8">
+                                            @(Model.GuestEmail)
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <label class="col-sm-4 col-form-label"><b>Address</b></label>
+                                        <div class="col-sm-8">
+                                            @(Model.GuestAddress)
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <table class="table table-bordered">
+                                    <thead class="bg-success">
+                                        <tr>
+                                            <th>Room Category</th>
+                                            <th>Check In</th>
+                                            <th>Check Out</th>
+                                            <th>Room Count</th>
+                                            <th>Total Night(s)</th>
+                                            <th>Rent</th>
+                                            <th>Total Rent</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                        @if (Model.OnlineBookingDetails != null && Model.OnlineBookingDetails.Any())
+                                        {
+                                            @foreach (var details in Model.OnlineBookingDetails)
+                                            {
+                                                <tr>
+                                                    <td data-label="Room Category">@details.RoomCategoryName</td>
+                                                    <td data-label="Check In">@details.CheckInDate.ToString("dd/MMM/yyyy")</td>
+                                                    <td data-label="Check Out">@details.CheckOutDate.ToString("dd/MMM/yyyy")</td>
+                                                    <td data-label="Room Count">@details.RoomCount</td>
+                                                    <td data-label="Total Night(s)">@details.TotalDays Night(s)</td>
+                                                    <td data-label="Rent">@details.RoomRent TK.</td>
+                                                    <td data-label="Total Rent" class="text-right">@details.TotalRent TK.</td>
+                                                </tr>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <tr>
+                                                <td colspan="7" class="text-center">No Room Categories Found</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td style="text-align: right" colspan="3">Total Room(s)</td>
+                                            <td style="font-weight: bold">@Model.TotalRoomCount</td>
+                                            <td style="font-weight: bold">@Model.OnlineBookingDetails.Sum(x=>x.TotalDays).ToString("N0") Night (s)</td>
+                                            <td style="text-align: right" >Grand Total</td>
+                                            <td class="text-right" style="font-weight: bold">@Model.TotalRent TK.</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- END / BLOG -->

@@ -1,0 +1,22 @@
+select convert(date,o.OrderDate) TranDate, o.Id OrderId,convert(date,o.OrderDate)OrderDate,o.OrderNo,ct.TypeName CustomerType,ct.Id CustomerTypeId,bk.Id BookingI,bk.BookingNo,ri.Id RoomId,ri.RoomNo
+,o.OrderAmount,o.VAT,o.TAX,o.ServiceCharge,o.Discount,o.NetAmount,isnull(P.PaidAmount,0)PaidAmount,o.NetAmount - isnull(p.PaidAmount,0) DueAmount,0 DueCollection
+from RsFoodOrders o
+inner join RsCustomers c on c.Id = o.CustomerId
+left join RsCustomerTypes ct on ct.Id = o.CustomerTypeId
+left join HtBookingServices bk on bk.Id = o.BookingId
+left join HtRoomInfos ri on ri.Id = o.RoomId
+left join (select OrderId,sum(PaidAmount) PaidAmount from RsOrderPayments where IsDeleted = 0 group by OrderId) p on p.OrderId = o.Id
+where o.IsDeleted = 0 
+union all
+select convert(date,dp.PaidDate) TranDate,o.Id OrderId,convert(date,o.OrderDate)OrderDate,o.OrderNo,ct.TypeName CustomerType,ct.Id CustomerTypeId,bk.Id BookingI,bk.BookingNo,ri.Id RoomId,ri.RoomNo
+,o.OrderAmount,o.VAT,o.TAX,o.ServiceCharge,o.Discount,o.NetAmount,isnull(p.PaidAmount,0)PaidAmount,o.NetAmount - isnull(p.PaidAmount,0) DueAmount,sum(dp.PaidAmount) DueCollection
+from RsOrderPayments dp
+inner join RsFoodOrders o on o.Id = dp.OrderId
+inner join RsCustomers c on c.Id = o.CustomerId
+left join RsCustomerTypes ct on ct.Id = o.CustomerTypeId
+left join HtBookingServices bk on bk.Id = o.BookingId
+left join HtRoomInfos ri on ri.Id = o.RoomId
+left join (select OrderId,sum(PaidAmount) PaidAmount from RsOrderPayments where IsDeleted = 0 group by OrderId) p on p.OrderId = o.Id
+where o.IsDeleted = 0 and dp.IsDeleted = 0 and convert(date,dp.PaidDate) > convert(date,o.OrderDate)
+group by convert(date,dp.PaidDate),o.Id,o.OrderNo,ct.TypeName,ct.Id,bk.Id,bk.BookingNo,ri.Id,ri.RoomNo,o.OrderAmount,o.VAT,o.TAX,o.ServiceCharge,o.Discount,o.NetAmount
+,convert(date,o.OrderDate),isnull(p.PaidAmount,0)

@@ -1,0 +1,79 @@
+﻿@model Domain.ViewModel.Payroll.PrSalaryPart.PrSalaryPartVm
+@{
+    ViewData["Title"] = "Pr Salary Edit";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkPayroll" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h3>Update Payroll Salary Part</h3>
+            </div>
+            <div class="card-body">
+                <form asp-controller="PrSalaryPart" asp-action="Edit" class="needs-validation" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="ActionById" />
+                    <input type="hidden" asp-for="ActionDate" />
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label" for="validationCustom01">Part Name</label>
+                            <input class="form-control" type="text" asp-for="PartName">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label" for="validationCustom01">Part Code</label>
+                            <input class="form-control" type="text" readonly asp-for="PartCode">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label" for="validationCustom01">Part Type</label>
+                            <select asp-for="PartType" asp-items="Model.PartTypeLookUp" class="form-control dd-type"></select>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label" for="validationCustom01">Value Type</label>
+                            <select asp-for="ValueType" asp-items="Model.ValueTypeLookUp" class="form-control dd-type"></select>
+                            <div class="invalid-feedback">Please mention Schedule Title</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label" for="validationCustom01">Value</label>
+                            <input class="form-control" type="text" asp-for="Value">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Remarks</label>
+                            <textarea asp-for="Remarks" class="form-control" id="" placeholder="Payrole Remarks" rows="4"></textarea>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label" for="validationCustom01">Serial No.</label>
+                            <input class="form-control" type="text" asp-for="SlNo">
+                        </div>
+                        <div class="col-md-4">
+                            <div class="media">
+                                <label class="col-form-label m-r-10">Is Enable</label>
+                                <div class="media-body icon-state">
+                                    <label class="switch">
+                                        <input type="checkbox" asp-for="IsEnable"><span class="switch-state"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="media">
+                                <label class="col-form-label m-r-10">Is Employee Wise</label>
+                                <div class="media-body icon-state">
+                                    <label class="switch">
+                                        <input type="checkbox" asp-for="IsEmpWise"><span class="switch-state"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <button class="btn btn-primary" style="float: right" type="submit">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

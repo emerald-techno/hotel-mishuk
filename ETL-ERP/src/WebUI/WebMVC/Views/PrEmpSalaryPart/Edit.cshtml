@@ -1,0 +1,56 @@
+﻿@model Domain.ViewModel.Payroll.PrEmpSalaryPart.PrEmpSalaryPartVm
+@{
+    ViewData["Title"] = "Employee Part Update";
+}
+
+<div class="col-sm-12 default-according">
+    <partial name="_QuickLinkPayroll" />
+    <div class="card">
+        <div class="card-header pb-4">
+            <h5>Employee Part Update</h5>
+            <div class="setting-list">
+                <a asp-action="Details" asp-controller="PrEmpSalaryPart" asp-route-employeeId="@Model.EmployeeId" class="btn btn-primary">Go Back</a>
+            </div>
+        </div>
+        <form asp-action="Edit" class="form theme-form">
+            @Html.HiddenFor(c => c.Id)
+            @Html.HiddenFor(c => c.EmployeeId)
+            @Html.HiddenFor(c => c.SalaryPartId)
+
+
+            <div class="card-body">
+                <div class="mb-3 row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Employee Name</label>
+                            <input class="form-control" asp-for="EmployeeName">
+                        </div>
+                        <div class="form-group">
+                            <label>Salary Part</label>
+                            <input class="form-control" asp-for="SalaryPartName" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Value Type</label>
+                            <select asp-for="ValueType" asp-items="Model.ValueTypeLookUp" class="form-control dd-type"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Part Type</label>
+                            <select asp-for="PartType" asp-items="Model.PartTypeLookUp" class="form-control dd-type" readonly></select>
+                        </div>
+                        <div class="form-group">
+                            <label>Value *</label>
+                            <input class="form-control" type="number" asp-for="Value">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer text-end">
+                <div class="col-sm-9 offset-sm-3">
+                    <button class="btn btn-primary" type="submit">Update</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

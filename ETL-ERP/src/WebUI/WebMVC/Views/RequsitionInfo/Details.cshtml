@@ -1,0 +1,186 @@
+﻿@model Domain.ViewModel.Inventory.RequsitionInfo.RequsitionInfoVm
+@using Domain.Enums.AppEnums
+
+@{
+	ViewData["Title"] = "Requsition Info Details";
+}
+
+@Html.HiddenFor(c => c.Id)
+
+<div class="row">
+	<div class="col-sm-12 default-according">
+		<partial name="_QuickLinkInventory" />
+
+		<div class="card">
+			<div class="card-header p-3">
+				<h5>Requsition Information</h5>
+			</div>
+			<div class="card-body">
+				<div class="row">
+					<div class="col-md-6">
+
+						<div class="row">
+							<label asp-for="SubmitByName" class="col-md-4 col-form-label">
+								Requsition By <span class="required">: </span>
+							</label>
+							<div class="col-md-8 col-form-label">
+								@Html.DisplayTextFor(m => m.SubmitByName)
+							</div>
+						</div>
+						<div class="row">
+							<label asp-for="Departement" class="col-md-4 col-form-label">
+								Department<span class="required">: </span>
+							</label>
+							<div class="col-md-8 col-form-label">
+								@Html.DisplayTextFor(m => m.Departement)
+							</div>
+						</div>
+						<div class="row">
+							<label asp-for="ReqNo" class="col-md-4 col-form-label">
+								Requsition No <span class="required">: </span>
+							</label>
+							<div class="col-md-8 col-form-label">
+								@Html.DisplayTextFor(m => m.ReqNo)
+							</div>
+						</div>
+
+						<div class="row">
+							<label asp-for="ReqDateStr" class="col-md-4 col-form-label">
+								Requsition Date<span class="required">: </span>
+							</label>
+							<div class="col-md-8 col-form-label">
+								@(((DateTime)Model.ReqDate).ToString("dd-MM-yyyy"))
+							</div>
+						</div>
+
+
+					</div>
+
+					<div class="col-md-6">
+						<div class="row">
+							<label asp-for="PriorityText" class="col-md-4 col-form-label ">
+								Priority<span class="required">: </span>
+							</label>
+							<div class="col-md-8 col-form-label">
+								@Html.DisplayTextFor(m => m.PriorityText)
+							</div>
+						</div>
+						<div class="row">
+							<label asp-for="StatusText" class="col-md-4 col-form-label ">
+								Requisition Status<span class="required">: </span>
+							</label>
+							<div class="col-md-8 col-form-label">
+								@Html.DisplayTextFor(m => m.StatusText)
+							</div>
+						</div>
+						<div class="row">
+							<label asp-for="IsStatusText" class="col-md-4 col-form-label ">
+								Issue Status<span class="required">: </span>
+							</label>
+							<div class="col-md-8 col-form-label">
+								@Html.DisplayTextFor(m => m.IsStatusText)
+							</div>
+						</div>
+						<div class="row">
+							<label asp-for="RequsitionFor" class="col-md-4 col-form-label">
+								Requsition For <span class="required">: </span>
+							</label>
+							<div class="col-md-8 col-form-label">
+								@Html.DisplayTextFor(m => m.RequsitionFor)
+							</div>
+						</div>
+						<div class="row">
+							<label asp-for="Remarks" class="col-md-4 col-form-label">
+								Remarks<span class="required">: </span>
+							</label>
+							<div class="col-md-8 col-form-label">
+								@Html.DisplayTextFor(m => m.Remarks)
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				<br />
+				<hr />
+				<br />
+
+				<div class="row">
+					<div class="col-md-12">
+						<table class="table table-bordered" style="text-align: center">
+							<thead>
+								<tr>
+									<th style="background-color: #73879c; color: white">Sl.</th>
+									<th style="background-color: #73879c; color: white">Item</th>
+									<th style="background-color: #73879c; color: white">Unit</th>
+									<th style="background-color: #73879c; color: white">Requisition Quantity</th>
+									<th style="background-color: #73879c; color: white">Approved Quantity</th>
+									@if (Model.IsStatus != (short)RequisitionIssueStatusEnum.NOT)
+									{
+										<th style="background-color: #73879c; color: white">Issue Qty</th>
+									}
+									<th style="background-color: #73879c; color: white">Stock</th>
+									<th style="background-color: #73879c; color: white">Remarks</th>
+								</tr>
+							</thead>
+
+							<tbody>
+								@if (Model != null)
+								{
+									int sl = 1;
+									foreach (var item in Model.RequsitionInfoDtls)
+									{
+										<tr>
+											<td>@(sl++)</td>
+											<td>@(item?.ItemName ?? "N/ A")</td>
+											<td>@(item?.ItemUnitName ?? "N/ A")</td>
+											<td>@(item?.ReqQty.ToString("F2") ?? "0")</td>
+											<td>@(item?.AprReqQty?.ToString("F2") ?? "0")</td>
+											@if (Model.IsStatus != (short)RequisitionIssueStatusEnum.NOT)
+											{
+												<td>@(item?.IssueQty?.ToString("F2") ?? "0")</td>
+											}
+											<td>@(item?.Stock.ToString("F2") ?? "0")</td>
+											<td>@(item?.Remarks ?? "")</td>
+										</tr>
+									}
+								}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+
+			<div class="card-footer">
+				<div class="row">
+					<div class="col-lg-12" align="right">
+
+						@if (Model.Status == (short)RequisitionStatusEnum.FRESH)
+						{
+							@Html.ActionLink("Submit Review", "SubmitReview", "RequsitionInfo", new { reqId = Model.Id }, new { @class = "btn btn-secondary btn-size" })
+						}
+
+						@Html.ActionLink("Create", "Create", "RequsitionInfo", null, new { @class = "btn btn-primary btn-size" })
+
+						@if (Model.Status == (short)RequisitionStatusEnum.FRESH)
+						{
+							@Html.ActionLink("Edit", "Edit", "RequsitionInfo", new { id = Model.Id }, new { @class = "btn btn-warning btn-size" })
+						}
+
+						@Html.ActionLink("Search", "Search", "RequsitionInfo", null, new { @class = "btn btn-info btn-size" })
+						<a class="btn btn-outline-info" asp-controller="RequsitionInfo" target="_blank" asp-action="RequsitionPrint" asp-route-id="@Model.Id" type="submit">Print</a>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+
+
+
+
+@section Scripts {
+
+}

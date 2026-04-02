@@ -1,0 +1,51 @@
+$(document).ready(function () {
+    search();
+})
+
+function search() {
+    const searchVm = {};
+
+    if ($.fn.DataTable.isDataTable("#SetSalaryGradeSearchTable")) {
+        const table = $("#SetSalaryGradeSearchTable").DataTable();
+        table.destroy();
+    }
+
+    var params = "";
+    if (!hasAnyError(searchVm)) {
+        params = { SearchModel: searchVm };
+    }
+
+    const oTable = $("#SetSalaryGradeSearchTable").DataTable({
+        "aLengthMenu": DataTable.lengthMenu,
+        "iDisplayLength": DataTable.displayLength,
+        "processing": DataTable.processing,
+        "serverSide": DataTable.serverSide,
+        "ordering": false,
+
+        "ajax": {
+            url: API + "SetSalaryGrade/Search",
+            type: "POST",
+            data: params,
+        }, error(e) {
+            failedMsg(e);
+        },
+
+        "columns": [
+            { "data": "serialNo" },
+            { "data": "gradeName" },
+            { "data": "startingBasic" },
+            { "data": "maxAmount" },
+            {
+                "render": function (data, type, item) {
+
+                    showTotalRowCountSpanInDataTable("SetSalaryGradeSearchTable", oTable);
+
+                    let editButton = `<a class='mr-2' href='${API}SetSalaryGrade/Edit/${item.id}' title='Edit'><i class="fa fa-edit"></i></a>`;
+                    return `<div style="font-size: 18px;"><div>` + editButton + `</div></div>`;
+                }
+            }
+        ]
+    });
+
+    addTotalRowCountSpanInDataTable("SetSalaryGradeSearchTable");
+}

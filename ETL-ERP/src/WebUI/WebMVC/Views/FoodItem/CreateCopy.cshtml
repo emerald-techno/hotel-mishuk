@@ -1,0 +1,151 @@
+﻿@model Domain.ViewModel.Restaurant.FoodItem.FoodItemVm
+@{
+    ViewData["Title"] = "Food Item Setup";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Create Set Menu Copy</h5>
+            </div>
+            <form asp-action="CreateCopy" class="form theme-form" data-parsley-validate enctype="multipart/form-data">
+
+                <input type="hidden" id="PreItemId" value="@Model.Id" />
+
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="row m-1">
+                                <div class="col-md-12">
+                                    <label class="col-form-label">Food Category *</label>
+                                    <select asp-for="CategoryId" asp-items="Model.FoodCategoryLookUp" class="dd-type"></select>
+                                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row m-1">
+                                <div class="col-md-12">
+                                    <label class="col-form-label">Item Name *</label>
+                                    <input class="form-control" asp-for="ItemName" type="text">
+                                    <span asp-validation-for="ItemName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row m-1">
+                                <div class="col-md-12">
+                                    <label class="col-form-label">Item Code *</label>
+                                    <input class="form-control" asp-for="ItemCode" type="text">
+                                    <span asp-validation-for="ItemCode" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row m-1">
+                                <div class="col-md-3">
+                                    <label class="col-form-label">Rate</label>
+                                    <input class="form-control" asp-for="Rate" type="text">
+                                    <span asp-validation-for="Rate" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="col-form-label">Offer Rate</label>
+                                    <input class="form-control" asp-for="OfferRate" type="number">
+                                    <span asp-validation-for="OfferRate" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="col-form-label">VAT (%)</label>
+                                    <input class="form-control" asp-for="VAT" type="text">
+                                    <span asp-validation-for="VAT" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="col-form-label">Net Rate</label>
+                                    <input class="form-control" asp-for="NetRate" type="number">
+                                    <span asp-validation-for="NetRate" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="row m-1">
+                                <div class="col-md-6">
+                                    <label class="col-form-label">Photo File</label>
+                                    <input asp-for="PhotoFile" class="form-control" type="file" name="PhotoFile">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="col-form-label">Remarks</label>
+                                    <textarea asp-for="Remarks" class="form-control" rows="1"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="row m-1">
+                                <div class="col-md-6">
+                                    <label class="col-form-label">Description</label>
+                                    <textarea asp-for="Description" class="form-control" rows="1"></textarea>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="media" style="margin-top:35px;">
+                                                <label class="col-form-label m-r-10">Active Status</label>
+                                                <div class="media-body icon-state">
+                                                    <label class="switch">
+                                                        <input type="checkbox" asp-for="IsActive"><span class="switch-state"></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="media" style="margin-top:35px;">
+                                                <label class="col-form-label m-r-10">Is It Set Menu</label>
+                                                <div class="media-body icon-state">
+                                                    <label class="switch">
+                                                        <input type="checkbox" asp-for="IsSetMenuItem"><span class="switch-state"></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="row">
+                                <table class="table table-bordered" style="width:100%;" id="setMenuTable">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="5">
+                                                <div class="d-flex justify-content-between">
+                                                    <h5>Set Menu Items</h5>
+                                                    @* <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#setItemEntryModal">Add Set Menu Item</button> *@
+                                                </div>
+                                            </th>
+                                        </tr>
+                                        <tr style="background-color:#DFF0D8;">
+                                            <th style="width:40%;">Item</th>
+                                            <th class="text-center" style="width:15%;">Price</th>
+                                            <th class="text-center" style="width:15%;">Qty</th>
+                                            <th class="text-center" style="width:15%;">Total</th>
+                                            <th class="text-center" style="width:15%;">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="setMenuTableBody">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/ETL/FoodItem/CopySetMenu.js"></script>
+}

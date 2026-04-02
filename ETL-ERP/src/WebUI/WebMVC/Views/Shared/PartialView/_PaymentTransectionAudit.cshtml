@@ -1,0 +1,168 @@
+﻿@model List<Domain.ViewModel.HotelManagement.FD_PaymentTranReport.PaymentTransactionReportVm>
+@using Domain.Enums.AppEnums
+@using Domain.Utility
+@using Domain.Utility.Common
+@{
+    var isSuperAdmin = User.Claims.Any(x => x.Type == CustomClaimType.Permission &&
+                                                        x.Value == Permissions.SuperAdmin &&
+                                                        x.Issuer == "LOCAL AUTHORITY");
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <form>
+                <div class="card-header p-4">
+                    <h5>Payment Transection Audit Report <span style="margin-left:15px;font-size:small;"><input type="checkbox" id="selectAll_FD_Transections" /> Select All </span></h5>
+
+                    <div class="setting-list">
+                        <button type="button" id="FD_TransApproveBtn" class="btn btn-primary float-left">Approve</button>
+                        <button class="btn btn-primary" id="PaymentTransAuditPrintBtn">PDF</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table id="ReportTable" class="table table-bordered" style="width:100%; text-align: center">
+                        <thead>
+                            <tr>
+                                <th style='width:5%;'>SL.</th>
+                                <th style='width:10%;'>Guest</th>
+                                <th style='width:7%;'>Service Date</th>
+                                <th style='width:7%;'>Pay Mode</th>
+                                <th style='width:10%;'>Particulars</th>
+                                <th style='width:8%;'>Bill No./ Trans. No.</th>
+                                <th style='width:8%;'>Paid Date</th>
+                                <th style='width:5%;'>Paid Amount</th>
+                                <th style='width:20%;'>Remarks</th>
+                                <th style='width:15%;'>Received By</th>
+                                <th style='width:5%;'>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                var groupedData = Model.GroupBy(x => x.PayMode).ToList();
+                                double grandTotal = 0;
+                                var summaryList = new List<(string PayModeName, double TotalAmount)>();
+                            }
+
+                            @foreach (var group in groupedData)
+                            {
+                                var payModeName = ((PayModeEnum)group.Key).ToString();
+
+                                <tr>
+                                    <td colspan="11" style="background:#dfe6e9;font-weight:600;color:#2c3e50;text-align:center;">
+                                        @payModeName
+                                    </td>
+                                </tr>
+
+                                double subTotal = 0;
+
+                                foreach (var (obj,i) in group.GetItemWithIndex())
+                                {
+                                    string bookingLink = string.IsNullOrEmpty(obj.BookingNo)
+                                    ? ""
+                                    : $"<a href='../../BookingService/Details/{obj.BookingId}' target='_blank' style='color:#2980b9;text-decoration:none;font-weight:600;'>{obj.BookingNo}</a>";
+
+                                    string billLink = string.IsNullOrEmpty(obj.BillNumber)
+                                    ? ""
+                                    : $"<br/><a href='../../Bill/Details/{obj.BillId}' target='_blank' style='color:#27ae60;text-decoration:none;font-size:12px;'>{obj.BillNumber}</a>";
+
+                                    <tr>
+                                        <td style="text-align:center;">
+                                            @(i+1)
+                                            @if (obj.AuditDate == null)
+                                            {
+                                                <input type="checkbox" value="@obj.PaymentId" class="fd_payment_checkbox" onclick="addPaymentTransactionAuditId(this);" />
+                                            }
+                                        </td>
+
+                                        <td style="text-align:center;">
+                                            @obj.GuestName <br />
+                                            <small style="color:#555;">@obj.GuestMobile</small>
+                                        </td>
+
+                                        <td style="text-align:center;">@obj.BookingDate.ToString("dd/MM/yyyy")</td>
+                                        <td style="text-align:center;">@payModeName</td>
+
+                                        <td style="text-align:center;">
+                                            @Html.Raw(bookingLink)
+                                            <br />
+                                            (Room#@obj.RoomNoList)
+                                        </td>
+
+                                        <td style="text-align:center;">
+                                            @obj.TransactionNo
+                                            @Html.Raw(billLink)
+                                        </td>
+
+                                        <td style="text-align:center;">@obj.PaidDate.ToString("dd/MM/yyyy")</td>
+
+                                        <td style="text-align:right;font-weight:600;color:#2c3e50;">
+                                            @obj.PaidAmount.ToString("N2")
+                                        </td>
+
+                                        <td style="text-align:left;">@obj.Description</td>
+                                        <td style="text-align:left;">@obj.ReceivedBy</td>
+                                        <td style="text-align:left;">
+                                            @if (obj.AuditDate == null && isSuperAdmin)
+                                            {
+                                                <a href="#" class="fd_payment_single_apr_btn" data-index="@(i)" data-audit-id="@(obj.PaymentId)"><i class="icofont icofont-check-circled text-primary" style="font-size: 26px;"></i></a>
+                                                <a href="#"><i class="icofont icofont-close-circled text-danger" style="font-size: 26px;"></i></a>
+                                            }
+                                            else
+                                            {
+                                                <a class="badge badge-primary" href="#" data-bs-original-title="" title="">--</a>
+                                            }
+                                        </td>
+
+
+
+                                    </tr>
+
+                                    subTotal += obj.PaidAmount;
+                                }
+
+                                <tr class="subtotal-row">
+                                    <td colspan="7" style="text-align:right;">@payModeName Received:</td>
+                                    <td style="text-align:right;">@subTotal.ToString("N2")</td>
+                                    <td colspan="3"></td>
+                                </tr>
+
+                                grandTotal += subTotal;
+                                summaryList.Add((payModeName, subTotal));
+                            }
+                        </tbody>
+                    </table>
+
+                    <!-- Payment Summary Table -->
+                    <div style="display:flex;justify-content:center;">
+                        <table class="report-table" style="width:50%; margin-top:20px;">
+                            <thead>
+                                <tr>
+                                    <th colspan="2" style="text-align:center;">Payment Summary</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in summaryList)
+                                {
+                                    <tr>
+                                        <td style="text-align:left;">@item.PayModeName Received</td>
+                                        <td style="text-align:right;">@item.TotalAmount.ToString("N2")</td>
+                                    </tr>
+                                }
+
+                                <tr class="subtotal-row">
+                                    <td style="text-align:right;">Total Received:</td>
+                                    <td style="text-align:right;">@grandTotal.ToString("N2")</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="~/theme/assets/js/scrollable/perfect-scrollbar.min.js"></script>
+<script src="~/theme/assets/js/scrollable/scrollable-custom.js"></script>
+<script src="~/theme/assets/js/sweet-alert/sweetalert.min.js"></script>

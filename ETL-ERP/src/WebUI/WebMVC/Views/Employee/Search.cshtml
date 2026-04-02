@@ -1,0 +1,78 @@
+﻿@model Domain.ViewModel.Hr.Employees.EmployeeSearchVm
+@{
+    ViewData["Title"] = "Employee Search";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkHr" />
+        <form>
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Employee List</h5>
+                    <div class="setting-list">
+                        <input class="btn btn-primary" type="button" id="EmployeeSearchBtn" value="Search" />
+                        <a asp-action="Create" asp-controller="Employee" class="btn btn-primary">New Employee</a>
+                        @*<input type="button" id="LedgerReportBtn" class="btn btn-primary" value="Search" />*@
+                    </div>
+                </div>
+                <div class="card-body table-responsive">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="col-form-label">Designation</label>
+                                    <select asp-for="DesignationId" asp-items="Model.DesignationLookUp" class="dd-type"></select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="col-form-label">Department</label>
+                                    <select asp-for="DepartmentId" asp-items="Model.DepartmentLookUp" class="dd-type"></select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="col-form-label">Status</label>
+                                    <select asp-for="EnableStatus" asp-items="Model.EmployeeIsEnableLookUp" class="dd-type"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Employee List</h5>
+                    <div class="setting-list">
+                        <a href="#" id="ExcelBtn" class="btn btn-primary">Excel File</a>
+                        <a href="#" id="printBtn" class="btn btn-primary">PDF Print</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table table-responsive">
+                        <table id="EmployeeSearchTable" class="display" style="width:100%; text-align: left">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th style="width: 5%">Sl</th>
+                                    <th>Photo</th>
+                                    <th>Code</th>
+                                    <th>Name</th>
+                                    <th>Designation</th>
+                                    <th>Department</th>
+                                    <th>Job Status</th>
+                                    <th>Joining Date</th>
+                                    <th>Basic Salary</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/js/ETL/Employee/EmployeeSearch.js"></script>
+}

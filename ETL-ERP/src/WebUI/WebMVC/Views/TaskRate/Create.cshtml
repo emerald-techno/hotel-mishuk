@@ -1,0 +1,45 @@
+﻿@model Domain.ViewModel.HouseKeeping.TaskRate.HkTaskRateVm
+@{
+    ViewData["Title"] = "Task Create";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Create Task Name</h5>
+                @* <div class="setting-list">
+                    <a asp-action="Search" asp-controller="TaskRate" class="btn btn-primary">Search Task Name</a>
+                </div> *@
+            </div>
+            <form asp-action="Create" asp-controller="TaskRate" class="form theme-form">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Rate</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="Rate" type="text" placeholder="Enter Task Rate">
+                                    <span asp-validation-for="Rate" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Task Name</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control dd-type" asp-for="TaskId" asp-items="Model.TaskNameLookUp"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

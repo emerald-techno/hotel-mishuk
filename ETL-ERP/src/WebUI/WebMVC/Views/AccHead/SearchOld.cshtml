@@ -1,0 +1,76 @@
+﻿@model Domain.ViewModel.Accounting.AccHead.AccHeadSearchVm
+@{
+    ViewData["Title"] = "Account Head Search";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <h4>Account Head</h4>
+                <div class="setting-list">
+                    <a asp-action="Create" asp-controller="AccHead" class="btn btn-secondary">New Head</a>
+                    <button class="btn btn-primary collapsed" data-bs-toggle="collapse" data-bs-target="#AccHeadAdvanceSearch" aria-expanded="true" aria-controls="AccHeadAdvanceSearch">Advance Search</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="row collapse" id="AccHeadAdvanceSearch" aria-labelledby="headingOne" data-bs-parent="#accordion">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Account Group Name</label>
+                                        <select asp-for="GroupId" asp-items="Model.AccGroupLookUp" class="form-control dd-type"></select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Account Head Code</label>
+                                        <input asp-for="HeadCode" type="text" class="form-control" placeholder="Enter Head Code">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="d-flex flex-row justify-content-end">
+                                <input class="btn btn-primary flex-column float-lg-right" type="button" id="AccHeadSearchBtn" value="Search" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Account Head</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="AccHeadSearchTable" class="display" style="width:100%; text-align: left">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 5%">Sl No</th>
+                                            <th>Account Group</th>
+                                            <th>Head Code</th>
+                                            <th>Head Name</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/js/ETL/AccHead/AccHeadSearch.js"></script>
+}

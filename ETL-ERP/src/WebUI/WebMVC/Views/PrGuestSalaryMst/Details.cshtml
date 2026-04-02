@@ -1,0 +1,88 @@
+﻿@model Domain.ViewModel.Payroll.PrGuestSalary.PrGuestSalaryMstVm
+@using Domain.Utility
+@{
+    ViewData["Title"] = "Payroll Guest Salary Details";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkPayroll" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h3>Guest Salary Details</h3><hr />
+                <div class="setting-list">
+                    <a asp-action="GuestSalaryReportPrint" asp-controller="PrGuestSalaryMst" asp-route-id="@Model.Id" class="btn btn-primary" target="_blank">PDF Print</a>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td>Year</td>
+                                    <td>@(Model.Year)</td>
+                                    <td>Month</td>
+                                    <td>@Utility.GetMonthName(Model.Month)</td>
+                                </tr>
+                                <tr>
+                                    <td>Approval</td>
+                                    <td>@(Model.IsApproved ? "Approved" : "Not Approved")</td>
+                                    <td>Approve Date</td>
+                                    <td>@Utility.ConvertDateToStr(Model.ApprovedDate)</td>
+                                </tr>
+                                <tr>
+                                    <td>Approve By</td>
+                                    <td>@Model.ApprovedByFullName</td>
+                                    <td>Remarks</td>
+                                    <td>@Model.Remarks</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+                <div class="row mt-5">
+                    <div class="col-md-12">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%">Serial</th>
+                                    <th>Employee</th>
+                                    <th>Amount</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.PrGuestSalaryDtls.Count > 0)
+                                {
+                                    foreach (var (guest, i) in Model.PrGuestSalaryDtls.GetItemWithIndex())
+                                    {
+                                        <tr>
+                                            <td>@(i+1)</td>
+                                            <th>@(guest.EmployeeName)</th>
+                                            <th>@(guest.Amount)</th>
+                                            <th>@(guest.Remarks)</th>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+            <div class="card-footer d-flex justify-content-end">
+                @if (!Model.IsApproved)
+                {
+                    <a asp-controller="PrGuestSalaryMst" asp-action="ApproveGuestSalaryMst" asp-route-id="@Model.Id" class="btn btn-primary">
+                        <i class="icofont icofont-ui-check"></i>&nbsp; Approve
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,146 @@
+﻿@model Domain.ViewModel.HotelManagement.GuestInfo.HtGuestDetailsVm
+@{
+    ViewData["Title"] = "Guest Details";
+}
+
+<div class="edit-profile">
+    <div class="row">
+        <div class="col-xl-4">
+            <div class="card">
+                <div class="card-header pb-0">
+                    <h4 class="card-title mb-0">Guest Personal Information</h4>
+                    <div class="card-options"><a class="card-options-collapse" href="#" data-bs-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a><a class="card-options-remove" href="#" data-bs-toggle="card-remove"><i class="fe fe-x"></i></a></div>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="profile-title">
+                            <div class="media">
+                                <img class="img-70 rounded-circle" alt="" src="@Model.PhotoUrl">
+                                <div class="media-body">
+                                    <h3 class="mb-1 f-20 txt-primary">@Model.GuestName</h3>
+                                    <h5 class="mb-1 f-20">@Model.BookingNo</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <label asp-for="Occupation" class="col-md-4 col-form-label">
+                                    Occupation <span class="required">: </span>
+                                </label>
+                                <div class="col-md-8 col-form-label">
+                                    @Html.DisplayTextFor(x => x.Occupation)
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label asp-for="GenderText" class="col-md-4 col-form-label">
+                                    Gender <span class="required">: </span>
+                                </label>
+                                <div class="col-md-8 col-form-label">
+                                    @Html.DisplayTextFor(x => x.GenderText)
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label asp-for="Mobile" class="col-md-4 col-form-label">
+                                    Mobile <span class="required">: </span>
+                                </label>
+                                <div class="col-md-8 col-form-label">
+                                    @Html.DisplayTextFor(x => x.Mobile)
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label asp-for="Email" class="col-md-4 col-form-label">
+                                    Email <span class="required">: </span>
+                                </label>
+                                <div class="col-md-8 col-form-label">
+                                    @Html.DisplayTextFor(x => x.Email)
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label asp-for="VipStatus" class="col-md-4 col-form-label">
+                                    Status <span class="required">: </span>
+                                </label>
+                                <div class="col-md-8 col-form-label">
+                                    @Html.DisplayTextFor(x => x.VipStatus)
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label asp-for="Address" class="col-md-4 col-form-label">
+                                    Address <span class="required">: </span>
+                                </label>
+                                <div class="col-md-8 col-form-label">
+                                    @Html.DisplayTextFor(x => x.Address)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-8">
+            <div class="card">
+                <div class="card-header pb-0">
+                    <h4 class="card-title mb-0">Booking Information</h4>
+                    <div class="card-options"><a class="card-options-collapse" href="#" data-bs-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a><a class="card-options-remove" href="#" data-bs-toggle="card-remove"><i class="fe fe-x"></i></a></div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <label asp-for="BookingDate" class="col-md-4 col-form-label">
+                                    Booking Date <span class="required">: </span>
+                                </label>
+                                <div class="col-md-8 col-form-label">
+                                    @Html.DisplayTextFor(x => x.BookingDate)
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label asp-for="CheckInTime" class="col-md-4 col-form-label">
+                                    Check In Time <span class="required">: </span>
+                                </label>
+                                <div class="col-md-8 col-form-label">
+                                    @Html.DisplayTextFor(x => x.CheckInTime)
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label asp-for="CheckOutTime" class="col-md-4 col-form-label">
+                                    Check Out Time <span class="required">: </span>
+                                </label>
+                                <div class="col-md-8 col-form-label">
+                                    @Html.DisplayTextFor(x => x.CheckOutTime)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <label asp-for="VisitPurpose" class="col-md-4 col-form-label">
+                                    Visit Purpose <span class="required">: </span>
+                                </label>
+                                <div class="col-md-8 col-form-label">
+                                    @Html.DisplayTextFor(x => x.VisitPurpose)
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label asp-for="BookingStatus" class="col-md-4 col-form-label">
+                                    Booking Status <span class="required">: </span>
+                                </label>
+                                <div class="col-md-8 col-form-label">
+                                    @Html.DisplayTextFor(x => x.BookingStatus)
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label asp-for="PaymentStatus" class="col-md-4 col-form-label">
+                                    Payment Status <span class="required">: </span>
+                                </label>
+                                <div class="col-md-8 col-form-label">
+                                    @Html.DisplayTextFor(x => x.PaymentStatus)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,75 @@
+﻿@model Domain.ViewModel.Restaurant.Customer.CustomerSearchVm
+@{
+    var currentUser = User.Identity;
+    ViewData["Title"] = "Customer Search";
+    Layout = "_Layout";
+    var isSuperAdmin = User.Claims.Any(c => c.Type == "Permission" && c.Value == "Permissions.SuperAdmin");
+    //Console.WriteLine($"isSuperAdmin: {isSuperAdmin}");
+}
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card mb-3">
+            <div class="card-header bg-primary">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed text-white" data-bs-toggle="collapse" data-bs-target="#collapseicon2" aria-expanded="false" aria-controls="collapseicon2"><i class="fa fa-filter"></i>Filter</button>
+                </h5>
+            </div>
+            <div class="collapse" id="collapseicon2" data-bs-parent="#accordionoc">
+                <form>
+                    <div class="card-body">
+                        @* <input asp-for="TranType" type="hidden" /> *@
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label class="col-form-label">Company</label>
+                                <select asp-for="CompanyId" asp-items="Model.CompanyLookUp" class="dd-type"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-end p-3">
+                        <div>
+                            <button type="button" id="SearchBtn" class="btn btn-primary">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Restaurant Customer List</h5>
+                <div class="setting-list">
+                    <a asp-action="Create" asp-controller="Customer" class="btn btn-primary">New Customer</a>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="table table-responsive">
+                    <table id="CustomerSearchTable" class="display" style="width:100%; text-align: left">
+                        <thead class="bg-primary">
+                            <tr>
+                                <th style="width: 5%">Serial</th>
+                                <th>Customer Name</th>
+                                <th>Mobile</th>
+                                <th>Company Name</th>
+                                <th>Employee Name</th>
+                                <th>Guest Name</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        window.isSuperAdmin = "@isSuperAdmin.ToString().ToLower()";
+         console.log('SuperAdmin:', window.isSuperAdmin);
+    </script>
+    <script src="~/js/ETL/Customer/CustomerSearch.js"></script>
+}

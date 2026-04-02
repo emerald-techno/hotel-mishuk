@@ -1,0 +1,96 @@
+﻿@model Domain.ViewModel.Report.EmpPfSummaryDtlReportVm
+@{
+    ViewData["Title"] = "Employee Provident Fund Info";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>EMPLOYEE PROVIDENT FUND DETAIL SUMMARY</h5><br />
+                <div class="setting-list">
+                    <a asp-action="EmployeePFDetailsReportPrint" asp-controller="PfFundMst" asp-route-id="@Model.EmployeeId" class="btn btn-primary" target="_blank">PDF Print</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr>
+                                <td style="width:20%"><b>Employee Name</b></td>
+                                <td colspan="3">@(Model.EmployeeName) - @(Model.EmployeeCode)</td>
+                            </tr>
+                            <tr>
+                                <td style="width:20%"><b>Employee Contibute</b></td>
+                                <td style="width:30%">@(Model.EmpCon)</td>
+                                <td style="width:20%"><b>Company Contibute</b></td>
+                                <td style="width:30%">@(Model.CompCon)</td>
+                            </tr>
+                            <tr>
+                                <td style="width:20%"><b>Interest Rate</b></td>
+                                <td style="width:30%">@(Model.Interest)</td>
+                                <td style="width:20%"><b>Total Amount</b></td>
+                                <td style="width:30%">@(Model.TotalAmount)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="row">
+                    <table id="PfDetailSummaryReportTable" class="table table-bordered" style="width:100%; text-align: center">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%">Month</th>
+                                <th>Employee Con</th>
+                                <th>Company Con</th>
+                                <th>Total Con</th>
+                                <th>Interest</th>
+                                <th>Total Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.PfFundDtlVms.Count > 0)
+                            {
+                                foreach (var (dtl, i) in Model.PfFundDtlVms.GetItemWithIndex())
+                                {
+                                    <tr>
+                                        <td style="width: 5%">@(i + 1)</td>
+                                        <td class="text-end">
+                                            @dtl.EmpCon
+                                        </td>
+                                        <td class="text-end">
+                                            @dtl.CompCon
+                                        </td>
+                                        <td class="text-end">
+                                            @(dtl.EmpCon + dtl.CompCon)
+                                        </td>
+                                        <td class="text-end">
+                                            @dtl.Interest
+                                        </td>
+                                        <td class="text-end">
+                                            @dtl.TotalAmount
+                                        </td>
+                                    </tr>
+                                }
+                                <tr>
+                                    <td class="text-end"><b>Total</b></td>
+                                    <td class="text-end"><b>@Model.PfFundDtlVms.Sum(c => c.EmpCon)</b></td>
+                                    <td class="text-end"><b>@Model.PfFundDtlVms.Sum(c => c.CompCon)</b></td>
+                                    <td class="text-end"><b>@Model.PfFundDtlVms.Sum(c => c.EmpCon + c.CompCon)</b></td>
+                                    <td class="text-end"><b>@Model.PfFundDtlVms.Sum(c => c.Interest)</b></td>
+                                    <td class="text-end"><b>@Model.PfFundDtlVms.Sum(c => c.TotalAmount)</b></td>
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td style="text-align:center" colspan="9"><b>Employee Provident Fund Not Found</b></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

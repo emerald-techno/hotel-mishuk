@@ -1,0 +1,80 @@
+﻿@model WebMVC.Models.User.SaveUserModel
+@{
+    ViewData["Title"] = "User Add";
+    Layout = "_Layout";
+}
+
+<div class="col-sm-12">
+    <div class="card">
+        <div class="card-header pb-0">
+            <h5>Add User</h5>
+        </div>
+        <form asp-controller="User" asp-action="Add" class="form theme-form">
+            <div class="card-body">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" name="InitialUserName" id="InitialUserName" />
+                <input type="hidden" name="InitialEmail" id="InitialEmail" />
+                <div class="row">
+                    <div class="col">
+                        <div class="mb-3">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-control" asp-for="FullName">
+                            <span asp-validation-for="FullName" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="mb-3">
+                            <label class="form-label">User Name</label>
+                            <input type="text" class="form-control" asp-for="UserName">
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="text" class="form-control" asp-for="Email">
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="mb-3">
+                            <label class="form-label">Mobile</label>
+                            <input type="text" class="form-control" asp-for="Mobile">
+                            <span asp-validation-for="Mobile" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="mb-3">
+                            <label class="form-label">User Role</label>
+                            <select asp-for="UserRoleId" asp-items="Model.RoleLookUp" class="dd-type"></select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="mb-3">
+                            <label class="form-label">Employee Sync <small>(if needed)</small></label>
+                            <select asp-for="EmployeeId" asp-items="Model.EmployeeLookUp" class="dd-type"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer text-end">
+                <button class="btn btn-primary" type="submit">Submit</button>
+                <input class="btn btn-light" type="reset" value="Cancel">
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,51 @@
+﻿@model Domain.ViewModel.Pf.PfSettlement.PfSettlementSearchVm
+@{
+    ViewData["Title"] = "Pf Setellement Search";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkPf" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h4>Pf Settlement</h4>
+                <div class="setting-list">
+                    <a asp-action="Create" asp-controller="PfSettlement" class="btn btn-primary">Add Pf Settlement</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="PfSettlementSearchTable" class="display" style="width:100%; text-align: left">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%">Sl</th>
+                                <th>Employee</th>
+                                <th>Status</th>
+                                <th>Settlement Date</th>
+                                <th>Status Date</th>
+                                <th>Pf Start Date</th>
+                                <th>Pf End Date</th>
+                                <th>Total Amount</th>
+                                <th>Interest</th>
+                                <th>Company Contribution Type</th>
+                                <th>Company Contribution</th>
+                                <th>Employee Contribution</th>
+                                <th>Pf Length (In Month)</th>
+                                <th>Tax</th>
+                                <th>Vat</th>
+                                <th>Net Amount</th>
+                                <th>Approve Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/ETL/PfSettlement/PfSettlementSearch.js"></script>
+}

@@ -1,0 +1,91 @@
+﻿@model Domain.ViewModel.Accounting.AccTranMst.AccReportVm
+@{
+    ViewData["Title"] = "Head Wise Balance";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkAccounts" />
+        <form>
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Head Wise Balance</h5>
+                    <div class="setting-list">
+                        <input type="button" id="ShowReportBtn" class="btn btn-primary" value="Show Report" />
+                    </div>
+                </div>
+                <div class="card-body table-responsive">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="col-form-label">Financial Year</label>
+                            <select asp-for="FinYearId" asp-items="Model.FincYearLookup" class="form-control dd-type"></select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label">From Date</label>
+                            <input class="form-control from_dt" asp-for="StrFromDate" placeholder="Enter start date" data-language="en" />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label">To Date</label>
+                            <input asp-for="StrToDate" class="form-control to_dt" placeholder="Enter end date" data-language="en" />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label">Account</label>
+                            <select asp-for="MishukLedgerId" asp-items="Model.AccountLookup" class="form-control dd-type"></select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label">Head</label>
+                            <select asp-for="HeadId" asp-items="Model.HeadLookup" class="form-control dd-type"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Head Wise Balance Report</h5>
+                    <div class="setting-list">
+                        <button class="btn btn-primary" id="TrialBalancePrintBtn">PDF</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <dvi class="table-responsive">
+                        <div style="text-align: center;">
+                            <div style="text-align: center; font-weight: bold; font-size: 16px; line-height: 20px">HEAD WISE BALANCE REPORT</div>
+                            <div style="text-align: center; font-weight: bold; font-size: 11px; line-height: 16px">
+                                <div id="ltReportFilter" runat="server" Text=""></div>
+                            </div>
+                        </div>
+                        <div id="ReportContainer"></div>
+                    </dvi>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        var fromDate = @Model.StrFromDate;
+        var toDate = @Model.StrToDate;
+
+        $(".from_dt").datepicker({
+            setDate: fromDate,
+            dateFormat: 'dd/mm/yyyy',
+            onSelect: function (d, i) {
+                console.log("event working..!", d);
+                getFincYearByDate(d)
+            }
+        });
+        $(".to_dt").datepicker({
+            setDate: toDate,
+            dateFormat: 'dd/mm/yyyy',
+            onSelect: function (d, i) {
+                console.log("event working..!", d);
+                getFincYearByDate(d)
+            }
+        });
+    </script>
+    <script src="~/js/ETL/AccTranMst/HeadWiseBalance.js"></script>
+}

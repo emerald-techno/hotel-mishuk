@@ -1,0 +1,115 @@
+﻿@model List<Domain.ViewModel.Report.RsTransectionReportVm>
+@using Domain.Enums.AppEnums
+@using Domain.Utility
+@using Domain.Utility.Common
+@{
+    var isSuperAdmin = User.Claims.Any(x => x.Type == CustomClaimType.Permission &&
+                                                        x.Value == Permissions.SuperAdmin &&
+                                                        x.Issuer == "LOCAL AUTHORITY");
+}
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <form>
+                <div class="card-header p-4">
+                    <h5>
+                        Restaurant Transection Audit Report 
+                        <span style="margin-left:15px;font-size:small;">
+                            <input type="checkbox" id="selectAll_Rs_Orders_Payments" /> Select All
+                        </span>
+                    </h5>
+
+                    <div class="setting-list">
+                        <button type="button" id="Restaurant_Payments_ApproveBtn" class="btn btn-primary float-left">Approve</button>
+                        <button class="btn btn-primary" id="RestaurantPaymentAuditPrintBtn">PDF</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table id="ReportTable" class="table table-bordered" style="width:100%; text-align: center">
+                        <thead>
+                            <tr>
+                                <th>SL</th>
+                                <th>Order No</th>
+                                <th>Customer</th>
+                                <th>Customer Type</th>
+                                <th>Pay Mode</th>
+                                <th>Paid Date</th>
+                                <th>Net Amount</th>
+                                <th>Paid Amount</th>
+                                <th>Collection</th>
+                                <th>Remarks</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var (obj, i) in Model.GetItemWithIndex())
+                            {
+                                string orderNo = $"<a target='_blank' href='../FoodOrder/Details/{obj.OrderId}'>{obj.OrderNo}</a>";
+                                string collectionFrom = obj.BillDtlId != null ? "Front-Desk" : "Restaurant";
+
+                                <tr>
+                                    <td style="text-align:center;">
+                                        @(i + 1)
+                                        @if (obj.AuditDate == null)
+                                        {
+                                            <input type="checkbox" value="@obj.RsPaymentId" class="rs_order_payment_checkbox" onclick="addRsOrderPaymentsAuditId(this);" />
+                                        }
+                                    </td>
+
+                                    <td style="text-align:center;">
+                                        <b>@Html.Raw(orderNo)</b><br />
+                                        @obj.OrderDate?.ToString("dd/MMM/yyyy")
+                                    </td>
+
+                                    <td style="text-align:center;">
+                                        <b>@obj.CustomerName</b><br />
+                                        @obj.Mobile
+                                    </td>
+                                    <td style="text-align:center;">@obj.CustomerType</td>
+
+                                    <td style="text-align:center;">@((PayModeEnum)obj.PayMode)</td>
+
+                                    <td style="text-align:center;">@obj.PaidDate?.ToString("dd/MMM/yyyy")</td>
+
+                                    <td style="text-align:right;">@obj.NetAmount.ToString("N2")</td>
+
+                                    <td style="text-align:right;">@obj.PaidAmount.ToString("N2")</td>
+                                    <td style="text-align:center;">@collectionFrom</td>
+                                    <td style="text-align:right;">@obj.Remarks</td>
+
+
+                                    <!-- Action -->
+                                    <td style="text-align:center;">
+                                        @if (obj.AuditDate == null && isSuperAdmin)
+                                        {
+                                            <a href="#" class="restaurant_payment_single_apr_btn" data-index="@(i)" data-audit-id="@(obj.RsPaymentId)"><i class="icofont icofont-check-circled text-primary" style="font-size: 26px;"></i></a>
+                                            <a href="#"><i class="icofont icofont-close-circled text-danger" style="font-size: 26px;"></i></a>
+                                        }
+                                        else
+                                        {
+                                            <a class="badge badge-primary" href="#" data-bs-original-title="" title="">--</a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+
+                            <tr>
+                                <td colspan="6" style="text-align:right;"><b>Total</b></td>
+                                <td style="text-align:right;"><b>@Model.Sum(x => x.NetAmount).ToString("N2")</b></td>
+                                <td style="text-align:right;"><b>@Model.Sum(x => x.PaidAmount).ToString("N2")</b></td>
+                                <td colspan="3"></td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="~/theme/assets/js/scrollable/perfect-scrollbar.min.js"></script>
+<script src="~/theme/assets/js/scrollable/scrollable-custom.js"></script>
+<script src="~/theme/assets/js/sweet-alert/sweetalert.min.js"></script>

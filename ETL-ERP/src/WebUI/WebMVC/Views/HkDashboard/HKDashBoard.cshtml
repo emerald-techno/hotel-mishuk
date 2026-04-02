@@ -1,0 +1,241 @@
+﻿@model Domain.ViewModel.Website.IndexRoomVm
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container-fluid general-widget">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header border-0 bg-light rounded-top shadow-sm py-3 px-4">
+                    <form>
+                        <div class="row align-items-center">
+                            <input asp-for="StrQueryDate" class="form-control query_dt d-none" type="hidden" />
+                            <!-- Title -->
+                            <div class="col-md-2 d-flex flex-column align-items-start">
+                                <h5 class="room-status mb-2 fw-semibold text-dark">
+                                    <i class="icofont icofont-hotel me-2 text-primary"></i>
+                                    Room Status
+                                </h5>
+
+                                <div class="d-flex align-items-center">
+                                    <h6 class="mb-0 fw-semibold text-dark me-2">Date:</h6>
+                                    <span class="mb-0 text-dark me-2">@Model.StrQueryDate</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-7">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-2">
+                                        <label class="form-label fw-semibold">Room Category</label>
+                                        <select asp-for="@Model.RoomCategoryId" asp-items="@Model.RoomCategoryLookUp" class="form-select dd-type"></select>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label class="form-label fw-semibold">Availability</label>
+                                        <select asp-for="@Model.HouseKeeperStatus" asp-items="@Model.AvailabilityStatusLookUp" class="form-select dd-type"></select>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label class="form-label fw-semibold">Cleaning Status</label>
+                                        <select asp-for="@Model.CleaningStatus" asp-items="@Model.CleanStatusLookUp" class="form-select dd-type"></select>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label class="form-label fw-semibold">House Keeper</label>
+                                        <select id="employeeId" asp-items="@Model.EmployeeLookUp" class="form-select dd-type"></select>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <div class="row">
+                                            <label class="form-label fw-semibold">Room No</label>
+
+                                        </div>
+                                        <div class="row">
+                                            <input type="text" style="height:40px" id="roomSearch" class="form-control" placeholder="Enter Room No..." autocomplete="off" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 d-flex justify-content-end align-items-center gap-2">
+                                <!-- Search Button -->
+                                <button class="btn btn-success btn-sm px-3" type="button" id="RoomSearchBtn">
+                                    <i class="icofont icofont-refresh me-1"></i> Search
+                                </button>
+                                <!-- Make Available and Make Out Of Order Button -->
+                                <button class="btn btn-outline-danger btn-sm px-3" type="button" id="outOfOrderBtn" data-bs-toggle="modal" data-bs-target="#OOOModal">
+                                    <i class="icofont icofont-minus-circle me-1"></i>Make Out of Order
+                                </button>
+                                <button class="btn btn-outline-success btn-sm px-3" type="button" id="makeRoomAvailableBtn">
+                                    <i class="icofont icofont-check-alt me-1"></i>Make Available
+                                </button>
+
+                                <!-- Select All Checkbox -->
+                                <div class="form-check ms-2">
+                                    <input class="form-check-input" type="checkbox" id="select-all">
+                                    <label class="form-check-label f-12 text-muted">
+                                        Select All
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="row mt-1 gy-3" id="status-change-section">
+                            <div class="col-md-9">
+                                <div class="row">
+                                    <div class="col-md-3 mt-1" id="assignHouseKeeperSection">
+                                        <label class="form-label fw-semibold">Assign To</label>
+                                        <select id="houseKeeperId" asp-items="@Model.EmployeeLookUp" class="form-select dd-type"></select>
+                                    </div>
+                                    <div class="col-md-3 mt-1" id="changeCleaningStatusSection">
+                                        <label class="form-label fw-semibold">Change CleaningStatus To</label>
+                                        <select id="RoomStatus" asp-items="@Model.CleanStatusLookUpForUpdate" class="dd-type"></select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 d-flex justify-content-end align-items-end gap-2 mt-1">
+                                <button class="btn btn-success btn-sm px-3" type="button" id="submitBtn">
+                                    <i class="icofont icofont-check-alt me-1"></i> Submmit
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+
+                <div class="card-body btn-showcase">
+                    <div class="col-sm-12 vertical-scroll scroll-demo" style="height:65vh" id="room-section">
+                    </div>
+
+                </div>
+            </div>
+            @*OOO modal*@
+            <div class="modal fade" id="OOOModal" tabindex="-1" role="dialog" aria-labelledby="OOOModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel2">Out of Order</h5>
+                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="mb-3">
+                                    <label class="col-form-label">Out of Order Remarks</label>
+                                    <textarea class="form-control" id="OOORemarks" type="text" rows="3"></textarea>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" id="outOfOrderSubmitBtn" type="button">Submit</button>
+                            <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            @*modal_end*@
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/theme/assets/js/prism/prism.min.js"></script>
+    <script src="~/theme/assets/js/clipboard/clipboard.min.js"></script>
+    <script src="~/theme/assets/js/counter/jquery.waypoints.min.js"></script>
+    <script src="~/theme/assets/js/counter/jquery.counterup.min.js"></script>
+    <script src="~/theme/assets/js/counter/counter-custom.js"></script>
+    <script src="~/theme/assets/js/custom-card/custom-card.js"></script>
+    <script src="~/theme/assets/js/datepicker/date-picker/datepicker.js"></script>
+    <script src="~/theme/assets/js/datepicker/date-picker/datepicker.en.js"></script>
+    <script src="~/theme/assets/js/datepicker/date-picker/datepicker.custom.js"></script>
+    <script src="~/theme/assets/js/owlcarousel/owl.carousel.js"></script>
+    <script src="~/theme/assets/js/general-widget.js"></script>
+    <script src="~/theme/assets/js/height-equal.js"></script>
+    <script src="~/theme/assets/js/tooltip-init.js"></script>
+
+    <script>
+        var queryDate = @Model.StrQueryDate;
+
+        $(".query_dt").datepicker({
+            setDate: queryDate,
+            dateFormat: 'dd/mm/yyyy',
+            autoClose: true
+        });
+    </script>
+
+    @* <script src="~/js/ETL/HkDashboard/HkDashboard.js?v=@DateTime.UtcNow.Ticks"></script> *@
+    <script src="~/js/ETL/HkDashboard/HkDashboard.js"></script>
+}
+
+<style>
+    .scroll-demo {
+        padding: 10px;
+        position: relative;
+        border: 1px solid #e6edef;
+        overflow: auto;
+        height: 50%;
+    }
+
+    .card .card-header {
+        padding: 10px !important;
+    }
+
+    .card .card-body {
+        padding: 10px !important;
+    }
+
+    .room-title {
+        color: #fff !important;
+    }
+
+    .today-checkout {
+        padding: 0.350rem 1.50rem;
+        border: solid 8px !important;
+        border-color: #730502 !important;
+    }
+
+    #room-section {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
+
+    .room-card {
+        position: relative;
+        border-radius: 15px;
+        width: 13%;
+        height: 130px;
+        padding: 5px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        transition: all 0.25s ease;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+        .room-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        }
+
+    .room-checkbox {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 18px;
+        height: 18px;
+        accent-color: #007bff;
+        cursor: pointer;
+    }
+</style>

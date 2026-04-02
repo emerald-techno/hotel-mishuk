@@ -1,0 +1,138 @@
+﻿@model Domain.ViewModel.HotelManagement.Billing.BillingVm
+@using Domain.Enums.AppEnums
+@using Domain.Utility.Common
+@{
+    ViewData["Title"] = "Bill Detail";
+}
+@section styles
+{
+    <style>
+        #BillRoomTableTbody tr td {
+            padding: 5px;
+        }
+
+        #BillRoomTableFoot tr {
+            border: 0px;
+        }
+
+            #BillRoomTableFoot tr td {
+                padding: 5px;
+                border: 0px;
+            }
+    </style>
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkHt" />
+        <input type="hidden" id="BillId" value="@Model.Id" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Booking Service Bill</h5>
+                <div class="setting-list">
+                    @if (Model.BillStatus != BillStatusEnum.FullPaid)
+                    {
+                        <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#serviceAddModal"> Add Service </a>
+                    }
+                    <a class="btn btn-outline-primary" asp-controller="Bill" target="_blank" asp-action="BillDetailPrint" asp-route-id="@Model.Id" type="submit">Print Bill</a>
+                    <a asp-action="Search" asp-controller="Bill" class="btn btn-primary">Bill List</a>
+                </div>
+            </div>
+            <div class="card-body py-3">
+
+                <div id="ReportContainer"></div>
+
+
+                @*modal*@
+
+                <div class="modal fade" id="serviceAddModal" tabindex="-1" role="dialog" aria-labelledby="serviceAddModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel2">Add New Service To Bill</h5>
+                                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <input type="hidden" id="MBillId" value="@Model.Id" />
+                                    <div class="mb-2">
+                                        <label class="col-form-label">Service</label>
+                                        <select id="MServiceId" asp-items="Model.ServiceLookUp" class="dd-type"></select>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="col-form-label">Rate</label>
+                                        <input class="form-control" id="MRate" type="text">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="col-form-label">Quantity</label>
+                                        <input class="form-control" id="MQty" type="text">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="col-form-label">Amount</label>
+                                        <input class="form-control" id="MAmount" type="text">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="col-form-label">Vat</label>
+                                        <input class="form-control" id="MVat" type="text">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="col-form-label">Tax</label>
+                                        <input class="form-control" id="MTax" type="text">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="col-form-label">Discount</label>
+                                        <input class="form-control" id="MDiscount" type="text">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="col-form-label">Net Amount</label>
+                                        <input class="form-control" id="MNetAmount" type="text">
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button class="btn btn-primary" id="ServiceAddBtn" type="button">Add</button>
+                                <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                @*modal_end*@
+            </div>
+            @if (Model.BillStatus != BillStatusEnum.FullPaid && Model.BillStatus != BillStatusEnum.Refund)
+            {
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="button" id="PayBillBtn">Pay Bill</button>
+                        <button class="btn btn-danger" type="button">Cancel</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+        var paidDate = @Model.PaidDateStr;
+
+        $(".datepicker-paid-date").datepicker({
+            setDate: paidDate,
+            dateFormat: 'dd/mm/yyyy',
+            autoClose: true
+        });
+
+        $('.datepicker-paid-date').on('changeDate', function (event) {
+            $(this).datepicker('hide');
+        });
+    </script>
+    <script src="~/js/ETL/Bill/BillDetail.js"></script>
+}
+<style>
+    .table-bill td {
+        padding: 4px;
+    }
+</style>

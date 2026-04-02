@@ -1,0 +1,13 @@
+select o.Id OrderId,o.OrderNo,o.OrderDate,o.OrderDesc,c.Id CustomerId,c.FirstName+' '+isnull(c.LastName,'') CustomerName,ct.TypeName CustomerType,ct.Id CustomerTypeId,bk.Id BookingI,bk.BookingNo,ri.Id RoomId,ri.RoomNo
+,o.OrderAmount,o.VAT,o.TAX,o.ServiceCharge,o.Discount,o.NetAmount,o.OrderStatus,o.PaymentStatus,fi.Id ItemId,fi.ItemName,fi.ItemCode,d.Quantity,d.Rate,d.TotalAmount ItemAmount
+,P.PaidAmount,o.NetAmount - isnull(p.PaidAmount,0) DueAmount
+from RsFoodOrderItems d
+inner join RsFoodItems fi on fi.Id = d.FoodId
+inner join RsFoodOrders o on o.Id = d.OrderId
+inner join RsCustomers c on c.Id = o.CustomerId
+left join RsCustomerTypes ct on ct.Id = o.CustomerTypeId
+left join HtBookingServices bk on bk.Id = o.BookingId
+left join HtRoomInfos ri on ri.Id = o.RoomId
+left join (select OrderId,sum(PaidAmount) PaidAmount from RsOrderPayments where IsDeleted = 0 group by OrderId) p on p.OrderId = o.Id
+where d.IsDeleted = 0 and o.IsDeleted = 0
+order by o.OrderDate

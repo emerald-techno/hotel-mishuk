@@ -1,0 +1,83 @@
+﻿@model Domain.ViewModel.Accounting.AccLedger.AccLedgerSearchVm
+@{
+    ViewData["Title"] = "Account Ledger Search";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Account Ledger</h5>
+                <div class="setting-list">
+                    <a asp-action="Create" asp-controller="AccLedger" class="btn btn-secondary">New Ledger</a>
+                    <button class="btn btn-primary collapsed" data-bs-toggle="collapse" data-bs-target="#AccLedgerAdvanceSearch" aria-expanded="true" aria-controls="AccLedgerAdvanceSearch">Advance Search</button>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <form>
+                    <div class="row collapse" id="AccLedgerAdvanceSearch" aria-labelledby="headingOne" data-bs-parent="#accordion">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Account Head</label>
+                                        <select asp-for="HeadId" asp-items="Model.HeadLookUp" class="form-control dd-type"></select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Ledger Name</label>
+                                        <input asp-for="LedgerName" type="text" class="form-control" placeholder="Enter Ledger Name">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Ledger Code</label>
+                                        <input asp-for="LedgerCode" type="text" class="form-control" placeholder="Enter Ledger Code">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="d-flex flex-row justify-content-end">
+                                <input class="btn btn-primary flex-column float-lg-right" type="button" id="AccLedgerSearchBtn" value="Search" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Account Ledger</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="AccLedgerSearchTable" class="display" style="width:100%; text-align: left">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 5%">Serial</th>
+                                            <th>Account Head</th>
+                                            <th>Account Ledger Name</th>
+                                            <th>Ledger Code</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/js/UMS/AccLedger/AccLedgerSearch.js"></script>
+}

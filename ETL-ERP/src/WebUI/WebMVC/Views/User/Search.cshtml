@@ -1,0 +1,44 @@
+﻿@model Domain.ViewModel.User.UserSearchVm
+
+@{
+    var currentUser = User.Identity;
+    ViewData["Title"] = "User Search";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4>User List</h4>
+                <div class="setting-list">
+                    @if (currentUser.HasPermission(Permissions.SuperAdmin, Permissions.Users.Create))
+                    {
+                        <a asp-action="Add" asp-controller="User" class="btn btn-primary">Add User</a>
+                    }
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="UserSearchTable" class="display" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%">Serial</th>
+                                <th>Full Name</th>
+                                <th>Email</th>
+                                <th>Mobile</th>
+                                <th>User Role</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/ETL/User/UserSearch.js"></script>
+}

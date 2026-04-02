@@ -1,0 +1,85 @@
+﻿@model Domain.ViewModel.HotelManagement.RoomDayAudit.RoomDayAuditVm
+@{
+    ViewData["Title"] = "Room Audit Generate";
+}
+
+<div class="col-md-12">
+    <div class="row">
+        <div class="col-md-12 default-according py-2">
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Night Audit | Business Date: @(Model.BusinessDate.ToString("dd-MMM-yyyy"))</h5>
+                    <div class="setting-list">
+                        <input type="button" id="ShowReportBtn" class="btn btn-primary" value="Show Report" />
+                    </div>
+                </div>
+                <div class="card-body row">
+                    <div class="col-md-2">
+                        <form class="theme-form mega-form">
+                            <input class="form-control query-date" id="BusinessDateStr" type="text" value="@(Model.BusinessDate.ToString("dd-MMM-yyyy"))" data-language="en">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* <div id="RoomAuditPartialDiv"></div> *@
+    <ul class="nav nav-tabs" id="auditTabs">
+        <li class="nav-item">
+            <a class="nav-link active" data-bs-toggle="tab" href="#RoomAuditTab">Room Audit</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#PaymentAuditTab">FO Transaction Audit</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#ServiceAuditTab">Service Audit</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#RestaurantAuditTab">Restaurant Sales Audit</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#RestaurantTransectionAuditTab">Res. Transaction Audit</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#HallAuditTab">Hall Audit</a>
+        </li>
+    </ul>
+
+    <div class="tab-content mt-2">
+        <div class="tab-pane fade show active" id="RoomAuditTab">
+            <div id="RoomAuditPartialDiv"></div>
+        </div>
+        <div class="tab-pane fade" id="PaymentAuditTab">
+            <div id="PaymentAuditPartialDiv"></div>
+        </div>
+        <div class="tab-pane fade" id="ServiceAuditTab">
+            <div id="ServiceAuditPartialDiv"></div>
+        </div>
+        <div class="tab-pane fade" id="RestaurantAuditTab">
+            <div id="RestaurantAuditPartialDiv"></div>
+        </div>
+        <div class="tab-pane fade" id="RestaurantTransectionAuditTab">
+            <div id="RestaurantTransectionAuditPartialDiv"></div>
+        </div>
+        <div class="tab-pane fade" id="HallAuditTab">
+            <div id="hallAuditPartialDiv"></div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts
+{
+
+    <script src="~/js/ETL/NightAudit/RoomAuditWithdateReport.js"></script>
+
+    <script>
+        var businessDate = '@(Model.BusinessDate.ToString("dd-MMM-yyyy"))';
+
+        $(".query-date").datepicker({
+            setDate: 'businessDate',
+            dateFormat: 'dd-M-yyyy'
+        });
+    </script>
+}

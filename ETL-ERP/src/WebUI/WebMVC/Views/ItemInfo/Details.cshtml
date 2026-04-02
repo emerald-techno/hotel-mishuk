@@ -1,0 +1,174 @@
+﻿@model Domain.ViewModel.Inventory.ItemInfo.ItemInfoVm
+@{
+    ViewData["Title"] = "Item Info Details";
+}
+<div class="col-sm-12 default-according">
+
+    <input type="hidden" asp-for="Id" />
+
+    <div class="card">
+        <div class="card-header d-flex justify-content-between">
+            <h5>Item Details</h5>
+        </div>
+        <div class="card-body">
+            <div class="row text-dark bg-light px-2 py-3">
+                <div class="col-md">
+                    <div class="row">
+                        <div class="col-md-2">
+                            @if (Model.PhotoDocUrl == null)
+                            {
+                                <img class="img-fluid rounded shadow-lg" src="~/img/No_Image_Available.jpg" style="height:150px;width:150px;" />
+                            }
+                            else
+                            {
+                                <img class="img-fluid rounded shadow-lg" src="@Model.PhotoDocUrl" style="height:150px;width:150px;" />
+                            }
+                        </div>
+
+                        <div class="col-md-10 ">
+                            <table class="table table-borderless">
+                                <tbody>
+                                    <tr>
+                                        <td colspan="4">
+                                            <h4>@Model.ItemName</h4><br />
+                                            <small>#@(Model.ItemCode)</small>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:10%; font-weight:bold">Category:</td>
+                                        <td>@Model.CategoryName</td>
+                                        <td style="width:10%; font-weight:bold">Reorder Quantity</td>
+                                        <td>@Model.ReorderQty</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:10%; font-weight:bold">Unit:</td>
+                                        <td>@Model.UnitName</td>
+                                        <td style="width:10%; font-weight:bold">Minimum Quantity:</td>
+                                        <td>@Model.MaxQty</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:10%; font-weight:bold">Remarks:</td>
+                                        <td>@Model.Remarks</td>
+                                        <td style="width:10%; font-weight:bold">Alternative Quantity:</td>
+                                        <td>@Model.AlertQty</td>
+                                        
+                                    </tr> 
+                                    <tr>
+                                        <td style="width:10%; font-weight:bold"></td>
+                                        <td></td>
+                                        <td style="width:10%; font-weight:bold">Lead Day:</td>
+                                        <td>@Model.LeadDay</td>
+                                        
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <ul class="nav nav-tabs border-tab" id="top-tab" role="tablist">
+                <li class="nav-item"><a class="nav-link active" id="top-home-tab" data-bs-toggle="tab" href="#top-home" role="tab" aria-controls="top-home" aria-selected="true"><i class="icofont icofont-cart"></i>Item Summary</a></li>
+                <li class="nav-item"><a class="nav-link" id="contact-top-tab" data-bs-toggle="tab" href="#top-contact" role="tab" aria-controls="top-contact" aria-selected="false"><i class="icofont icofont-tasks"></i>Transaction Log</a></li>
+            </ul>
+            <div class="tab-content" id="top-tabContent">
+                <div class="tab-pane fade show active" id="top-home" role="tabpanel" aria-labelledby="top-home-tab">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" style="width:100%; text-align: center">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th rowspan="2">Date</th>
+                                    <th colspan="5">In</th>
+                                    <th colspan="5">Out</th>
+                                    <th rowspan="2">Balance</th>
+                                </tr>
+                                <tr>
+                                    <th>Opening</th>
+                                    <th>Receive</th>
+                                    <th>Tran Rcv</th>
+                                    <th>Sales Return</th>
+                                    <th>Total In</th>
+                                    <th>Sales</th>
+                                    <th>Transfer</th>
+                                    <th>Receive Return</th>
+                                    <th>Damage</th>
+                                    <th>Total Out</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @* @if (Model.ItemTransactionSummaryVms.Count > 0)
+                                {
+                                    foreach (var itemsum in Model.ItemTransactionSummaryVms)
+                                    {
+                                        <tr>
+                                            <td>@(itemsum.TranDate.ToString("dd/MM/yyyy"))</td>
+                                            <td>@(itemsum.OpQty)</td>
+                                            <td>@(itemsum.RcvQty)</td>
+                                            <td>@(itemsum.TrRcvQty)</td>
+                                            <td>@(itemsum.SalesRtQty)</td>
+                                            <td>@(itemsum.InQty)</td>
+                                            <td>@(itemsum.SalesQty)</td>
+                                            <td>@(itemsum.TransferQty)</td>
+                                            <td>@(itemsum.RcvRtQty)</td>
+                                            <td>@(itemsum.DamangeQty)</td>
+                                            <td>@(itemsum.OutQty)</td>
+                                            <td class="text-end">@(itemsum.BalanceQty.ToString("N2"))</td>
+                                        </tr>
+                                    }
+                                    <tr style="background-color: #F5F7FB;">
+                                        <td colspan="11" class="text-end"><b>Total</b></td>
+                                        <td class="text-end"><b>@(Model.ItemTransactionSummaryVms.Sum(c => c.BalanceQty).ToString("N2"))</b></td>
+                                    </tr>
+                                } *@
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="top-contact" role="tabpanel" aria-labelledby="contact-top-tab">
+                    <div style="display: flex;justify-content: end;margin: 10px 0px;">
+                        <a asp-controller="Customer" asp-action="TransactionPrint" asp-route-id="@Model.Id" class="btn btn-primary" target="_blank">PDF Print</a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered" style="width:100%; text-align: center">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th>Tran Type</th>
+                                    <th>Tran No</th>
+                                    <th>Tran Date</th>
+                                    <th>Vendor Name</th>
+                                    <th>Qty</th>
+                                    <th>Rate</th>
+                                    <th>Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @* @if (Model.ItemTransactionLogs.Count > 0)
+                                {
+                                    foreach (var item in Model.ItemTransactionLogs)
+                                    {
+                                        <tr>
+                                            <td>@(item.TranTypeText)</td>
+                                            <td>@(item.TranNo)</td>
+                                            <td>@(item.TranDate.ToString("dd/MM/yyyy"))</td>
+                                            <td class="text-center">@(item.VendorName)</td>
+                                            <td class="text-end">@(item.Qty)</td>
+                                            <td class="text-end">@(item.Rate.ToString("N2"))</td>
+                                            <td class="text-end">@(item.Amount.ToString("N2"))</td>
+                                        </tr>
+                                    }
+                                    <tr style="background-color: #F5F7FB;">
+                                        <td colspan="6" class="text-end"><b>Total</b></td>
+                                        <td class="text-end"><b>@(Model.ItemTransactionLogs.Sum(c => c.Amount).ToString("N2"))</b></td>
+                                    </tr>
+                                } *@
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

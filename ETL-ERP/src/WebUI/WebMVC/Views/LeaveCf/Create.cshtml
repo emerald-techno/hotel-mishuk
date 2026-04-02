@@ -1,0 +1,83 @@
+﻿@model Domain.ViewModel.Leave.LeaveCf.LeaveCfVm
+@{
+    ViewData["Title"] = "Leave carry forward Create";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Leave carry forward Create</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="LeaveCf" class="btn btn-primary">Search Leave carry forward</a>
+                </div>
+            </div>
+            <form asp-action="Create" class="form theme-form">
+                @*<input type="hidden" asp-for="LeaveTypeId" />
+                <input type="hidden" asp-for="EmployeeId" />*@
+
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="col-form-label">Employee</label>
+                            <select asp-for="EmployeeId" asp-items="Model.EmployeeLookUp" class="form-control dd-type"></select>
+                        </div>
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4" id="LeaveCardSec"></div>
+                    </div>
+
+                    <br />
+                    <br />
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="col-form-label">Leave Type</label>
+                            <select asp-for="LeaveTypeId" asp-items="Model.LeaveTypeLookUp" class="form-control dd-type"></select>
+                        </div>
+                    </div>
+
+                    <br />
+                    <br />
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Leave Year</label>
+                            <select asp-for="LeaveYear" asp-items="Model.LeaveYearLookUp" class="form-control dd-type"></select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Leave Balance</label>
+                            <input class="form-control" asp-for="LeaveBalance" type="number">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Carry Forward Balance</label>
+                            <input class="form-control" asp-for="CfBalance" type="number">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Leave Enjoyed</label>
+                            <input class="form-control" asp-for="LeaveEnjoyed" type="number">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Leave Sale</label>
+                            <input class="form-control" asp-for="LeaveSale" type="number">
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/js/ETL/LeaveCf/LeaveCfCreate.js"></script>
+}

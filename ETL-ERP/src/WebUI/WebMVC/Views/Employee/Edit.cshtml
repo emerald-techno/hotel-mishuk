@@ -1,0 +1,262 @@
+﻿@model Domain.ViewModel.Hr.Employees.EmployeeVm
+@{
+    ViewData["Title"] = "Employee Edit";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <partial name="_QuickLinkHr" />
+        <div class="card">
+            <div class="card-header pb-2">
+                <h5>Edit Employee</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="Employee" class="btn btn-primary">Back</a>
+                </div>
+            </div>
+            <form asp-action="Edit" class="form theme-form" method="post" data-parsley-validate enctype="multipart/form-data">
+                <div class="card-body">
+
+                    @Html.HiddenFor(c => c.Id)
+                    @Html.HiddenFor(c => c.UserId)
+                    @Html.HiddenFor(c => c.ActionById)
+                    @Html.HiddenFor(c => c.ActionDate)
+                    @Html.HiddenFor(c => c.PhotoUrl)
+                    @Html.HiddenFor(c => c.NidUrl)
+                    @Html.HiddenFor(c => c.SignatureUrl)
+                    @Html.HiddenFor(c => c.IsEnable)
+
+                    <input type="hidden" id="probDate" value="@Model.ProbationDateStr" />
+                    <input type="hidden" id="confirmDate" value="@Model.ConfirmationDateStr" />
+                    <input type="hidden" id="birthDate" value="@Model.DobStr" />
+
+                    <div class="row pb-3">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Employee Name</label>
+                                <input class="form-control" asp-for="Name">
+                            </div>
+                            <div class="form-group">
+                                <label>Mobile</label>
+                                <input class="form-control" asp-for="Mobile">
+                            </div>
+                            <div class="form-group">
+                                <label>Join Date</label>
+                                <input class="form-control joinDatePick" type="text" data-language="en" asp-for="JoinDateStr">
+                            </div>
+                            <div class="form-group">
+                                <label>Probation Date</label>
+                                <input class="form-control probationDatePick" asp-for="ProbationDateStr" type="text" data-language="en">
+                            </div>
+                            <div class="form-group">
+                                <label>Employee Status</label>
+                                <select asp-for="EmployeeStatus" asp-items="Model.EmployeeStatusLookUp" class="form-control dd-type"></select>
+                            </div>
+                            <div class="form-group">
+                                <label>Bank Account Number</label>
+                                <input class="form-control" asp-for="BankAccNo" type="text">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Employee Code</label>
+                                <input class="form-control" asp-for="Code" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label>Designation</label>
+                                <select asp-for="DesignationId" asp-items="Model.DesignationLookUp" class="form-control dd-type"></select>
+                            </div>
+                            <div class="form-group">
+                                <label>Present Address</label>
+                                <input class="form-control" asp-for="PreAddress">
+                            </div>
+                            <div class="form-group">
+                                <label>Confirmation Date</label>
+                                <input class="form-control confirmationDatePick" asp-for="ConfirmationDateStr" type="text" data-language="en">
+                            </div>
+                            <div class="form-group">
+                                <label>Salary Type</label>
+                                <select asp-for="SalaryType" asp-items="Model.SalaryTypeLookUp" class="form-control dd-type"></select>
+                            </div>
+                            <div class="media">
+                                <label class="col-form-label m-r-10">Is Pf Member</label>
+                                <div class="media-body icon-state">
+                                    <label class="switch">
+                                        <input type="checkbox" asp-for="IsPfMember"><span class="switch-state"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input class="form-control" asp-for="Email">
+                            </div>
+                            <div class="form-group">
+                                <label>Official Department</label>
+                                <select asp-for="DepartmentId" asp-items="Model.DepartmentLookUp" class="form-control dd-type"></select>
+                            </div>
+                            <div class="form-group">
+                                <label>Academic Department</label>
+                                <select asp-for="AcademicDptId" asp-items="Model.AcademicDepartmentLookUp" class="form-control dd-type"></select>
+                            </div>
+                            <div class="form-group">
+                                <label>Permanent Address</label>
+                                <input class="form-control" asp-for="PerAddress">
+                            </div>
+                            <div class="form-group">
+                                <label>Basic Salary</label>
+                                <input class="form-control" asp-for="Salary" type="text">
+                            </div>
+                            <div class="form-group">
+                                <label>Permanent Duty Shift</label>
+                                <select asp-for="DutyShiftId" asp-items="Model.DutyShiftLookUp" class="form-control dd-type"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h5>Personal Information</h5>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Father Name</label>
+                                <input class="form-control" asp-for="FatherName">
+                            </div>
+                            <div class="form-group">
+                                <label>Spouse Name</label>
+                                <input class="form-control" asp-for="SpouseName">
+                            </div>
+                            <div class="form-group">
+                                <label>Birth Date</label>
+                                <input class="form-control dobPick" asp-for="DobStr" type="text" data-language="en">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Mother Name</label>
+                                <input class="form-control" asp-for="MotherName">
+                            </div>
+                            <div class="form-group">
+                                <label>Religion</label>
+                                <select asp-for="Religion" asp-items="Model.ReligionLookUp" class="form-control dd-type"></select>
+                            </div>
+                            <div class="form-group">
+                                <label>Blood Group</label>
+                                <select asp-for="BloodGroup" asp-items="Model.BloodGroupLookUp" class="form-control dd-type"></select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Marital Status</label>
+                                <select asp-for="MaritalStatus" asp-items="Model.MaritalStatusLookUp" class="form-control dd-type"></select>
+                            </div>
+                            <div class="form-group">
+                                <label>Gender</label>
+                                <select asp-for="Gender" asp-items="Model.GenderLookUp" class="form-control dd-type"></select>
+                            </div>
+                            <div class="form-group">
+                                <label>Nationality</label>
+                                <input class="form-control" asp-for="Nationality" type="text">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>National ID</label>
+                                <input class="form-control" asp-for="NID" type="text">
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group row">
+                                <label>Photo</label>
+                                <div title="File less or equal (400 X 520) pixel and maximum 512 kb Photo format JPG/ JPEG/ PNG ">
+                                    <input type="file" class="form-control" id="PhotoFile" name="PhotoFile" onchange="basePreviewPhoto('PhotoFile', '.PostedPhotoPreview', '.HidePostedPhotoDiv', null);">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group row HidePostedPhotoDiv">
+                                <div class="col-md-8" align="left">
+                                    @if (!string.IsNullOrEmpty(Model.PhotoUrl))
+                                    {
+                                        <input type="hidden" id="PhotoUrl" name="PhotoUrl" value="@(Model.PhotoUrl)" />
+                                        <div class="PostedPhotoPreview" style="height: 150px; width: 150px">
+                                            @if (ViewBag.Photo != null)
+                                            {
+                                                try
+                                                {
+                                                    var imgSrc = $"data:image/gif;base64,{Convert.ToBase64String(ViewBag.Photo)}";
+
+
+                                                    <img style="width: 100%; height: 100%;" src="@imgSrc" />
+
+                                                }
+                                                catch
+                                                {
+
+                                                    <img style="width: 100%; height: 100%;" src="@(ViewBag.Photo)" />
+
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <span>
+                                                    <img style="width: 100%; height: 100%;" src="~/images/Nopreview-Available.jpg" />
+                                                </span>
+                                            }
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="PostedPhotoPreview" style="height: 150px; width: 150px"></div>
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Update</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        var joinDate = @Model.JoinDateStr;
+
+        const probitionDate = $("#probDate").val();
+        const confirmDate = $("#confirmDate").val();
+        const birthDate = $("#birthDate").val();
+
+        $(".joinDatePick").datepicker({
+            setDate: joinDate,
+            dateFormat: 'dd/mm/yyyy',
+        });
+
+        $(".probationDatePick").datepicker({
+            setDate: probitionDate,
+            dateFormat: 'dd/mm/yyyy',
+        });
+
+        $(".confirmationDatePick").datepicker({
+            setDate: confirmDate,
+            dateFormat: 'dd/mm/yyyy',
+        });
+
+        $(".dobPick").datepicker({
+            setDate: birthDate,
+            dateFormat: 'dd/mm/yyyy',
+        });
+    </script>
+}

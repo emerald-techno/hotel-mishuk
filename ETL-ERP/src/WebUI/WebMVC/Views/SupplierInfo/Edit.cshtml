@@ -1,0 +1,90 @@
+﻿@model Domain.ViewModel.Inventory.SupplierInfo.SupplierInfoVm
+@{
+    ViewData["Title"] = "Supplier Info Edit";
+}
+
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkInventory" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Edit Supplier</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="SupplierInfo" class="btn btn-primary">Search Supplier</a>
+                </div>
+            </div>
+            <form asp-action="Edit" class="form theme-form" data-parsley-validate enctype="multipart/form-data">
+                @Html.HiddenFor(c => c.Id)
+                @Html.HiddenFor(c => c.PhotoDoc)
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Supplier Name</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="SupplierName" type="text" placeholder="Enter Supplier name">
+                                    <span asp-validation-for="SupplierName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Supplier Code</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="SupplierCode" type="text" readonly>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Mobile</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="Mobile" type="number" placeholder="Enter Mobile Number">
+                                    <span asp-validation-for="Mobile" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Phone</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="Phone" type="number" placeholder="Enter Phone Number">
+                                    <span asp-validation-for="Phone" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Email</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="Email" type="email" placeholder="Enter Email Number">
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Address</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="Address" type="text" placeholder="Enter Supplier Address">
+                                    <span asp-validation-for="Mobile" class="text-danger"></span>
+                                </div>
+                            </div>
+                            @* <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Photo File</label>
+                                <div class="col-sm-9">
+                                    <div class="form-group">
+                                        <input asp-for="PhotoFile" class="form-control" type="file" name="PhotoFile">
+                                    </div>
+                                </div>
+                            </div> *@
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Remarks</label>
+                                <div class="col-sm-9">
+                                    <textarea class="form-control" rows="4" asp-for="Remarks"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

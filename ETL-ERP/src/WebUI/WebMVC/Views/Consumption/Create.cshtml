@@ -1,0 +1,130 @@
+﻿@model Domain.ViewModel.Inventory.Transaction.TransactionVm
+@{
+    ViewData["Title"] = "New Consumption Entry";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>New Consumption Entry</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="Consumption" class="btn btn-primary">Search Consumption</a>
+                </div>
+            </div>
+            <form asp-action="Create" asp-controller="Consumption" id="CreateConsumptionForm" class="form theme-form">
+                <div class="card-body py-3">
+
+                    <input type="hidden" asp-for="TranType" />
+                    
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Consumption No</label>
+                            <input class="form-control" asp-for="TranNo" readonly>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Consumption Date *</label>
+                            <input class="datepicker-consumption-date form-control" asp-for="TranDateStr" type="text" data-language="en">
+                            <span asp-validation-for="TranDateStr" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Issue Department</label>
+                            <select asp-for="IssueDeptId" asp-items="Model.IssueDptLookUp" class="dd-type"></select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Remarks</label>
+                            <textarea class="form-control" rows="4" asp-for="Remarks"></textarea>
+                        </div>
+                    </div>
+
+                    <br />
+                    <hr />
+                    <br />
+
+                    <div class="row">
+                        <div class="col-md-2 mb-3">
+                            <label class="form-label">Con. Item *</label>
+                            <select id="ItemId" asp-items="Model.ItemLookUp" class="form-control dd-type"></select>
+                            <input type="hidden" id="IsMonthly" value="false" />
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <label class="form-label">Item Unit</label>
+                            <select id="UnitId" asp-items="Model.UnitLookUp" class="form-control dd-type"></select>
+                            <input id="UnitPrice" type="hidden" readonly>
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <label class="form-label">Consumtion Qty.</label>
+                            <input class="form-control" type="number" id="Qty">
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <label class="form-label">Left Over</label>
+                            <input class="form-control" type="number" id="LeftOver">
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <label class="form-label">Stock</label>
+                            <input class="form-control" type="number" id="Stock" readonly>
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <label class="form-label">Remarks</label>
+                            <input class="form-control" type="text" id="ItemRemarks">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2 offset-10 mb-3 d-flex justify-content-end">
+                            <button type="button" id="AddItemBtn" class="btn btn-primary">Add Item</button>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 5%">#</th>
+                                        <th style="width: 30%">Item</th>
+                                        <th style="width: 10%">Unit</th>
+                                        <th style="width: 10%">Consumption Qty.</th>
+                                        <th style="width: 10%">Left Over</th>
+                                        <th style="width: 10%">Stock</th>
+                                        <th style="width: 20%">Remarks</th>
+                                        <th style="width: 5%">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ItemTableTbody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="button" id="CreateConsumptionSubmitBtn">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+         var currentDate = @Model.TranDateStr;
+
+        $(".datepicker-consumption-date").datepicker({
+            setDate: currentDate,
+            dateFormat: 'dd/mm/yyyy',
+            autoClose: true
+        });
+    </script>
+    <script src="~/js/ETL/Consumption/ConsumptionCreate.js"></script>
+}
+

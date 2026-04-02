@@ -1,0 +1,73 @@
+﻿@model Domain.ViewModel.Hr.Employees.EmployeeVm;
+@{
+    ViewData["Title"] = "Employee Disable";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <partial name="_QuickLinkHr" />
+    <div class="card">
+        <div class="card-header p-4">
+            <h5>Disable Employee</h5>
+        </div>
+        <div class="setting-list">
+            <a asp-action="Search" asp-controller="Employee" class="btn btn-primary">Back</a>
+        </div>
+        <form asp-action="Disable" class="form theme-form">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        @if (Model.PhotoUrl == null)
+                        {
+                            <img src="~/images/no_avatar.jpg" width="200px;" height="150px;" />
+                        }
+                        else
+                        {
+                            <img src="@Model.PhotoUrl" width="200px;" height="150px;" alt="pic" />
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <p><b>Name : </b>@Model.Name</p>
+                        <p><b>Code : </b>@Model.Code</p>
+                        <p><b>Department : </b>@Model.DepartmentName</p>
+                    </div>
+                    <div class="col-md-3">
+                        <p><b>Desgination : </b>@Model.DesignationName</p>
+                        <p><b>Salary : </b>@Model.Salary</p>
+                        <p><b>Join Date : </b>@Model.JoinDate.ToString("dd-MMM-yyyy")</p>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+                <div class="row" style="margin-top:40px;">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Retirement Date</label>
+                        <input class="datepicker-here form-control" asp-for="RetirementDate" type="text" data-language="en">
+                        <span asp-validation-for="RetirementDate" class="text-danger"></span>
+                        <p class="text-success" style="font-size:12px;margin-top:5px;">Only For Retirement</p>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Disable Date *</label>
+                        <input class="datepicker-here form-control" asp-for="DisableDate" type="text" data-language="en">
+                        <span asp-validation-for="DisableDate" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Disable Reason *</label>
+                        <textarea class="form-control" rows="3" asp-for="DisableReason"></textarea>
+                        <span asp-validation-for="DisableReason" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer text-end">
+                <div class="col-sm-9 offset-sm-3">
+                    <button class="btn btn-primary" type="submit">Submit</button>
+                    <input class="btn btn-light" type="reset" value="Clear">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/js/ETL/HostelFee/StudentHostelFeeGenerate.js"></script>
+}

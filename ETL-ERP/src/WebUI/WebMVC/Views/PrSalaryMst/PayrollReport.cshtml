@@ -1,0 +1,71 @@
+﻿@model Domain.ViewModel.Payroll.PrSalaryMst.PrSalaryMstVm
+@{
+    ViewData["Title"] = "Payroll Report";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <form>
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Payroll Report</h5>
+                    <div class="setting-list">
+                        <input type="button" id="ShowReportBtn" class="btn btn-primary" value="Show Report" />
+                    </div>
+                </div>
+                <div class="card-body table-responsive">
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Year</label>
+                            @Html.DropDownListFor(model => model.Year, Enumerable.Range((DateTime.Now.Year - 2), 10).Select(x => new SelectListItem { Value = x.ToString(), Text = x.ToString() }), "Select Year", new { @class = "form-control dd-type" })
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">Month</label>
+                            @Html.DropDownListFor(model => model.Month, Enumerable.Range(1, 12).Select(x => new SelectListItem { Value = x.ToString(), Text = System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(x) }), "Select Month", new { @class = "form-control dd-type" })
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="col-form-label">Department</label>
+                            <select asp-for="DepartmentId" asp-items="Model.DepartmentLookup" class="form-control dd-type"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Employee Payroll Report</h5>
+                    <div class="setting-list">
+                        <button class="btn btn-primary" id="ReportPrintBtn">PDF</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <dvi class="table-responsive">
+                        <div style="text-align: center;">
+                            <div style="text-align: center; font-weight: bold; font-size: 16px; line-height: 20px">SALARY OF HOTEL MISHUK STAFFS</div>
+                            <div style="text-align: center; font-weight: bold; font-size: 11px; line-height: 16px">
+                                <div id="ltReportFilter" runat="server" Text=""></div>
+                            </div>
+                        </div>
+                        <div id="ReportContainer"></div>
+                    </dvi>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts
+{
+    <script>
+
+        $(".from_dt").datepicker({
+            dateFormat: 'dd/mm/yyyy'
+        });
+        $(".to_dt").datepicker({
+            dateFormat: 'dd/mm/yyyy'
+        });
+    </script>
+    <script src="~/js/ETL/PrSalaryMst/PayrollReport.js"></script>
+}

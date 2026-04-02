@@ -1,0 +1,42 @@
+﻿@model Domain.ViewModel.HouseKeeping.TaskName.HkTaskNameSearchVm
+@{
+    ViewData["Title"] = "Task Search";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <form>
+            <div class="card">
+            </div>
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Task Name List</h5>
+                    <div class="setting-list">
+                        <input class="btn btn-primary" type="button" id="TaskNameSearchBtn" value="Search" />
+                        <a asp-action="Create" asp-controller="TaskName" class="btn btn-primary">New Task Name</a>
+                        @*<input type="button" id="LedgerReportBtn" class="btn btn-primary" value="Search" />*@
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table table-responsive">
+                        <table id="TaskNameSearchTable" class="display" style="width:100%; text-align: left">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th style="width: 5%">Sl</th>
+                                    <th>Name</th>
+                                    <th>Type Name</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/ETL/TaskName/TaskNameSearch.js"></script>
+}

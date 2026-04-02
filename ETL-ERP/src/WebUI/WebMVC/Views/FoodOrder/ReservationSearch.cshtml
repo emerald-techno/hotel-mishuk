@@ -1,0 +1,124 @@
+﻿@model Domain.ViewModel.Restaurant.FoodOrder.FoodOrderSearchVm
+@{
+    ViewData["Title"] = "Reservation List";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <form>
+            <input type="hidden" value="@((int)Model.OrderType)" id="OrderType" />
+
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Reservation Search</h5>
+                    <div class="setting-list">
+                        <input class="btn btn-primary" type="button" id="FoodOrderSearchBtn" value="Search" />
+                    </div>
+                </div>
+                <div class="card-body table-responsive">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Form Date</label>
+                                        <input class="form-control from_dt" asp-for="FormDateStr" type="text" placeholder="Enter start date" data-language="en" />
+
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>To Date</label>
+                                        <input asp-for="ToDateStr" class="form-control to_dt" placeholder="Enter end date" data-language="en" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Reservation Status</label>
+                                        <select asp-for="OrderStatus" asp-items="Model.FoodOrderStatusLookUp" class="form-control dd-type"></select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Payment Status</label>
+                                        <select asp-for="PaymentStatus" asp-items="Model.OrderPaymentStatusLookUp" class="form-control dd-type"></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Reservation List</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table table-responsive">
+                        <table id="FoodOrderSearchTable" class="display" style="width:100%; text-align: left">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th style="width: 5%">Sl</th>
+                                    <th>Reservation Info</th>
+                                    <th>Customer Info</th>
+                                    <th>Reservation Status</th>
+                                    <th>Payment Status</th>
+                                    <th>Total Amount</th>
+                                    <th>Sale By</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+
+                @*clean_modal_start*@
+
+                <div class="modal fade" id="statusModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="mySmallModalLabel">Change Reservation Status</h5>
+                                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <input type="hidden" id="SelectedOrderId" />
+                                <select id="SelectedOrderStatus" asp-items="Model.FoodOrderStatusLookUp" class="dd-type"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @*clean_modal_end*@
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        var fromDate = @Model.FormDateStr;
+        var toDate = @Model.ToDateStr;
+
+        $(".from_dt").datepicker({
+            setDate: fromDate,
+            dateFormat: 'dd/mm/yyyy',
+            onSelect: function (d, i) {
+                console.log("event working..!", d);
+                getFincYearByDate(d)
+            }
+        });
+        $(".to_dt").datepicker({
+            setDate: toDate,
+            dateFormat: 'dd/mm/yyyy',
+            onSelect: function (d, i) {
+                console.log("event working..!", d);
+                getFincYearByDate(d)
+            }
+        });
+    </script>
+    <script src="~/js/ETL/FoodOrder/FoodOrderSearch.js"></script>
+}

@@ -1,0 +1,782 @@
+﻿@model Domain.ViewModel.HotelManagement.Billing.BillingVm
+@using Domain.Enums.AppEnums
+@using Domain.Utility.Common
+@using Domain.Utility
+@using Domain.Entities.Identity
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+@{
+    //ViewBag.Title = "Bill";
+    ViewData["Title"] = "Billing Service";
+    var user = await UserManager.GetUserAsync(User);
+}
+
+@section styles
+{
+    <style>
+        #BillRoomTableTbody tr td {
+            padding: 5px;
+        }
+
+        #BillRoomTableFoot tr {
+            border: 0px;
+        }
+
+            #BillRoomTableFoot tr td {
+                padding: 5px;
+                border: 0px;
+            }
+    </style>
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        @* <partial name="_QuickLinkHt" /> *@
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Booking Service Bill</h5>
+                <div class="setting-list">
+                    @if (Model.BillStatus != BillStatusEnum.FullPaid)
+                    {
+                        <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#serviceAddModal"> Add Service </a>
+                        if (Model.BillDate.Date == DateTime.Today.Date)
+                        {
+                            <a class="btn btn-outline-info" href="#" data-bs-toggle="modal" data-bs-target="#discountUpdateModal">
+                                Update Discount
+                            </a>
+                        }
+                        else if (user.FullName == UserCode.Development)
+                        {
+                            <a class="btn btn-outline-info" href="#" data-bs-toggle="modal" data-bs-target="#discountUpdateModal">
+                                Update Discount
+                            </a>
+                        }
+
+                    }
+                    <a class="btn btn-outline-secondary" asp-controller="Bill" target="_blank" asp-action="BillDetailPrint" asp-route-id="@Model.Id" type="submit">New Format</a>
+                    <a class="btn btn-outline-primary" asp-controller="Bill" target="_blank" asp-action="BillPrint" asp-route-id="@Model.Id" type="submit">Print Bill</a>
+                    <a asp-action="Search" asp-controller="Bill" class="btn btn-primary">Bill List</a>
+                </div>
+            </div>
+            <div class="card-body py-3">
+
+                <div class="row">
+                    <div class="col-md-4">
+
+                        <h4><u>Bill To :-</u></h4>
+
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label">Name</label>
+                            <div class="col-sm-8">
+                                @(Model.BookingGuestName)
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <label class="col-sm-4 col-form-label">Phone Number</label>
+                            <div class="col-sm-8">
+                                @(Model.BookingGuestMobile)
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <label class="col-sm-4 col-form-label">Address</label>
+                            <div class="col-sm-8">
+                                @(Model.BookingGuestAddress)
+                            </div>
+                        </div>
+                        @if (!string.IsNullOrEmpty(Model.CmpRemarks))
+                        {
+                            <div class="row mt-1">
+                                <label class="col-sm-4 col-form-label">Complimentary Info</label>
+                                <div class="col-sm-8">
+                                    @(Model.CmpRemarks)
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label">Bill No</label>
+                            <div class="col-sm-8">
+                                <b> @(Model.BillNumber)</b>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label">Bill Date</label>
+                            <div class="col-sm-8">
+                                @Utility.GetDate(Model.BillDate)
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label">Booking No</label>
+                            <div class="col-sm-8">
+                                @* @(Model.BookingNo) *@
+                                <a target="_blank" href="../../BookingService/Details/@Model.BookingId"><b>@Model.BookingNo</b></a>
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <label class="col-sm-4 col-form-label">Booking Date</label>
+                            <div class="col-sm-8">
+                                @Utility.GetDate(Model.BookingDate)
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <label class="col-sm-4 col-form-label">Bill Status</label>
+                            <div class="col-sm-8">
+                                @if (Model.BillStatus == BillStatusEnum.FullPaid)
+                                {
+                                    <span class="badge badge-pill badge-success" style="font-size: 0.8rem;">Fully Paid</span>
+                                }
+                                else if (Model.BillStatus == BillStatusEnum.PartialPaid)
+                                {
+                                    <span class="badge badge-pill badge-warning" style="font-size: 0.8rem;">Partialy Paid</span>
+                                }
+                                else if (Model.BillStatus == BillStatusEnum.Fresh)
+                                {
+                                    <span class="badge badge-pill badge-secondary" style="font-size: 0.8rem;">New</span>
+                                }
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <label class="col-sm-4 col-form-label">Remarks</label>
+                            <div class="col-sm-8">
+                                @(Model.Remarks)
+                            </div>
+                        </div>
+                    </div>
+                    @* Payments *@
+                    <div class="col-md-4">
+                        <div class="card shadow-sm">
+                            <div class="card-header py-2 d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">Payments</h5>
+                                <span class="badge badge-info">
+                                    @(Model.BillingPayments?.Count ?? 0)
+                                </span>
+                            </div>
+
+                            @if (Model.BillingPayments != null && Model.BillingPayments.Any())
+                            {
+                                <div class="card-body p-0">
+                                    <table class="table table-bordered table-hover mb-0">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th style="width:20%">Date</th>
+                                                <th style="width:35%">Details</th>
+                                                <th style="width:20%">Mode</th>
+                                                <th class="text-end" style="width:25%">Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.BillingPayments)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @Utility.ConvertDateToStr(item.PaidDate)
+                                                    </td>
+                                                    <td style="font-size: 0.8rem;">
+                                                        <div><strong>Txn:</strong> @item.TransactionNo</div>
+
+                                                        @if (!string.IsNullOrEmpty(item.AccountNo))
+                                                        {
+                                                            <div><strong>A/C:</strong> @item.AccountNo</div>
+                                                        }
+
+                                                        <div>
+                                                            <strong>Voucher:</strong>
+                                                            <a href="../../AccTranMst/JournalDetails/@item.VoucherId"
+                                                               target="_blank"
+                                                               class="text-decoration-none">
+                                                                @item.VoucherNo
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <span class="badge badge-success">
+                                                            @item.PayMode.GetDescription()
+                                                        </span>
+                                                    </td>
+                                                    <td class="text-end fw-bold text-success">
+                                                        @item.PaidAmount?.ToString("N2")
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="card-footer py-2 text-end bg-light">
+                                    <h6 class="mb-0">
+                                        Total Paid :
+                                        <span class="fw-bold text-success text-end">
+                                            @(Model.BillingPayments.Sum(x => x.PaidAmount)?.ToString("N2"))
+                                        </span>
+                                    </h6>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="alert alert-warning text-center m-3">
+                                    <i class="fa fa-info-circle"></i> No payment received yet
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+
+                <br />
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr class="text-center">
+                                    <th style="width: 5%">Sl</th>
+                                    <th style="width: 10%">Room</th>
+                                    <th style="width: 15%">Service Name</th>
+                                    <th style="width: 15%">Check In</th>
+                                    <th style="width: 15%">Check Out</th>
+                                    @if (Model.BookingType == BookingType.Hall)
+                                    {
+                                        <th style="width: 10%">No. Of Shift</th>
+                                    }
+                                    else
+                                    {
+                                        <th style="width: 10%">No. Of Days</th>
+                                    }
+                                    <th style="width: 15%">Price/Day</th>
+                                    <th style="width: 15%">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="BillRoomTableTbody">
+                                @if (Model.BillingDetails.Count > 0)
+                                {
+                                    foreach (var (dtl, i) in Model.BillingDetails.GetItemWithIndex())
+                                    {
+
+                                        if (dtl.ServiceCode == HtServiceCode.FoodService)
+                                        {
+                                            <tr>
+                                                <td class="text-center">@(i + 1)</td>
+                                                <td class="text-center"><b>@(dtl.BookingRoomNo)</b></td>
+                                                <td>@(dtl.ServiceName)</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td class="text-center"></td>
+                                                <td></td>
+                                                <td class="text-end">@(dtl.NetAmount)</td>
+                                            </tr>
+                                        }
+                                        else if (dtl.ServiceCode == HtServiceCode.RoomRent)
+                                        {
+                                            <tr>
+                                                <td class="text-center">@(i + 1)</td>
+                                                <td class="text-center">
+                                                    <b>@(dtl.BookingRoomNo)</b>
+                                                    @if (dtl.BookingRoomExtraBed > 0)
+                                                    {
+                                                        <br />
+
+                                                        <small>Extra Bed: @(dtl.BookingRoomExtraBed)</small>
+                                                    }
+                                                </td>
+                                                <td>@(dtl.ServiceName)</td>
+                                                <td>@(Utility.ConvertDateTimeToStr((DateTime)dtl.BookingRoomCheckInTime, is24Time: true))</td>
+                                                <td>@(Utility.ConvertDateTimeToStr((DateTime)dtl.BookingRoomCheckOutTime, is24Time: true))</td>
+                                                <td class="text-center">@(dtl.Days)</td>
+                                                <td>
+                                                    <b>Rent:</b> @(dtl.Rate) <br />
+                                                    <b>Service Charge:</b> @(dtl.BookingRoomServiceCharge) <br />
+                                                    @if (dtl.BookingRoomExtraBed > 0)
+                                                    {
+                                                        <b>Extra Bed Charge:</b> @(dtl.BookingRoomExtraBedCharge) <br />
+                                                    }
+                                                </td>
+                                                <td class="text-end">@(dtl.Amount + dtl.ExtraBedCharge + dtl.ServiceCharge)</td>
+                                            </tr>
+                                        }
+                                        else if (dtl.ServiceCode == HtServiceCode.HallRent)
+                                        {
+                                            <tr>
+                                                <td class="text-center">@(i + 1)</td>
+                                                <td class="text-center">
+                                                    <b>@(dtl.BookingHallName)</b>
+                                                    <br /><small>Date: @(dtl.BookingHallBookDate?.ToString("dd/MM/yyyy"))</small>
+                                                    <br /><small>Shift: @(dtl.HallShiftText)</small>
+                                                </td>
+                                                <td>@(dtl.ServiceName)</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td class="text-center">@(dtl.Days)</td>
+                                                <td>
+                                                    <b>Rent:</b> @(dtl.Rate) <br />
+                                                    <b>Service Charge:</b> @(dtl.BookingRoomServiceCharge) <br />
+                                                </td>
+                                                <td class="text-end">@(dtl.NetAmount)</td>
+                                            </tr>
+                                        }
+                                        else
+                                        {
+                                            <tr>
+                                                <td class="text-center">@(i + 1)</td>
+                                                <td class="text-center">
+                                                    <b>@(dtl.BookingRoomNo ?? "N/A")</b>
+                                                </td>
+                                                <td>
+                                                    @(dtl.ServiceName)<br />
+                                                    @(dtl?.ServiceDate?.ToString("dd-MMM-yyyy") ?? "")
+                                                </td>
+                                                <td></td>
+                                                <td></td>
+                                                <td class="text-center"></td>
+                                                <td>
+                                                    <b>Rate:</b> @(dtl.Rate) x @(dtl.Quantity) = @(dtl.Amount) <br />
+                                                    <b>Vat:</b> @(dtl.VAT), <b>Tax:</b> @(dtl.Tax), <b>Discount:</b> @(dtl.Discount)
+                                                </td>
+                                                <td class="text-end">@(dtl.NetAmount)</td>
+                                            </tr>
+                                        }
+                                    }
+                                }
+                            </tbody>
+                            <tfoot id="BillRoomTableFoot">
+
+                                <tr>
+                                    <td colspan="6" rowspan="9">
+                                        @if (Model.BillStatus != BillStatusEnum.FullPaid && Model.BillStatus != BillStatusEnum.Refund)
+                                        {
+                                            <form asp-action="PayBill" asp-controller="Bill" method="post" id="PayBillForm">
+                                                <input type="hidden" name="BillId" id="BillId" value="@Model.Id">
+                                                <div class="row">
+                                                    <label class="col-sm-2 col-form-label">Pay Date</label>
+                                                    <div class="col-sm-4">
+                                                        <input class="datepicker-paid-date form-control" name="PaidDateStr" asp-for="PaidDateStr" type="text" data-language="en">
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-1">
+                                                    <label class="col-sm-2 col-form-label">Pay Mode</label>
+                                                    <div class="col-sm-4">
+                                                        <select name="PayMode" id="PayMode" asp-items="Model.PayModeLookUp" class="dd-type"></select>
+                                                    </div>
+
+                                                    <label class="col-sm-2 col-form-label">Pay Amount</label>
+                                                    <div class="col-sm-4">
+                                                        <input type="text" class="form-control" name="PaidAmount" id="PaidAmount">
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-1">
+                                                    <label class="col-sm-2 col-form-label">Transaction No</label>
+                                                    <div class="col-sm-4">
+                                                        <input type="text" class="form-control" name="TransactionNo" id="TransactionNo">
+                                                    </div>
+
+                                                    <label class="col-sm-2 col-form-label">Account Number</label>
+                                                    <div class="col-sm-4">
+                                                        <input type="text" class="form-control" name="AccountNo" id="AccountNo">
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        }
+                                    </td>
+                                    @{
+                                        var roomRentalServiceTotal = Model.BillingDetails.Where(c => c.ServiceId == 1).Sum(x => x.NetAmount + x.Discount);
+                                        var hallRentalServiceTotal = Model.BillingDetails.Where(c => c.ServiceId == 4).Sum(x => x.NetAmount + x.Discount);
+                                        var otherServiceTotal = Model.BillingDetails.Where(c => c.ServiceId != 1 && c.ServiceId != 4).Sum(x => x.NetAmount);
+
+                                        // var grandTotal = Model.BillingDetails.Where(c => c.ServiceId == 1 || c.ServiceId == 4).Sum(x => x.NetAmount + x.Discount) + Model.BillingDetails.Where(c => c.ServiceId != 1 && c.ServiceId != 4).Sum(x => x.NetAmount);
+                                        var grandTotal = roomRentalServiceTotal + hallRentalServiceTotal + otherServiceTotal;
+                                        var subTotal = Model.BillingDetails.Sum(x => x.Amount + x.ExtraBedCharge + x.ServiceCharge);
+
+                                        var detailDiscount = Model.BillingDetails.Sum(x => x.Discount);
+
+                                        var roomTotal = Model.BillingDetails.Where(v => v.ServiceId == 1 || v.ServiceId == 4).Sum(x => x.Amount + x.ExtraBedCharge + x.ServiceCharge);
+
+                                        var otherServiceDiscount = Model.BillingDetails.Where(v => v.ServiceId != 1 && v.ServiceId != 4).Sum(x => x.Discount);
+                                        var masterRoomDiscount = (Model.Discount);
+                                        var detailRoomDiscount = Model.BillingDetails.Where(v => v.ServiceId == 1 || v.ServiceId == 4).Sum(x => x.Discount);
+
+
+                                        var totalDiscount = masterRoomDiscount > 0 ? masterRoomDiscount : detailRoomDiscount > 0 ? detailRoomDiscount : 0;
+
+                                        double discountPercent = AppUtility.CalculatePercentage(totalDiscount, roomTotal);
+
+                                        // if (roomTotal > 0 && detailRoomDiscount > 0)
+                                        // {
+                                        //     discountPercent = AppUtility.CalculatePercentage(detailRoomDiscount, roomTotal);
+                                        // }
+
+                                        string discountPercentText = $"({discountPercent.ToString("F2")} %)";
+                                    }
+
+                                    <td style="text-align: right">Grand Total</td>
+                                    <td class="text-end" style="font-weight: bold">
+                                        @grandTotal
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right">VAT</td>
+                                    <td class="text-end" style="font-weight: bold">
+                                        @Model.Vat
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right">Tax</td>
+                                    <td class="text-end" style="font-weight: bold">
+                                        @Model.Tax
+                                    </td>
+                                </tr>
+                                <tr>
+
+                                    <td style="text-align: right">Discount</td>
+                                    <td class="text-end" style="font-weight: bold">
+                                        (@discountPercent.ToString("F2")&nbsp;%)
+
+                                        @*@Model.Discount*@
+                                        @* @totalDiscount *@
+                                        @(masterRoomDiscount > 0 ? masterRoomDiscount : detailRoomDiscount)
+                                    </td>
+                                </tr>
+                                <tr>
+
+                                    <td style="text-align: right">Adjustment Discount</td>
+                                    <td class="text-end" style="font-weight: bold">
+                                        @(Model.SpecialDiscount)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right">Net Payable Amount</td>
+                                    <td class="text-end" style="font-weight: bold">
+                                        @Model.NetAmount
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right">
+                                        Deposit Paid <br />
+                                        <small>@(Model.MrList)</small>
+                                    </td>
+                                    <td class="text-end" style="font-weight: bold">
+                                        @Model.AdvanceAmount
+                                    </td>
+                                </tr>
+
+                                @{
+                                    //var dueAmount = Model.NetAmount > Model.PaidAmount ? (Model.NetAmount - Model.PaidAmount) : 0;
+                                    var netPayableAmount = Model.NetAmount > Model.AdvanceAmount ? (Model.NetAmount - Model.AdvanceAmount) : 0;
+
+                                    if (Model.PaidAmount > 0 && Model.NetAmount > Model.PaidAmount)
+                                    {
+                                        netPayableAmount = (Model.NetAmount - Model.PaidAmount);
+                                    }
+                                }
+
+                                <tr>
+                                    <td style="text-align: right">Balance to be paid in Full</td>
+                                    <td class="text-end" style="font-weight: bold">
+                                        @(netPayableAmount)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right">Total Paid Amount</td>
+                                    <td class="text-end" style="font-weight: bold">
+                                        @(Model.PaidAmount)
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+                @*Service Add modal*@
+                <div class="modal fade" id="serviceAddModal" tabindex="-1" role="dialog" aria-labelledby="serviceAddModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header bg-success">
+                                <h5 class="modal-title" id="exampleModalLabel2">Add to Bill</h5>
+                                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+
+                            <div class="modal-body">
+                                <!-- Tabs -->
+                                <ul class="nav nav-tabs" id="serviceTabs" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active" id="service-tab" data-bs-toggle="tab" data-bs-target="#serviceAddTab"
+                                                type="button" role="tab" aria-controls="serviceAddTab" aria-selected="true">
+                                            Add Service
+                                        </button>
+                                    </li>
+                                </ul>
+
+                                <div class="tab-content mt-3" id="serviceTabsContent">
+                                    <!-- ================= TAB 1: Add Service ================= -->
+                                    <div class="tab-pane fade show active" id="serviceAddTab" role="tabpanel" aria-labelledby="service-tab">
+                                        <form>
+                                            <input type="hidden" id="MBillId" value="@Model.Id" />
+
+                                            <div class="row mb-3">
+                                                <div class="col-md-4">
+                                                    <label for="MServiceId" class="form-label">Service</label>
+                                                    <select id="MServiceId" asp-items="Model.ServiceLookUp" class="dd-type"></select>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="MBookingRoomId" class="form-label">Room</label>
+                                                    <select id="MBookingRoomId" asp-items="Model.BookingRoomLookUp" class="dd-type"></select>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="MServiceDate" class="form-label MServiceDate">Service Date</label>
+                                                    <input id="MServiceDate" class="form-control datepicker-service-date" type="text" data-language="en" />
+                                                </div>
+                                            </div>
+
+                                            <div class="row align-items-end mb-3">
+                                                <div class="col-md-3">
+                                                    <label for="MRate" class="form-label">Rate</label>
+                                                    <input type="text" class="form-control" id="MRate" />
+                                                </div>
+                                                <div class="col-md-1 text-center fs-4">×</div>
+                                                <div class="col-md-3">
+                                                    <label for="MQty" class="form-label">Quantity</label>
+                                                    <input type="text" class="form-control" id="MQty" />
+                                                </div>
+                                                <div class="col-md-1 text-center fs-4">=</div>
+                                                <div class="col-md-4">
+                                                    <label for="MAmount" class="form-label">Amount</label>
+                                                    <input type="text" class="form-control" id="MAmount" readonly />
+                                                </div>
+                                            </div>
+
+                                            <!-- Summary Section -->
+                                            <div class="summary-section">
+                                                <div class="row mb-2">
+                                                    <div class="col-md-4">
+                                                        <div class="input-group">
+                                                            <input type="number" class="form-control" id="MDiscountPercent" />
+                                                            <span class="input-group-text">%</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label class="form-label">Discount</label>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <input type="number" class="form-control" id="MDiscount" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mb-2">
+                                                    <div class="col-md-4 text-end">
+                                                        <button type="button" class="btn btn-sm btn-primary segregateBtn">Segregate</button>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label class="form-label">Gross Total</label>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <input type="number" class="form-control" id="MGrossTotal" readonly />
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mb-2">
+                                                    <div class="col-md-4 text-end"></div>
+                                                    <div class="col-md-4">
+                                                        <label class="form-label">Segregated Amount</label>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <input type="number" class="form-control" id="MSegregatedAmount" readonly />
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mb-2">
+                                                    <div class="col-md-4">
+                                                        <div class="input-group">
+                                                            <input type="number" class="form-control" id="MServiceChargePercent" />
+                                                            <span class="input-group-text">%</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label class="form-label">Service Charge</label>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <input type="number" class="form-control" id="MServiceCharge" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mb-2">
+                                                    <div class="col-md-4">
+                                                        <div class="input-group">
+                                                            <input type="number" class="form-control" id="MVatPercent" />
+                                                            <span class="input-group-text">%</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label class="form-label">VAT</label>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <input type="number" class="form-control" id="MVat" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-4"></div>
+                                                    <div class="col-md-4">
+                                                        <label class="form-label fw-bold">Net Amount</label>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <input type="text" class="form-control fw-bold" id="MNetAmount" readonly />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button class="btn btn-outline-primary" id="ServiceAddBtn" type="button">Add</button>
+                                <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @*modal_end*@
+
+                @*modal_Complimentary*@
+                <div class="modal fade" id="complimentModal" tabindex="-1" role="dialog" aria-labelledby="complimentModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Make Complimentary</h5>
+                                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div>
+                                    <form>
+                                        <div class="mb-2">
+                                            <label class="col-form-label">Compliment Remarks</label>
+                                            <textarea class="form-control" id="CmpRemarks" type="text"></textarea>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button class="btn btn-primary" id="complimentSubmitBtn" type="button">Save</button>
+                                <button class="btn btn-secondary" id="modal_close" type="button" data-bs-dismiss="modal">Close</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                @*modal_end*@
+
+                @*discount_modal*@
+                <div class="modal fade" id="discountUpdateModal" tabindex="-1" role="dialog" aria-labelledby="discountUpdateModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel2">Update Discount Info</h5>
+                                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <input type="hidden" id="U_BillId" value="@Model.Id" />
+
+                                    <div class="mb-2 row">
+                                        <label class="col-sm-4 col-form-label">Grand Total</label>
+                                        <div class="col-sm-8">
+                                            <input class="form-control" id="U_TotalAmount" value="@(Model.TotalAmount)" type="number" readonly>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-2 row">
+                                        <label class="col-sm-4 col-form-label">Discount</label>
+                                        <div class="col-sm-8">
+                                            <input class="form-control" id="U_Discount" value="@(Model.Discount)" type="number" readonly>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-2 row">
+                                        <label class="col-sm-4 col-form-label">Adjustment Discount</label>
+                                        <div class="col-sm-8">
+                                            <input class="form-control" id="U_SpecialDiscount" value="@(Model.SpecialDiscount)" type="number">
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-2 row">
+                                        <label class="col-sm-4 col-form-label">Net Amount</label>
+                                        <div class="col-sm-8">
+                                            <input class="form-control" id="U_NetAmount" value="@(Model.NetAmount)" type="number" readonly>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-2 row">
+                                        <label class="col-sm-4 col-form-label">Paid Amount</label>
+                                        <div class="col-sm-8">
+                                            <input class="form-control" id="U_PaidAmount" value="@(Model.PaidAmount)" type="number" readonly>
+                                        </div>
+                                    </div>
+
+
+                                </form>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" id="DiscountUpdateBtn" type="button">Update</button>
+                                <button class="btn btn-danger" type="button" data-bs-dismiss="modal">Close</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                @*modal_end*@
+            </div>
+            @if (Model.BillStatus != BillStatusEnum.FullPaid && Model.BillStatus != BillStatusEnum.Refund)
+            {
+                <div class="card-footer text-end">
+                    <div class="row">
+                        @if (Model.BillStatus == BillStatusEnum.Fresh)
+                        {
+                            <div class="col-sm-3 d-flex">
+                                <a class="btn btn-info" href="#" data-bs-toggle="modal" data-bs-target="#complimentModal"> Make Comlimentary </a>
+                            </div>
+                        }
+
+                        @if (Model.NetAmount == Model.PaidAmount)
+                        {
+                            <div class="col-sm-3 d-flex">
+                                <button class="btn btn-outline-secondary" type="button" id="BillCloseBtn">Close Bill</button>
+                            </div>
+                        }
+                        <div class="col-sm-9">
+                            <button class="btn btn-primary" type="button" id="PayBillBtn">Pay Bill</button>
+                            <button class="btn btn-danger" type="button">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+        var paidDate = @Model.PaidDateStr;
+
+        $(".datepicker-paid-date").datepicker({
+            setDate: paidDate,
+            dateFormat: 'dd/mm/yyyy',
+            autoClose: true
+        });
+
+        $('.datepicker-paid-date').on('changeDate', function (event) {
+            $(this).datepicker('hide');
+        });
+
+        $(".datepicker-service-date").datetimepicker({
+            timepicker: false,
+            format: 'd/m/Y'
+        });
+    </script>
+    @*<script src="~/js/ETL/Bill/Details.js"></script>*@
+    <script src="~/js/ETL/Bill/Details.js?v=@DateTime.UtcNow.Ticks"></script>
+    <script src="~/js/ETL/Bill/AddServiceToBill.js?v=@DateTime.UtcNow.Ticks"></script>
+}

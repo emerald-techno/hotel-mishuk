@@ -1,0 +1,88 @@
+﻿@model Domain.ViewModel.Attendance.ShiftManagement.ShiftManagementSearchVm
+@{
+    ViewData["Title"] = "Shift Schedule Search";
+
+    var startYear = DateTime.Now.Year;
+}
+
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card mb-3">
+            <div class="card-header bg-primary">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed text-white" data-bs-toggle="collapse" data-bs-target="#collapseicon2" aria-expanded="false" aria-controls="collapseicon2"><i class="fa fa-filter"></i>Filter</button>
+                </h5>
+            </div>
+            <div class="collapse" id="collapseicon2" data-bs-parent="#accordionoc">
+                <form>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label class="col-form-label">Permanent Shift</label>
+                                <select asp-for="PermanentShiftId" asp-items="Model.PermanentShiftLookUp" class="dd-type"></select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="col-form-label">Duty Shift</label>
+                                <select asp-for="DutyShiftId" asp-items="Model.DutyShiftLookUp" class="dd-type"></select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="col-form-label">Employee</label>
+                                <select asp-for="EmployeeId" asp-items="Model.EmployeeLookUp" class="dd-type"></select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label class="form-label">Year</label>
+                                @Html.DropDownListFor(model => model.SelectYear, Enumerable.Range(startYear, 10).Select(x => new SelectListItem { Value = x.ToString(), Text = x.ToString() }), "Select Year", new { @class = "form-control dd-type" })
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Month</label>
+                                @Html.DropDownListFor(model => model.SelectMonth, Enumerable.Range(1, 12).Select(x => new SelectListItem { Value = x.ToString(), Text = System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(x) }), "Select Month", new { @class = "form-control dd-type" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-end p-3">
+                        <div>
+                            <button type="button" id="SearchBtn" class="btn btn-primary">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header d-flex">
+                <h5>Shift Schedule List</h5>
+                <div class="setting-list">
+                    <a asp-action="Create" asp-controller="ShiftManagement" class="btn btn-primary">Month Shift Setup</a>
+                    <a asp-action="EmployeeShift" asp-controller="ShiftManagement" class="btn btn-primary">Employee Shift Setup</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table table-responsive">
+                    <table id="ShiftScheduleSearchTable" class="display" style="width:100%; text-align: center">
+                        <thead class="bg-primary">
+                            <tr>
+                                <th style="width: 5%">Serial</th>
+                                <th>Month Info</th>
+                                <th>Start</th>
+                                <th>End</th>
+                                <th>Permanent Shift</th>
+                                <th>Duty Shift</th>
+                                <th>Employee</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts
+{
+    <script src="~/js/ETL/ShiftManagement/ShiftScheduleSearch.js"></script>
+}

@@ -1,0 +1,98 @@
+﻿<!-- FOOTER -->
+<footer id="footer">
+
+    <!-- FOOTER TOP -->
+    <div class="footer_top">
+        <div class="container">
+            <div class="row">
+
+                <!-- WIDGET MAILCHIMP -->
+                <div class="col-lg-9">
+                    <div class="mailchimp">
+                        <h4>News &amp; Offers</h4>
+                       @*  <div class="mailchimp-form">
+                            <form action="#" method="POST">
+                                <input type="text" name="email" placeholder="Your email address" class="input-text">
+                                <button class="awe-btn"><a href="#">Sign Up</a></button>
+                            </form>
+                        </div> *@
+                    </div>
+                </div>
+                <!-- END / WIDGET MAILCHIMP -->
+                <!-- WIDGET SOCIAL -->
+                <div class="col-lg-3">
+                    <div class="social">
+                        <div class="social-content">
+                            <a href="https://www.facebook.com/hotelmishuk/"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-google-plus"></i></a>
+                            <a href="#"><i class="fa fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- END / WIDGET SOCIAL -->
+
+            </div>
+        </div>
+    </div>
+    <!-- END / FOOTER TOP -->
+    <!-- FOOTER CENTER -->
+    <div class="footer_center">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-2">
+                    <div class="widget">
+                        <div class="widget-logo">
+                            <div class="img">
+                                <a asp-action="Index"><img src="~/theme/images/logo-footer.png" alt=""></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="widget">
+                        <h4 class="widget-title">Contact</h4>
+                        <div class="text" style=" color:ghostwhite">
+                            <p><i class="lotus-icon-location"></i> Hotel Motel Zone, Sea Beach, Cox's Bazar, Bangladesh</p>
+                            <p><i class="lotus-icon-phone"></i> 01715-946471</p>
+                            <p><i class="fa fa-envelope-o"></i> <a style="color:aliceblue" href="mailto:hotelmishuk@gmail.com">hotelmishuk@gmail.com</a></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-2">
+                    <div class="widget">
+                        <h4 class="widget-title">Page site</h4>
+                        <ul>
+                            <li><a asp-controller="Home" asp-action="Gallery">Gallery</a></li>
+                            <li><a asp-controller="Home" asp-action="Restaurant">Restaurant</a></li>
+                            @* <li><a asp-controller="Home" asp-action="Event">Event</a></li> *@
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-lg-2">
+                    <div class="widget">
+                        <h4 class="widget-title">ABOUT</h4>
+                        <ul>
+                            <li><a asp-controller="Home" asp-action="About">About</a></li>
+                           @*  <li><a asp-controller="Home" asp-action="Blog">Blog</a></li> *@
+                            <li><a asp-controller="Home" asp-action="Contact">Contact Us</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- END / FOOTER CENTER -->
+    <!-- FOOTER BOTTOM -->
+    <div class="footer_bottom">
+        <div class="container">
+            <p>&copy; @DateTime.Now.Year Emerald Techno Ltd. All rights reserved.</p>
+        </div>
+    </div>
+    <!-- END / FOOTER BOTTOM -->
+
+</footer>
+<!-- END / FOOTER -->

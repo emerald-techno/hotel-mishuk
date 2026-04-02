@@ -1,0 +1,38 @@
+﻿@model Domain.ViewModel.Admin.Designation.DesignationSearchVm
+@{
+    ViewData["Title"] = "Designation Search";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Designation</h5>
+                <div class="setting-list">
+                    <a asp-action="Create" asp-controller="Designation" class="btn btn-primary">New Designation</a>
+                </div>
+            </div>
+            <div class="card-body table-responsive">
+                <div class="row">
+                    <table id="DesignationSearchTable" class="display" style="width:100%; text-align: left">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%">Serial</th>
+                                <th>Designation Name</th>
+                                <th>Code</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/js/ETL/Designation/DesignationSearch.js"></script>
+}

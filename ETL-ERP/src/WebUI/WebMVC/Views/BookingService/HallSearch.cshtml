@@ -1,0 +1,73 @@
+﻿@model Domain.ViewModel.HotelManagement.Booking.BookingServiceSearchVm
+@{
+    ViewData["Title"] = "Hall Booking List";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkHt" />
+        <form>
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Booking Search</h5>
+                    <div class="setting-list">
+                        <input class="btn btn-primary" type="button" id="BookingSearchBtn" value="Search" />
+                        <a asp-action="HallBooking" asp-controller="BookingService" class="btn btn-primary">Book Hall</a>
+                    </div>
+                </div>
+                <div class="card-body table-responsive">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="col-form-label">Guest Name</label>
+                                    <input class="form-control" asp-for="GuestName" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="col-form-label">Booking Status</label>
+                                    <select asp-for="BookingStatus" asp-items="Model.BookingServiceStatusLookUp" class="dd-type"></select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="col-form-label">Payment Status</label>
+                                    <select asp-for="PaymentStatus" asp-items="Model.PaymentStatusLookUp" class="dd-type"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Booking List</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table table-responsive">
+                        <table id="BookingSearchTable" class="display" style="width:100%; text-align: left">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th style="width: 5%">Sl</th>
+                                    <th>Booking Info</th>
+                                    <th>Guest Info</th>
+                                    <th>Check In</th>
+                                    <th>Check Out</th>
+                                    <th>Booking Status</th>
+                                    <th>Amount</th>
+                                    <th>Payment Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+    {
+
+    <script src="~/js/ETL/BookingService/HallBookingSearch.js?v=@DateTime.UtcNow.Ticks"></script>
+}

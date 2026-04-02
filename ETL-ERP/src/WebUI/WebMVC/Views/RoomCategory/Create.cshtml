@@ -1,0 +1,147 @@
+﻿@model Domain.ViewModel.HotelManagement.RoomCategory.HtRoomCategoryVm
+
+@{
+    ViewData["Title"] = "Room Category Create";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkHt" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Create Room Category</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="RoomCategory" class="btn btn-primary">Search Room Category</a>
+                </div>
+            </div>
+            <form asp-action="Create" class="form theme-form" data-parsley-validate enctype="multipart/form-data">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Room Category Name</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="CategoryName" type="text" placeholder="Enter room category name">
+                                    <span asp-validation-for="CategoryName" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Bed Type</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control dd-type" asp-for="BedTypeId" asp-items="Model.BedTypeLookUp"></select>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Bed Number</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="BedNumber" type="number" placeholder="Enter bed number">
+                                    <span asp-validation-for="BedNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Other Info</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="OtherInfo" type="text" placeholder="Enter other info">
+                                    <span asp-validation-for="OtherInfo" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Capacity</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="Capacity" type="text" placeholder="Capacity info">
+                                    <span asp-validation-for="Capacity" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Rent</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="Rent" type="text" placeholder="Enter rent">
+                                    <span asp-validation-for="Rent" class="text-danger"></span>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Service Charge</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="ServiceCharge" type="text" placeholder="Enter service charge">
+                                    <span asp-validation-for="ServiceCharge" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Total Rent</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="TotalRent" type="text" placeholder="Enter total rent" readonly>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Offer Rent</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="OfferRate" type="text" placeholder="Enter Offer Rent">
+                                    <span asp-validation-for="OfferRate" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Ac Available</label>
+                                <div class="col-sm-9">
+                                    <div class="form-group">
+                                        <input asp-for="IsAc" type="checkbox" />
+                                    </div>
+                                    <span asp-validation-for="IsAc" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Balcony Available</label>
+                                <div class="col-sm-9">
+                                    <div class="form-group">
+                                        <input asp-for="IsBalcony" type="checkbox" />
+                                    </div>
+                                    <span asp-validation-for="IsBalcony" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Show In WebSite</label>
+                                <div class="col-sm-9">
+                                    <div class="form-group">
+                                        <input asp-for="IsWebSiteShow" type="checkbox" />
+                                    </div>
+                                    <span asp-validation-for="IsWebSiteShow" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Photo File</label>
+                                <div class="col-sm-9">
+                                    <div class="form-group">
+                                        <input asp-for="PhotoFile" class="form-control" type="file" name="PhotoFile">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Remarks</label>
+                                <div class="col-sm-9">
+                                    <textarea class="form-control" rows="4" asp-for="Remarks"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/js/ETL/RoomCategory/RoomCategoryCreate.js"></script>
+}

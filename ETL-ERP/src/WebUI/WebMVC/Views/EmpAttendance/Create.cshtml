@@ -1,0 +1,121 @@
+﻿@model Domain.ViewModel.Attendance.EmpAttendence.EmpAttendanceVm
+@{
+    ViewData["Title"] = "Employee Attendance Create";
+}
+
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkHr" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Employee Attendance</h5>
+            </div>
+            <form asp-action="Create" class="form theme-form">
+                <input type="hidden" asp-for="Status" value="P" />
+                <div class="card-body">
+                    <div class="row p-2">
+                        <div class="col-md-2">
+                            <label class="col-form-label">Employee </label>
+                        </div>
+                        <div class="col-md-5">
+                            <select asp-for="EmployeeId" asp-items="Model.EmployeetLookUp" class="dd-type"></select>
+                        </div>
+                    </div>
+                    <div class="row p-2">
+                        <div class="col-md-2">
+                            <label class="col-form-label">Attendance Date </label>
+                        </div>
+                        <div class="col-md-5">
+                            <input class="form-control datepickerVcDate" asp-for="AttendDateStr" type="text" data-language="en">
+                        </div>
+                    </div>
+                    <div class="row p-2">
+                        <div class="col-md-2">
+                            <label class="col-form-label">Attendance Time </label>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="input-group clockpicker pull-center" data-align="top" data-autoclose="true">
+                                <input asp-for="AttendTimeStr" class="form-control" type="text" placeholder="00:00" /><span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+                            </div>
+                            <span asp-validation-for="AttendTimeStr" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-5">
+                            <p class="text-primary">Note : * First Added Time Will be Entry & Last Added Time Will be Exit.</p>
+                        </div>
+                    </div>
+                    <div class="row p-2">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-5">
+                            <input type="checkbox" asp-for="IsLunch" /> <label class="col-form-label pl-4">Lunch Time </label>
+                        </div>
+                    </div>
+
+                    @* <div class="row">
+                    <div class="col-md-7">
+                    <label class="col-form-label">Employee </label>
+                    <select asp-for="EmployeeId" asp-items="Model.EmployeetLookUp" class="dd-type"></select>
+                    </div>
+                    <div class="col-md-7">
+                    <label class="col-form-label">Attendance Date </label>
+                    <input class="form-control datepickerVcDate" asp-for="AttendDateStr" type="text" data-language="en">
+                    </div>
+                    </div>*@
+                    @*<div class="row pt-4">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4 d-flex justify-content-between">
+                    <label class="col-form-label">Attendance Time </label>
+                    <div>
+                    <div class="input-group clockpicker pull-center" data-align="top" data-autoclose="true">
+                    <input asp-for="AttendTimeStr" class="form-control" type="text" placeholder="00:00" /><span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+                    </div>
+                    <span asp-validation-for="AttendTimeStr" class="text-danger"></span>
+                    </div>
+                    <div>
+                    <input type="checkbox" asp-for="IsLunch" />
+                    <label class="col-form-label pl-4">Lunch Time </label>
+                    </div>
+                    </div>
+                    <div class="col-md-4"></div>
+                    </div>*@
+
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Save</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    @*<script>
+        var attendDate = @Model.AttendDateStr;
+
+        $(".datepicker-here-current").datepicker({
+            setDate: attendDate,
+            dateFormat: 'dd/mm/yy',
+        });
+    </script>*@
+
+    <script>
+        var currentDate = @Model.AttendDateStr;
+
+        $(".datepickerVcDate").datepicker({
+            setDate: currentDate,
+            dateFormat: 'dd/mm/yy',
+        });
+
+                                //var currentTime = @Model.AttendTimeStr;
+
+                                //$(".timepickerVcDate").datepicker({
+                                //    setDate: currentTime,
+                                //    dateFormat: 'hh:mm:ss',
+                                //});
+
+    </script>
+}

@@ -1,0 +1,61 @@
+﻿@model Domain.ViewModel.Leave.LeaveCf.LeaveCfSearchVm
+@{
+    ViewData["Title"] = "Leave carry forward Search";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkLeave" />
+        <div class="card mb-3">
+            <form>
+                <div class="card-header p-4">
+                    <h5>Leave carry forward Search</h5>
+                    <div class="setting-list">
+                        <a asp-action="Create" asp-controller="LeaveCf" class="btn btn-primary">Add Leave Cf</a>
+                        <input type="button" id="LeaveCfSearchBtn" class="btn btn-success" value="Search" />
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="col-form-label">Employee</label>
+                            <select asp-for="EmployeeId" asp-items="Model.EmployeeLookUp" class="form-control dd-type"></select>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="LeaveCfSearchTable" class="display" style="width:100%; text-align: left">
+                                <thead class="bg-primary">
+                                    <tr>
+                                        <th style="width: 5%">Serial</th>
+                                        <th>Employee</th>
+                                        <th>Designation</th>
+                                        <th>Department</th>
+                                        <th>Leave Type</th>
+                                        <th>Leave Year</th>
+                                        <th>Leave Balance</th>
+                                        <th>Carry Forward Balance</th>
+                                        <th>Leave Enjoyed</th>
+                                        <th>Leave Sale</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/js/ETL/LeaveCf/LeaveCfSearch.js"></script>
+}

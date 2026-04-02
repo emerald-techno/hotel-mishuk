@@ -1,0 +1,109 @@
+﻿@model Domain.ViewModel.Pf.PfFund.PfFundMstVm
+@using Domain.Utility
+<link rel="stylesheet" type="text/css" href="~/theme/assets/css/scrollable.css">
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <form asp-controller="PfFundMst" asp-action="CreatePfReport" method="post" id="PfFundMstForm">
+                <div class="card-header p-4">
+                    <h5>Povident Fund Report</h5>
+                    <div class="setting-list">
+                        <button type="button" id="PfSubmitBtn" class="btn btn-primary float-left">Save Pf Report</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="vertical-scroll scroll-demo" style="height:500px;">
+                        <input type="hidden" asp-for="Year" />
+                        <input type="hidden" asp-for="Month" />
+                        <input type="hidden" asp-for="FundType" />
+                        <input type="hidden" asp-for="FundFromDate" />
+                        <input type="hidden" asp-for="FundToDate" />
+                        <input type="hidden" asp-for="EmpConPer" />
+                        <input type="hidden" asp-for="CompConPer" />
+                        <input type="hidden" asp-for="PrMstId" />
+
+                        <table id="ReportTable" class="table table-bordered" style="width:100%; text-align: center">
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%">Serial</th>
+                                    <th>Employee Name</th>
+                                    <th>Employee Code</th>
+                                    <th>Department</th>
+                                    <th>Designation</th>
+                                    <th>Gross Salary</th>
+                                    <th>Employee Con</th>
+                                    <th>Company Con</th>
+                                    <th>Interest</th>
+                                    <th>Total Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.PfFundDtls.Count > 0)
+                                {
+                                    foreach (var (employee, i) in Model.PfFundDtls.GetItemWithIndex())
+                                    {
+                                        <tr>
+                                            <td style="width: 5%">@(i + 1)</td>
+                                            <td>
+                                                <input type="hidden" name="PfFundDtls[@i].EmployeeId" value="@employee.EmployeeId" />
+                                                @employee.EmployeeName
+                                            </td>
+                                            <td>
+                                                @employee.EmployeeCode
+                                            </td>
+                                            <td>
+                                                @employee.EmpDepartment
+                                            </td>
+                                            <td>
+                                                @employee.EmpDesignation
+                                            </td>
+                                            <td class="text-end">
+                                                <input type="hidden" name="PfFundDtls[@i].EmpSalary" value="@employee.EmpSalary" />
+                                                @employee.EmpSalary
+                                            </td>
+                                            <td class="text-end">
+                                                <input type="hidden" name="PfFundDtls[@i].EmpCon" value="@employee.EmpCon" />
+                                                @employee.EmpCon
+                                            </td>
+                                            <td class="text-end">
+                                                <input type="hidden" name="PfFundDtls[@i].CompCon" value="@employee.CompCon" />
+                                                @employee.CompCon
+                                            </td>
+                                            <td class="text-end">
+                                                <input type="hidden" name="PfFundDtls[@i].Interest" value="@employee.Interest" />
+                                                @employee.Interest
+                                            </td>
+                                            <td class="text-end">
+                                                <input type="hidden" name="PfFundDtls[@i].TotalAmount" value="@employee.TotalAmount" />
+                                                @employee.TotalAmount
+                                            </td>
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <td colspan="6" class="text-end"><b>Total</b></td>
+                                        <td class="text-end"><b><input type="hidden" asp-for="TotalEmpCon" /> @Model.TotalEmpCon</b></td>
+                                        <td class="text-end"><b><input type="hidden" asp-for="TotalCompCon" />@Model.TotalCompCon</b></td>
+                                        <td class="text-end"><b><input type="hidden" asp-for="Interest" />@Model.Interest</b></td>
+                                        <td class="text-end"><b><input type="hidden" asp-for="PfAmount" />@Model.PfAmount</b></td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td style="text-align:center" colspan="8"><b>No Employee Povident Fund Found</b></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="~/theme/assets/js/scrollable/perfect-scrollbar.min.js"></script>
+<script src="~/theme/assets/js/scrollable/scrollable-custom.js"></script>
+<script src="~/theme/assets/js/sweet-alert/sweetalert.min.js"></script>
+<script src="~/js/ETL/PfFund/PfFundSave.js"></script>

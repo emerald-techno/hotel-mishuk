@@ -1,0 +1,112 @@
+﻿@model Domain.ViewModel.Hr.HrSetting.HrSettingVm
+
+@{
+    ViewData["Title"] = "Office Time Edit";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Edit Office Time</h5>
+                <div class="setting-list">
+                    <a asp-action="Details" asp-controller="HrSetting" class="btn btn-primary">Go Back</a>
+                </div>
+            </div>
+            <form asp-action="Details" asp-controller="HrSetting" class="form theme-form">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Office Start Time</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="OfficeStartTime" placeholder="Enter Office Start Time">
+                                    <span asp-validation-for="OfficeStartTime" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Office End Time</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="OfficeEndTime" placeholder="Enter Office End Time">
+                                    <span asp-validation-for="OfficeEndTime" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Holiday One</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="HolidayOne" placeholder="Enter Holiday One">
+                                    <span asp-validation-for="HolidayOne" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Holiday Two</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="HolidayTwo" placeholder="Enter Holiday Two">
+                                    <span asp-validation-for="HolidayTwo" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Holiday One Type</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control dd-type" asp-for="HolidayOneTypeText" asp-items="Model.HolidayLookUp"></select>
+                                    <span asp-validation-for="HolidayOneTypeText" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Holiday Two Type</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control dd-type" asp-for="HolidayTwoTypeText" asp-items="Model.HolidayLookUp"></select>
+                                </div>
+                            </div>
+
+                            <div class="row pt-4">
+                                <div class="col-md-3">
+                                    <div>
+                                        <label class="col-form-label pl-4">Is Special Time </label>
+                                        <input type="checkbox" asp-for="IsSpecialTime" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row pt-4">
+                                <div class="col-md-4 d-flex justify-content-between">
+                                    <label class="col-form-label">Special Office Start Time </label>
+                                    <div>
+                                        <div class="input-group clockpicker pull-center" data-align="top" data-autoclose="true">
+                                            <input asp-for="SpOfficeStartTime" class="form-control datepicker-here-current-time" type="text" placeholder="00:00" /><span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+                                        </div>
+                                        <span asp-validation-for="SpOfficeStartTime" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 offset-2 d-flex justify-content-between">
+                                    <label class="col-form-label">Special Office End Time </label>
+                                    <div>
+                                        <div class="input-group clockpicker pull-center" data-align="top" data-autoclose="true">
+                                            <input asp-for="SpOfficeEndTime" class="form-control datepicker-here-current-time" type="text" placeholder="00:00" /><span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+                                        </div>
+                                        <span asp-validation-for="SpOfficeEndTime" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @*<div class="row pt-4">
+                            </div>*@
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

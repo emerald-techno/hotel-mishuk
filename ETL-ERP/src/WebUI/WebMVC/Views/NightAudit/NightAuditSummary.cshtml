@@ -1,0 +1,39 @@
+﻿@model Domain.ViewModel.HotelManagement.BusinessDaySummary.BusinessDaySummaryVm
+@{
+    ViewData["Title"] = "Night Audit Summary Generate";
+}
+
+<div class="col-md-12">
+    <div class="row">
+        <div class="col-md-12 default-according py-2">
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Generate Night Audit Summary Report | Business Date: @(Model.BusinessDate.ToString("dd-MMM-yyyy"))</h5>
+                    <div class="setting-list">
+                        <button type="button" id="GanerateNightAuditSummaryBtn" class="btn btn-secondary mx-2">Generate</button>
+                        @*<button class="btn btn-primary" id="ReportPrintBtn">PDF</button>*@
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form class="theme-form mega-form">
+                        <input id="BusinessDateStr" type="hidden" value="@(Model.BusinessDate.ToString("dd-MMM-yyyy"))">
+                        <input class="form-control" id="AuditDateStr" type="hidden" data-language="en">
+                        @* <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label class="form-label">Audit Date</label>
+                                <input class="form-control" id="AuditDateStr" type="text" data-language="en">
+                            </div>
+                        </div> *@
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="NightAuditSummaryPartialDiv"></div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/ETL/NightAudit/NightAuditSummaryGenerate.js"></script>
+}

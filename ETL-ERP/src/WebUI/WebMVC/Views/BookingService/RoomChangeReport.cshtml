@@ -1,0 +1,60 @@
+﻿@model Domain.ViewModel.HotelManagement.HotelReport.RoomChangeReportVm
+@{
+    ViewData["Title"] = "Statements of  Room Change";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkHt" />
+        <form>
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>  Room Change Report</h5>
+                    <div class="setting-list">
+                        <input type="button" id="ShowReportBtn" class="btn btn-primary" value="Show Report" />
+                        <button class="btn btn-primary" id="ReportPrintBtn">PDF</button>
+                    </div>
+                </div>
+                <div class="card-body table-responsive">
+                    <div class="row">
+
+                        <div class="col-md-3">
+                            <label class="col-form-label">From Date</label>
+                            <input class="form-control from_dt" autocompletetype="Disabled" asp-for="StrFromDate" placeholder="Start date" data-language="en" />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label">To Date</label>
+                            <input asp-for="StrToDate" autocompletetype="Disabled" class="form-control to_dt" placeholder="End date" data-language="en" />
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <dvi class="table-responsive">
+                        <div style="text-align: center;">
+                            <div style="text-align: center; font-weight: bold; font-size: 16px; line-height: 20px"> Room Change Report</div>
+                            <div style="text-align: center; font-weight: bold; font-size: 11px; line-height: 16px">
+                                <div id="ltReportFilter" runat="server" Text=""></div>
+                            </div>
+                        </div>
+                        <div id="ReportContainer"></div>
+                    </dvi>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+
+        $(".from_dt").datepicker({
+            dateFormat: 'yyyy-mm-dd'
+        });
+        $(".to_dt").datepicker({
+            dateFormat: 'yyyy-mm-dd'
+        });
+    </script>
+    <script src="~/js/ETL/BookingService/RoomChangeReport.js"></script>
+}

@@ -1,0 +1,1025 @@
+﻿@model Domain.ViewModel.HotelManagement.RoomBooking.HtBookingServiceVm
+@using Domain.Enums.AppEnums
+@using Domain.Entities.Identity
+@using Domain.Utility.Common
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Booking Details";
+    var user = await UserManager.GetUserAsync(User);
+}
+
+@section styles
+{
+    <style>
+        .input-group .btn {
+            padding: 0.375rem 1.25rem !important;
+            width: 40%;
+        }
+
+        #RoomTableFoot tr td {
+            padding: 5px;
+        }
+
+        .subtotal-bg {
+            background-color: #1f9e8645;
+            padding: 10px 0px;
+        }
+
+        .subtotal-text-color {
+            color: #24695c !important;
+        }
+
+        .nav-tabs {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 0 0.5rem;
+        }
+
+            .nav-tabs .nav-link {
+                border: none;
+                color: #6c757d;
+                font-weight: 500;
+                padding: 0.75rem 1.25rem;
+                position: relative;
+                transition: all 0.2s ease;
+                margin-right: 0.5rem;
+            }
+
+                .nav-tabs .nav-link:hover {
+                    color: #3a7bd5;
+                    background-color: rgba(58, 123, 213, 0.05);
+                }
+
+                .nav-tabs .nav-link.active {
+                    color: #3a7bd5;
+                    background-color: transparent;
+                    font-weight: 600;
+                }
+
+                    .nav-tabs .nav-link.active::after {
+                        content: '';
+                        position: absolute;
+                        bottom: -1px;
+                        left: 0;
+                        right: 0;
+                        height: 3px;
+                        background: linear-gradient(90deg, #3a7bd5, #00d2ff);
+                        border-radius: 3px 3px 0 0;
+                    }
+
+        .payment-card-body {
+            padding: 15px 20px 0px 20px !important;
+        }
+
+        .badge-sm {
+            font-size: 15px;
+            padding: 4px 8px;
+        }
+    </style>
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <h4>
+                    Booking Details
+                    @if (Model.BookingConfirmStatus == BookingConfirmEnum.Waiting)
+                    {
+                        <span class="badge badge-pill badge-info badge-sm">Waiting</span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-pill badge-success badge-sm">Confirm</span>
+                    }
+                </h4>
+                <div class="setting-list">
+                    @if (Model.BookingStatus == BookingServiceStatusEnum.Booked)
+                    {
+                        if (Model.BookingConfirmStatus == BookingConfirmEnum.Waiting)
+                        {
+                            <a asp-action="ConfirmBooking" asp-controller="BookingService" asp-route-id="@Model.Id" class="btn btn-outline-success">Confirm Booking</a>
+                        }
+
+                        <a asp-action="UpdateBooking" asp-controller="BookingService" asp-route-id="@Model.Id" class="btn btn-outline-secondary"><i class="fa fa-pencil"></i></a>
+                        <a class="btn btn-outline-danger" href='#' title='Cancel Booking' data-bs-toggle="modal" data-bs-target="#cancelModal"><i class="fa fa-ban text-danger"></i></a>
+                        <a class="btn btn-outline-info" asp-controller="BookingService" target="_blank" asp-action="ReservationPrint" asp-route-bookingId="@Model.Id" type="submit">Res. Bill</a>
+                        <a asp-action="BookingNoShow" asp-controller="BookingService" asp-route-id="@Model.Id" class="btn btn-outline-warning">No Show</a>
+                        if (Model.BookingConfirmStatus == BookingConfirmEnum.Confirm)
+                        {
+                            <a asp-action="CheckIn" asp-controller="BookingService" asp-route-id="@Model.Id" class="btn btn-secondary ckeckinbtn">Check In</a>
+                        }
+                    }
+                    else if (Model.BookingStatus == BookingServiceStatusEnum.CheckIn)
+                    {
+                        <a asp-action="UpdateCheckIn" asp-controller="BookingService" asp-route-id="@Model.Id" class="btn btn-outline-secondary"><i class="fa fa-pencil"></i></a>
+                        <a asp-action="CheckOut" asp-controller="BookingService" asp-route-id="@Model.Id" class="btn btn-info">Check Out</a>
+
+                        <a class="btn btn-outline-info" asp-controller="BookingService" target="_blank" asp-action="BillDetailPrint" asp-route-id="@Model.Id" type="submit">Booking Bill</a>
+                    }
+                    <a class="btn btn-outline-info" asp-controller="BookingService" target="_blank" asp-action="ReservationCardPrint" asp-route-bookingId="@Model.Id" type="submit">Res. Card</a>
+                    <a asp-action="Search" asp-controller="BookingService" class="btn btn-primary">Booking List</a>
+                </div>
+            </div>
+
+            <input type="hidden" asp-for="Id" id="bookingId" />
+
+
+            <div class="card-body py-3">
+
+
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="mb-1 row">
+                            <div class="col-12">
+                                <label class="col-sm-5 col-form-label">Booking No:</label>
+                                <span>@Model.BookingNo</span>
+                            </div>
+                        </div>
+                        <div class="mb-1 row">
+                            <div class="col-12">
+                                <label class="col-sm-5 col-form-label">Booking Date:</label>
+                                <span>@Model.BookingDate.ToString("dd/MM/yyyy")</span>
+                            </div>
+                        </div>
+                        <div class="mb-1 row">
+                            <div class="col-12">
+                                <label class="col-sm-5 col-form-label">Visit Perpose:</label>
+                                <span>@Model.VisitPurpose</span>
+                            </div>
+                        </div>
+                        <div class="mb-1 row">
+                            <div class="col-12">
+                                <label class="col-sm-5 col-form-label">Remarks:</label>
+                                <span>@Model.Remarks</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="mb-1 row">
+                            <div class="col-12">
+                                <label class="col-sm-5 col-form-label">Booked Check In:</label>
+                                <span id="checkInTime">@Model.CheckInTime.ToString("dd/MM/yyyy hh:mm tt")</span>
+                            </div>
+                        </div>
+                        <div class="mb-1 row">
+                            <div class="col-12">
+                                <label class="col-sm-5 col-form-label">Booked Check Out:</label>
+                                <span id="checkOutTime">@Model.CheckOutTime.ToString("dd/MM/yyyy hh:mm tt")</span>
+                            </div>
+                        </div>
+                        <div class="mb-1 row">
+                            <div class="col-12">
+                                <label class="col-sm-5 col-form-label">Booking Status:</label>
+                                <span>@Model.BookingStatus</span>
+                            </div>
+                        </div>
+                        <div class="mb-1 row">
+                            <div class="col-12">
+                                <label class="col-sm-5 col-form-label">Payemnt Status:</label>
+                                <span>@Model.PaymentStatus</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3"></div>
+
+                    <div class="col-md-3">
+                        <div class="row">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2">
+                                            <h4>Guest List</h4>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th style="width: 5%">Sl</th>
+                                        <th style="width: 95%">Guest Info</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="GuestTableTbody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <br />
+                <div class="row">
+                    <div class="col-md-9">
+                        <!-- NAV TABS -->
+                        <ul class="nav nav-tabs" id="bookingTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="booking-tab" data-bs-toggle="tab" data-bs-target="#booking"
+                                        type="button" role="tab" aria-controls="booking" aria-selected="true">
+                                    Room Info
+                                </button>
+                            </li>
+
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="services-tab" data-bs-toggle="tab" data-bs-target="#services"
+                                        type="button" role="tab" aria-controls="services" aria-selected="false">
+                                    Services
+                                </button>
+                            </li>
+
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="restaurant-tab" data-bs-toggle="tab" data-bs-target="#restaurant"
+                                        type="button" role="tab" aria-controls="restaurant" aria-selected="false">
+                                    Restaurant Orders
+                                </button>
+                            </li>
+
+                        </ul>
+
+                        <!-- TAB CONTENT -->
+                        <div class="tab-content mt-3" id="bookingTabsContent">
+
+                            <!-- ✅ ROOM INFO TAB -->
+                            <div class="tab-pane fade show active" id="booking" role="tabpanel" aria-labelledby="booking-tab">
+                                <!-- your existing room info and payment tables -->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <form>
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th colspan="7">
+                                                            <div class="d-flex justify-content-between">
+                                                                <h4>Room Info</h4>
+                                                                <div>
+                                                                    <a class="btn btn-primary" id="assign-btn" href="#" style="display:none;"> Assign Room </a>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th style="width: 5%">Sl</th>
+                                                        <th style="width: 20%">Room Info</th>
+                                                        <th style="width: 15%">Check In</th>
+                                                        <th style="width: 15%">Check Out</th>
+                                                        <th style="width: 15%">Night Stay</th>
+                                                        <th style="width: 20%">Cost Per Night</th>
+                                                        <th style="width: 10%">Total</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="RoomTableTbody">
+                                                </tbody>
+                                                <tfoot id="RoomTableFoot">
+                                                    <tr>
+                                                        <td colspan="6" style="text-align: right">Total Rent</td>
+                                                        <td class="text-end" style="font-weight: bold">
+                                                            @(Math.Round(Model.Rent, 2).ToString("N2"))
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="6" style="text-align: right">Total Discount</td>
+                                                        <td class="text-end" style="font-weight: bold">
+                                                            @(Math.Round(Model.Discount, 2).ToString("N2"))
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="6" style="text-align: right">Total Service Charge</td>
+                                                        <td class="text-end" style="font-weight: bold">
+                                                            @(Math.Round(Model.ServiceCharge, 2).ToString("N2"))
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="6" style="text-align: right">Total VAT</td>
+                                                        <td class="text-end" style="font-weight: bold">
+                                                            @(Math.Round(Model.Vat, 2).ToString("N2"))
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="6" style="text-align: right">Net Total</td>
+                                                        <td class="text-end" style="font-weight: bold">
+                                                            @(Math.Round(Model.NetRent, 2).ToString("N2"))
+                                                        </td>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ✅ services TAB -->
+                            <div class="tab-pane fade" id="services" role="tabpanel" aria-labelledby="services-tab">
+                                @if (Model.Services?.Count > 0)
+                                {
+                                    var services = Model.Services.ToList();
+                                    if (services.Any())
+                                    {
+                                        var total = services.Sum(x => Math.Round(x.NetAmount, 2));
+                                        <table class="table table-bordered table-hover shadow-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="6"><h4>Services</h4></th>
+                                                </tr>
+                                                <tr>
+                                                    <th>Sl</th>
+                                                    <th>Service</th>
+                                                    <th>Service Date</th>
+                                                    <th>Room No</th>
+                                                    <th class="text-end">Amount</th>
+                                                    <th class="text-center">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @{
+                                                    int sl = 1;
+                                                    foreach (var service in services)
+                                                    {
+                                                        <tr>
+                                                            <td>@(sl++)</td>
+                                                            <td>
+                                                                <b>@service.ServiceName</b>
+                                                            </td>
+                                                            <td>
+                                                                @service.ServiceDate?.ToString("dd/MMM/yyyy")
+                                                            </td>
+                                                            <td>
+                                                                (@service?.BookingRoomNo)
+                                                            </td>
+                                                            <td class="text-end">@Math.Round(service.NetAmount, 2).ToString("N2")</td>
+                                                            <td class="text-center">
+                                                                @if (service.ActionDate?.Date == DateTime.Today.Date || user.FullName == UserCode.Development)
+                                                                {
+                                                                    <a class="item_delete_btn text-danger" data-id="@(service.Id)" style="font-size:18px;" href="#" title='Remove'><i class="fa fa-trash"></i></a>
+                                                                }
+                                                            </td>
+                                                        </tr>
+
+                                                    }
+                                                }
+                                                <tr class="subtotal-bg">
+                                                    <td colspan="4" class="text-end subtotal-text-color"><b>Total</b></td>
+                                                    <td class="text-end subtotal-text-color"><b>@total.ToString("N2")</b></td>
+                                                    <td class="text-end subtotal-text-color"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    }
+                                    else
+                                    {
+                                        <h5>No Services Found</h5>
+                                    }
+                                }
+                            </div>
+
+                            <!-- ✅ RESTAURANT TAB -->
+                            <div class="tab-pane fade" id="restaurant" role="tabpanel" aria-labelledby="restaurant-tab">
+                                @if (Model.FoodOrders?.Count > 0)
+                                {
+                                    var restaurantOrders = Model.FoodOrders.ToList();
+                                    if (restaurantOrders.Any())
+                                    {
+                                        var total = restaurantOrders.Sum(x => Math.Round(x.NetAmount, 2));
+                                        <table class="table table-bordered table-hover shadow-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="5"><h4>Restaurant Orders</h4></th>
+                                                </tr>
+                                                <tr>
+                                                    <th>Sl</th>
+                                                    <th>Order No</th>
+                                                    <th>Order Date</th>
+                                                    <th>Room No</th>
+                                                    <th class="text-end">Amount</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @{
+                                                    int sl = 1;
+                                                    foreach (var order in restaurantOrders)
+                                                    {
+                                                        <tr>
+                                                            <td>@(sl++)</td>
+                                                            <td>
+                                                                <b><a href="@($"../../FoodOrder/Details/{order.Id}")" target="_blank">@order.OrderNo</a></b>
+                                                            </td>
+                                                            <td>
+                                                                @order.OrderDate.ToString("dd/MM/yyyy")
+                                                            </td>
+                                                            <td>
+                                                                (@order.RoomNo)
+                                                            </td>
+                                                            <td class="text-end">@Math.Round(order.NetAmount, 2).ToString("N2")</td>
+                                                        </tr>
+
+                                                    }
+                                                }
+                                                <tr class="subtotal-bg">
+                                                    <td colspan="4" class="text-end subtotal-text-color"><b>Total</b></td>
+                                                    <td class="text-end subtotal-text-color"><b>@total.ToString("N2")</b></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    }
+                                    else
+                                    {
+                                        <h5>No Restaurant Orders Found</h5>
+                                    }
+                                }
+                            </div>
+
+
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-3">
+
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                @if (Model.BookingBill?.BillingDetails != null && Model.BookingBill.BillingDetails.Any())
+                                {
+                                    var groupedServices = Model.BookingBill?.BillingDetails
+                                    .GroupBy(x => new { x.ServiceName, x.ServiceCode })
+                                    .OrderBy(g => g.Key.ServiceCode)
+                                    .ToList();
+
+                                    var serviceTotal = Model.BookingBill?.BillingDetails.Sum(x => Math.Round(x.NetAmount, 2));
+                                    var paidAmount = Math.Round(Model.PaidAmount, 2);
+                                    var adjustAmount = Model.BookingBill?.SpecialDiscount;
+
+                                    var billNo = Model.BookingBill?.BillNumber;
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="card">
+                                                <div class="card-header p-2 d-flex justify-content-around">
+                                                    <h4 style="font-size:20px; height: 15px;">Bill Summary</h4>
+                                                    @if (Model.BookingBill?.BillStatus != BillStatusEnum.FullPaid && Model.BookingStatus == BookingServiceStatusEnum.CheckIn)
+                                                    {
+                                                        <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#serviceAddModal" style="font-size:10px;padding:5px"> Add Service </a>
+                                                    }
+                                                    @if (Model.BookingStatus != BookingServiceStatusEnum.Booked && Model.BookingStatus != BookingServiceStatusEnum.CheckIn)
+                                                    {
+                                                        <a href="../../Bill/Details/@Model.BookingBill?.Id" target="_blank">@Model.BookingBill?.BillNumber</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>@Model.BookingBill?.BillNumber</span>
+                                                    }
+                                                </div>
+                                                <div class="card-body">
+                                                    @foreach (var group in groupedServices)
+                                                    {
+                                                        var groupTotal = group.Sum(x => Math.Round(x.NetAmount, 2));
+                                                        <div class="row align-items-center" style="padding: 10px 0px;">
+                                                            <div class="col-md-8">
+                                                                <b>@group.Key.ServiceName</b>
+                                                            </div>
+                                                            <div class="col-md-4 text-end">
+                                                                <span id="@group.Key.ServiceCode" class="form-control-plaintext text-end d-block">
+                                                                    <b>@groupTotal.ToString("N2")</b>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    }
+
+                                                    <div class="row align-items-center subtotal-bg subtotal-text-color text-white mt-3 rounded">
+                                                        <div class="col-md-8 text-start">
+                                                            <b>Total Amount</b>
+                                                        </div>
+                                                        <div class="col-md-4 text-end">
+                                                            <span id="service-total" class="form-control-plaintext text-end d-block">
+                                                                <b>@serviceTotal?.ToString("N2")</b>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row align-items-center mt-3 rounded">
+                                                        <div class="col-md-8 text-start">
+                                                            <b>Payment Receive</b>
+                                                        </div>
+                                                        <div class="col-md-4 text-end">
+                                                            <span id="paid-total" class="form-control-plaintext text-end d-block">
+                                                                <b> @paidAmount.ToString("N2")</b>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    @if (adjustAmount > 0)
+                                                    {
+                                                        <div class="row align-items-center mt-3 rounded">
+                                                            <div class="col-md-8 text-start">
+                                                                <b>Adjustment</b>
+                                                            </div>
+                                                            <div class="col-md-4 text-end">
+                                                                <span id="adjustment" class="form-control-plaintext text-end d-block">
+                                                                    <b> @adjustAmount?.ToString("N2")</b>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+
+                                                    }
+                                                    <div class="row align-items-center subtotal-bg mt-3 rounded">
+                                                        <div class="col-md-8 text-start">
+                                                            <b>Balance</b>
+                                                        </div>
+                                                        <div class="col-md-4 text-end">
+                                                            <span id="due-amount" class="form-control-plaintext text-end d-block">
+                                                                <b>@(serviceTotal > paidAmount ? (serviceTotal - (paidAmount + adjustAmount))?.ToString("N2") : 0)</b>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                }
+
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header p-2 d-flex justify-content-between">
+                                        <h4 style="font-size:20px; height: 15px;">Payments</h4>
+
+                                        @if (Model.BookingStatus != BookingServiceStatusEnum.CheckOut
+                                        && Model.PaymentStatus != PaymentStatusEnum.FullPayment
+                                        && Model.BookingStatus != BookingServiceStatusEnum.NoShow)
+                                        {
+                                            <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#paymentEntryModal" style="font-size:10px;padding:5px">Pay Now</a>
+                                        }
+                                    </div>
+
+                                    @if (Model.BookingPayments != null && Model.BookingPayments.Count > 0)
+                                    {
+                                        <div class="card-body p-1">
+                                            <div class="row">
+
+                                                <div class="col-md-12">
+
+                                                    @foreach (var item in Model.BookingPayments)
+                                                    {
+                                                        <div class="card p-2">
+                                                            <div class="card-header p-1 d-flex justify-content-between align-items-start">
+                                                                <div>
+                                                                    <h6 class="mb-1 text-secondary">Payment Date</h6>
+                                                                    <p class="fw-bold mb-0">@Utility.ConvertDateToStr(item.PaidDate)</p>
+                                                                </div>
+                                                                <div>
+                                                                    <span class="badge bg-success">@item.PayMode.GetDescription()</span>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="card-body p-2">
+                                                                <div class="row">
+                                                                    <div class="col-md-8" style="font-size:small">
+                                                                        <div>
+                                                                            <strong>Tran. No:</strong> @item.TransactionNo
+                                                                        </div>
+                                                                        @if (!string.IsNullOrEmpty(item.AccountNo))
+                                                                        {
+                                                                            <div class="mb-2">
+                                                                                <strong>Account No:</strong> @item.AccountNo
+                                                                            </div>
+                                                                        }
+                                                                        <div>
+                                                                            <strong>Voucher No:</strong>
+                                                                            <a href="@($"../../AccTranMst/JournalDetails/{item.VoucherId}")" target="_blank" class="text-decoration-none">
+                                                                                @item.VoucherNo
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-4 text-lg-end">
+                                                                        <span class="fw-bold text-success">
+                                                                            @item.PaidAmount?.ToString("N2")
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="card-footer p-1">
+                                                                <p>@(item.Description)</p>
+                                                                @if (user.FullName == UserCode.Development)
+                                                                {
+                                                                    <span><a href="#" type="button" class="text-danger payment_delete_btn" data-id="@item.Id"><i class="fa fa-close"></i></a></span>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="card-footer p-2 text-end">
+                                            <h5>
+                                                Total Paid:
+                                                <span class="fw-bold text-success">
+                                                    @(Model.BookingPayments.Sum(x => x.PaidAmount)?.ToString("N2"))
+                                                </span>
+                                            </h5>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-warning text-center mt-3" role="alert">
+                                            <h5>There Is No Payment Yet...</h5>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- #region Payment Modal -->
+        <div class="modal fade" id="paymentEntryModal" tabindex="-1" role="dialog" aria-labelledby="paymentEntryModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel2">Payment Entry</h5>
+                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="mb-3">
+                                <label class="col-form-label">Pay Date</label>
+                                <input class="datepicker-paid-date form-control" asp-for="PaidDateStr" id="PaidDateStr" type="text" data-language="en">
+                            </div>
+                            <div class="mb-3">
+                                <label class="col-form-label">Payment Method</label>
+                                <select id="PayMode" asp-items="Model.PayModeLookUp" class="dd-type"></select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="col-form-label">Pay Amount</label>
+                                <input class="form-control" id="PaidAmount" type="text">
+                            </div>
+                            <div class="mb-3">
+                                <label class="col-form-label">Transaction Number</label>
+                                <input class="form-control" id="TransactionNo" asp-for="@Model.PaymentVm.TransactionNo" type="text">
+                            </div>
+                            <div class="mb-3">
+                                <label class="col-form-label">Account Number</label>
+                                <input class="form-control" id="AccountNo" type="text">
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" id="PaymentEntryBtn" type="button">Entry</button>
+                        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- #endregion Payment Modal -->
+        @*Cancel modal*@
+        <div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="cancelModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel2">Cancel Booking</h5>
+                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="mb-3">
+                                <label class="col-form-label">Cancel Reason</label>
+                                <textarea class="form-control" id="CancelReason" type="text" rows="3"></textarea>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" id="CancelBookingBtn" type="button">Submit</button>
+                        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        @*modal_end*@
+
+        @*Service Add modal*@
+        <div class="modal fade" id="serviceAddModal" tabindex="-1" role="dialog" aria-labelledby="serviceAddModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-success">
+                        <h5 class="modal-title" id="exampleModalLabel2">Add to Bill</h5>
+                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <!-- Tabs -->
+                        <ul class="nav nav-tabs" id="serviceTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="service-tab" data-bs-toggle="tab" data-bs-target="#serviceAddTab"
+                                        type="button" role="tab" aria-controls="serviceAddTab" aria-selected="true">
+                                    Add Service
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="extraBed-tab" data-bs-toggle="tab" data-bs-target="#extraBedTab"
+                                        type="button" role="tab" aria-controls="extraBedTab" aria-selected="false">
+                                    Add Extra Bed
+                                </button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content mt-3" id="serviceTabsContent">
+                            <!-- ================= TAB 1: Add Service ================= -->
+                            <div class="tab-pane fade show active" id="serviceAddTab" role="tabpanel" aria-labelledby="service-tab">
+                                <form>
+                                    <input type="hidden" id="MBillId" value="@Model.BookingBill?.Id" />
+
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <label for="MServiceId" class="form-label">Service</label>
+                                            <select id="MServiceId" asp-items="Model.BookingBill.ServiceLookUp" class="dd-type"></select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="MBookingRoomId" class="form-label">Room</label>
+                                            <select id="MBookingRoomId" asp-items="Model.BookingBill.BookingRoomLookUp" class="dd-type"></select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="MServiceDate" class="form-label MServiceDate">Service Date</label>
+                                            <input id="MServiceDate" class="form-control datepicker-service-date" type="text" data-language="en" />
+                                        </div>
+                                    </div>
+
+                                    <div class="row align-items-end mb-3">
+                                        <div class="col-md-3">
+                                            <label for="MRate" class="form-label">Rate</label>
+                                            <input type="text" class="form-control" id="MRate" />
+                                        </div>
+                                        <div class="col-md-1 text-center fs-4">×</div>
+                                        <div class="col-md-3">
+                                            <label for="MQty" class="form-label">Quantity</label>
+                                            <input type="text" class="form-control" id="MQty" />
+                                        </div>
+                                        <div class="col-md-1 text-center fs-4">=</div>
+                                        <div class="col-md-4">
+                                            <label for="MAmount" class="form-label">Amount</label>
+                                            <input type="text" class="form-control" id="MAmount" readonly />
+                                        </div>
+                                    </div>
+
+                                    <!-- Summary Section -->
+                                    <div class="summary-section">
+                                        <div class="row mb-2">
+                                            <div class="col-md-4">
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control" id="MDiscountPercent" />
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">Discount</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input type="number" class="form-control" id="MDiscount" />
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-2">
+                                            <div class="col-md-4 text-end">
+                                                <button type="button" class="btn btn-sm btn-primary segregateBtn">Segregate</button>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">Gross Total</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input type="number" class="form-control" id="MGrossTotal" readonly />
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-2">
+                                            <div class="col-md-4 text-end"></div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">Segregated Amount</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input type="number" class="form-control" id="MSegregatedAmount" readonly />
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-2">
+                                            <div class="col-md-4">
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control" id="MServiceChargePercent" />
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">Service Charge</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input type="number" class="form-control" id="MServiceCharge" />
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-2">
+                                            <div class="col-md-4">
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control" id="MVatPercent" />
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">VAT</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input type="number" class="form-control" id="MVat" />
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-4"></div>
+                                            <div class="col-md-4">
+                                                <label class="form-label fw-bold">Net Amount</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input type="text" class="form-control fw-bold" id="MNetAmount" readonly />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- ================= TAB 2: Add Extra Bed ================= -->
+                            <div class="tab-pane fade" id="extraBedTab" role="tabpanel" aria-labelledby="extraBed-tab">
+                                <form>
+                                    <div class="row mb-3">
+                                        <div class="col-md-3">
+                                            <label for="EBRoomId" class="form-label">Room</label>
+                                            <select id="EBRoomId" asp-items="Model.BookingBill.BookingRoomLookUp" class="dd-type"></select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="EBFrom" class="form-label">From Date</label>
+                                            <input id="EBFrom" class="form-control datepicker-from-date" type="text" data-language="en" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="EBTo" class="form-label">To Date</label>
+                                            <input id="EBTo" class="form-control datepicker-to-date" type="text" data-language="en" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="EBNights" class="form-label">Nights</label>
+                                            <input type="number" id="EBNights" class="form-control" readonly />
+                                        </div>
+                                    </div>
+
+                                    <div class="row align-items-end mb-3">
+                                        <div class="col-md-3">
+                                            <label for="EBRate" class="form-label">Rate</label>
+                                            <input type="number" id="EBRate" class="form-control" />
+                                        </div>
+                                        <div class="col-md-1 text-center fs-4">×</div>
+                                        <div class="col-md-3">
+                                            <label for="EBQty" class="form-label">Quantity</label>
+                                            <input type="number" id="EBQty" class="form-control" />
+                                        </div>
+                                        <div class="col-md-1 text-center fs-4">=</div>
+                                        <div class="col-md-4">
+                                            <label for="EBAmount" class="form-label">Amount</label>
+                                            <input type="number" id="EBAmount" class="form-control" readonly />
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-2">
+                                        <div class="col-md-4 text-end">
+                                            <button type="button" class="btn btn-sm btn-primary segregateBtn">Segregate</button>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Segregated Amount</label>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input type="number" class="form-control" id="EBSegregatedAmount" readonly />
+                                        </div>
+                                    </div>
+
+                                    <!-- Summary same as Service -->
+                                    <div class="summary-section">
+                                        <div class="row mb-2">
+                                            <div class="col-md-4">
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control" id="EBServiceChargePercent" />
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">Service Charge</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input type="number" class="form-control" id="EBServiceCharge" readonly />
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-2">
+                                            <div class="col-md-4">
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control" id="EBVatPercent" />
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">VAT</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input type="number" class="form-control" id="EBVat" readonly />
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-4"></div>
+                                            <div class="col-md-4">
+                                                <label class="form-label fw-bold">Net Amount</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input type="text" class="form-control fw-bold" id="EBNetAmount" readonly />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-outline-primary" id="ServiceAddBtn" type="button">Add</button>
+                        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*modal_end*@
+
+        <!-- #region Complementary Add Modal -->
+        <div class="modal fade" id="complementaryEntryModal" tabindex="-1" role="dialog" aria-labelledby="complementaryEntryModal" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel2">Add Complementary</h5>
+                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <input type="hidden" id="C_BookingRoomId" />
+
+                            <div class="mb-3">
+                                <label class="col-form-label">Complementary</label>
+                                <select id="complementaryId" asp-items="Model.ComplementaryLookUp" class="dd-type"></select>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" id="ComplementaryEntryBtn" type="button">Entry</button>
+                        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- #endregion Complementary Add Modal -->
+    </div>
+</div>
+
+
+
+
+@section scripts
+{
+    <script>
+        var paidDate = @Model.PaidDateStr;
+
+        $(".datepicker-paid-date").datepicker({
+            setDate: paidDate,
+            dateFormat: 'dd/mm/yyyy',
+            autoClose: true
+        });
+
+        $('.datepicker-paid-date').on('changeDate', function (event) {
+            $(this).datepicker('hide');
+        });
+        $("#date-time-picker-check-to").datetimepicker();
+
+
+        $(".datepicker-service-date").datetimepicker({
+            timepicker: false,
+            format: 'd/m/Y'
+        });
+        
+
+    </script>
+
+    <script src="~/js/ETL/BookingService/Details.js?v=@DateTime.UtcNow.Ticks"></script>
+    <script src="~/js/ETL/Bill/AddServiceToBill.js?v=@DateTime.UtcNow.Ticks"></script>
+
+    @* <script src="~/js/ETL/BookingService/Details.js?v=@DateTime.UtcNow.Ticks"></script> *@
+}

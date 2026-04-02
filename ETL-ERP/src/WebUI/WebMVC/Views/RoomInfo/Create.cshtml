@@ -1,0 +1,210 @@
+﻿@model Domain.ViewModel.HotelManagement.RoomInfo.HtRoomInfoVm
+@{
+    ViewData["Title"] = "Room Info Setup";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkHt" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Room Setup</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="RoomInfo" class="btn btn-primary">Search Room</a>
+                </div>
+            </div>
+            <form asp-action="Create" class="form theme-form">
+
+                <div class="card-body">
+
+                    <div class="row m-1">
+                        <div class="col-md-4">
+                            <label class="col-form-label">Room Number *</label>
+                            <input class="form-control" asp-for="RoomNo" type="text">
+                            <span asp-validation-for="RoomNo" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label">Room Category *</label>
+                            <select asp-for="RoomCategoryId" asp-items="Model.RoomCategoryLookUp" class="dd-type"></select>
+                            <span asp-validation-for="RoomCategoryId" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label">Floor *</label>
+                            <select asp-for="FloorId" asp-items="Model.FloorLookUp" class="dd-type"></select>
+                            <span asp-validation-for="FloorId" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row m-1">
+                        <div class="col-md-4">
+                            <label class="col-form-label">Room Information</label>
+                            <textarea asp-for="RoomInformation" class="form-control" rows="3"></textarea>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label">Other Information</label>
+                            <textarea asp-for="OtherInfo" class="form-control" rows="3"></textarea>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="media" style="margin-top:35px;">
+                                <label class="col-form-label m-r-10">AC Availability</label>
+                                <div class="media-body icon-state">
+                                    <label class="switch">
+                                        <input type="checkbox" asp-for="IsAc"><span class="switch-state"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="media" style="margin-top:35px;">
+                                <label class="col-form-label m-r-10">Belcony Availability</label>
+                                <div class="media-body icon-state">
+                                    <label class="switch">
+                                        <input type="checkbox" asp-for="IsBelcony"><span class="switch-state"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row m-1">
+                        <div class="col-md-4">
+                            <label class="col-form-label">Bed Type</label>
+                            <select asp-for="BedTypeId" asp-items="Model.BedTypeLookUp" class="dd-type"></select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label">Bed Info</label>
+                            <input class="form-control" asp-for="BedInfo" type="text">
+                            <span asp-validation-for="BedInfo" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="col-form-label">Number of Bed</label>
+                            <input class="form-control" asp-for="NumberOfBed" type="number">
+                            <span asp-validation-for="NumberOfBed" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="col-form-label">Number of Person</label>
+                            <input class="form-control" asp-for="Person" type="number">
+                            <span asp-validation-for="Person" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row m-1">
+                        <div class="col-md-4">
+                            <label class="col-form-label">Room Size</label>
+                            <input class="form-control" asp-for="RoomSize" type="text">
+                            <span asp-validation-for="RoomSize" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="col-form-label">Rent</label>
+                            <input class="form-control" asp-for="Rent" type="text">
+                            <span asp-validation-for="Rent" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="col-form-label">VAT (%)</label>
+                            <input class="form-control" asp-for="Vat" type="text">
+                            <span asp-validation-for="Vat" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="col-form-label">Service Charge</label>
+                            <input class="form-control" asp-for="ServiceCharge" type="number">
+                            <span asp-validation-for="ServiceCharge" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="col-form-label">Total Rent</label>
+                            <input class="form-control" asp-for="TotalRent" type="number" readonly>
+                            <span asp-validation-for="TotalRent" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row m-1">
+                        <div class="col-md-4">
+                            <label class="col-form-label">Remarks</label>
+                            <textarea asp-for="Remakrs" class="form-control" rows="3"></textarea>
+                        </div>
+                        <div class="col-md-8" style="margin-top:35px;">
+                            <div class="table table-bordered">
+                                <table id="RoomFacilityTable" class="display" style="width:100%; text-align: left">
+                                    <thead class="bg-primary text-center">
+                                        <tr>
+                                            <th>Category</th>
+                                            <th>Facility</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="RoomFacilityTBody">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+
+            @*modal*@
+
+            <div class="modal fade" id="facilityModal" tabindex="-1" role="dialog" aria-labelledby="facilityModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Assign Facility</h5>
+                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                @if (Model.RoomFacilityLookup.Count > 0)
+                                {
+                                    foreach (var category in Model.RoomFacilityLookup)
+                                    {
+                                        <div class="col-md-4">
+                                            <h5>@(category.FacilityCategoryName)</h5>
+
+                                            @if (category.SaveRoomFacilities.Count > 0)
+                                            {
+                                                <ul>
+                                                    @foreach (var (facility, i) in category.SaveRoomFacilities.GetItemWithIndex())
+                                                    {
+                                                        <li>
+                                                            <input type="hidden" id="fa_cat_id_@(i)" value="@(category.FacilityCategoryId)"/>
+                                                            <input type="hidden" id="fa_cat_name_@(i)" value="@(category.FacilityCategoryName)"/>
+                                                            <input type="hidden" id="fa_id_@(i)" value="@(facility.FacilityId)"/>
+                                                            <input type="hidden" id="fa_name_@(i)" value="@(facility.FacilityName)" />
+
+                                                            <input class="facility_item" type="checkbox" data-index="@(i)"/>
+                                                            <span>@(facility.FacilityName)</span>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            }
+                                            else
+                                            {
+                                                <p>No Facility For This Category</p>
+                                            }
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" id="facilitySubmitBtn" type="button">Add</button>
+                            <button class="btn btn-secondary" id="modal_close" type="button" data-bs-dismiss="modal">Close</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            @*modal_end*@
+
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/ETL/RoomInfo/RoomInfoCreate.js"></script>
+}

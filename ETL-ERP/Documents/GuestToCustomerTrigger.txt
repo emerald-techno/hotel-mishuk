@@ -1,0 +1,31 @@
+CREATE TRIGGER trgInsertRsCustomer
+ON HtGuestInfos
+AFTER INSERT
+AS
+BEGIN
+    INSERT INTO RsCustomers (CustomerCode, Salutation, FirstName, LastName, Mobile, Email, Gender, Address, Dob, PhotoUrl, GuestId, ActionById, ActionDate, IsDeleted)
+    SELECT GuestCode, Salutation, FirstName, LastName, Mobile, Email, Gender, Address, isnull(Dob,getdate()), PhotoUrl, Id, ActionById, ActionDate, IsDeleted
+    FROM inserted;
+END;
+GO
+
+-- Create trigger for update
+CREATE TRIGGER trgUpdateRsCustomer
+ON HtGuestInfos
+AFTER UPDATE
+AS
+BEGIN
+    UPDATE RsCustomers
+    SET RsCustomers.Salutation = i.Salutation,
+        RsCustomers.FirstName = i.FirstName,
+        RsCustomers.LastName = i.LastName,
+        RsCustomers.Mobile = i.Mobile,
+        RsCustomers.Email = i.Email,
+        RsCustomers.Gender = i.Gender,
+        RsCustomers.Address = i.Address,
+        RsCustomers.Dob = i.Dob,
+        RsCustomers.PhotoUrl = i.PhotoUrl
+    FROM RsCustomers
+    INNER JOIN inserted i ON RsCustomers.GuestId = i.Id;
+END;
+GO

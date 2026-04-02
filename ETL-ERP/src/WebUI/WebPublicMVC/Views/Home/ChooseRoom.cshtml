@@ -1,0 +1,163 @@
+﻿@model Domain.ViewModel.Website.RoomPageVm
+@{
+    ViewData["Title"] = "ChooseRoom";
+}
+
+<section class="section-sub-banner bg-9">
+
+    <div class="awe-overlay"></div>
+
+    <div class="sub-banner">
+        <div class="container">
+            <div class="text text-center">
+                <h2>RESERVATION</h2>
+                <p>Planning your perfect getaway is a breeze with our seamless hotel reservation process. </p>
+            </div>
+        </div>
+    </div>
+
+</section>
+<!-- END / SUB BANNER -->
+<!-- RESERVATION -->
+<section class="section-reservation-page bg-white">
+
+    <div class="container">
+        <div class="reservation-page">
+
+            <!-- STEP -->
+            <div class="reservation_step">
+                <ul>
+                    @* <li ><a asp-controller="Home" asp-action="Reservation"><span>1.</span>  Choose Date</a></li>
+                    <li class="active"><a asp-controller="Home" asp-action="ChooseRoom"><span>2.</span> Choose Room</a></li>
+                    <li><a asp-controller="Home" asp-action="MakeReservation"><span>3.</span> Make a Reservation</a></li>
+                    <li><a asp-controller="Home" asp-action="CheckOut"><span>4.</span> Confirmation</a></li> *@
+
+                    <li><a><span>1.</span>  Choose Date</a></li>
+                    <li class="active"><a><span>2.</span> Choose Room</a></li>
+                    <li><a><span>3.</span> Make a Reservation</a></li>
+                    <li><a><span>4.</span> Confirmation</a></li>
+                </ul>
+            </div>
+            <!-- END / STEP -->
+
+            <div class="row">
+
+                <!-- SIDEBAR -->
+                @* <div class="col-md-4 col-lg-3">
+
+                    <div class="reservation-sidebar">
+
+                        <!-- SIDEBAR AVAILBBILITY -->
+                        <div class="reservation-sidebar_availability bg-gray">
+
+                            <!-- HEADING -->
+                            <h2 class="reservation-heading">YOUR RESERVATION</h2>
+                            <!-- END / HEADING -->
+
+                            <h6 class="check_availability_title">your stay dates</h6>
+
+                            
+
+                            <div class="check_availability-field">
+                                <label>Arrive</label>
+                                <input type="text" asp-for="@Model.StrFromDate" id="StrFromDate" class="awe-calendar awe-input from" placeholder="Arrive">
+                            </div>
+
+                            <div class="check_availability-field to">
+                                <label>Depature</label>
+                                <input type="text" asp-for="@Model.StrToDate" id="StrToDate" class="awe-calendar awe-input" placeholder="Depature">
+                            </div>
+
+                            
+
+                            <h6 class="check_availability_title">ROOMS &amp; Guests</h6>
+
+                            <div class="check_availability-field">
+                                <label>ROOMS</label>
+                                <select id="roomCount" class="awe-select" type="dd-type">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                </select>
+                            </div>
+
+                            <div id="roomContainer"></div>
+
+
+
+                            <button class="awe-btn awe-btn-13" id="AvaillibilityBtn">CHECK AVAILABLE</button>
+
+                        </div>
+                        <!-- END / SIDEBAR AVAILBBILITY -->
+
+                    </div>
+
+                </div> *@
+                <!-- END / SIDEBAR -->
+                <!-- CONTENT -->
+                <div class="col-md-8 col-lg-9" id="content">
+
+                    <div class="reservation_content">
+
+                        <!-- RESERVATION ROOM -->
+                        <div class="reservation-room">
+                            @foreach (var room in Model.RoomCategories)
+                            {
+                                <!-- ITEM -->
+                                <div class="reservation-room_item">
+
+                                    <h2 class="reservation-room_name"><a asp-controller="Home" asp-action="RoomDetails" asp-route-id="@room.Id">@room.CategoryName</a></h2>
+
+                                    <div class="reservation-room_img">
+                                        <a asp-controller="Home" asp-action="RoomDetails" asp-route-id="@room.Id"><img src="@room.PhotoUrl" alt=""></a>
+                                    </div>
+
+                                    <div class="reservation-room_text">
+
+                                        <div class="reservation-room_desc">
+                                            <p>@(room.OtherInfo)</p>
+                                            <ul>
+                                                <li>Bed: @room.BedNumber</li>
+                                                <li>AC: @(room.IsAc ? "YES" : "NO")</li>
+                                                <li>Balcony: @(room.IsBalcony ? "Yes" : "No")</li>
+                                            </ul>
+                                        </div>
+
+                                        <a href="#" class="reservation-room_view-more">View More Infomation</a>
+
+                                        <div class="clear"></div>
+
+                                        <p class="reservation-room_price">
+                                            <span class="reservation-room_amout">৳@(room.Rent)</span> / days
+                                        </p>
+
+                                        <a id="bookRoomLink" class="awe-btn awe-btn-default bookRoomLink" href="../../Home/MakeReservation?arrivedDate=@Model.StrFromDate&depatureDate=@Model.StrToDate&categoryId=@room.Id">BOOK ROOM</a>
+                                    </div>
+
+                                </div>
+                                <!-- END / ITEM -->
+                            }
+
+
+                        </div>
+                        <!-- END / RESERVATION ROOM -->
+
+                    </div>
+
+                </div>
+                <!-- END / CONTENT -->
+
+            </div>
+        </div>
+    </div>
+
+</section>
+<!-- END / RESERVATION -->
+
+@section Scripts
+{
+    <script src="~/js/ETL/ChooseRoom/ChooseRoom.js"></script>
+}

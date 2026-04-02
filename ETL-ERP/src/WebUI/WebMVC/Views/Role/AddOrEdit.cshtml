@@ -1,0 +1,71 @@
+﻿@model WebMVC.Models.UserRole.SaveUserRoleModel
+@{
+    ViewData["Title"] = "Role Add";
+    Layout = "_Layout";
+}
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header">
+                <h5>Add Role Permission</h5>
+            </div>
+            <form asp-area="Admin" asp-controller="Role" asp-action="AddOrEdit" id="role-form">
+                <div class="card-body">
+                    <fieldset class="mb-3">
+
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" name="InitialName" id="InitialName" value="@Model.Name" />
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group row">
+                                    <label class="col-form-label col-lg-4 required" asp-for="Name"></label>
+                                    <div class="col-lg-8">
+                                        <input type="text" class="form-control" asp-for="Name">
+                                        <span asp-validation-for="Name" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </fieldset>
+
+                    <fieldset class="mb-3">
+
+                        @for (int rootItem = 0; rootItem < Model.ViewPermission.Items.Count(); rootItem++)
+                        {
+                            <div class="form-group border-bottom">
+                                <span class="font-weight-semibold">@Model.ViewPermission.Items[rootItem].Title</span>
+                                <input type="hidden" asp-for="@Model.ViewPermission.Items[rootItem].Id" />
+                                <input type="hidden" asp-for="@Model.ViewPermission.Items[rootItem].Name" />
+                                <input type="hidden" asp-for="@Model.ViewPermission.Items[rootItem].ParentId" />
+                            </div>
+                            <div class="form-group m-t-15 m-checkbox-inline mb-2">
+                                @for (int childItem = 0; childItem < Model.ViewPermission.Items[rootItem].Children.Count(); childItem++)
+                                {
+                                    <div class="checkbox checkbox-dark">
+                                        <input type="checkbox" asp-for="@Model.ViewPermission.Items[rootItem].Children[childItem].IsSelected">
+                                        <label asp-for="@Model.ViewPermission.Items[rootItem].Children[childItem].IsSelected">
+                                            @Model.ViewPermission.Items[rootItem].Children[childItem].Title
+                                        </label>
+                                    </div>
+                                    <input type="hidden" asp-for="@Model.ViewPermission.Items[rootItem].Children[childItem].Id" />
+                                    <input type="hidden" asp-for="@Model.ViewPermission.Items[rootItem].Children[childItem].Name" />
+                                    <input type="hidden" asp-for="@Model.ViewPermission.Items[rootItem].Children[childItem].ParentId" />
+                                }
+                            </div>
+                        }
+                    </fieldset>
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary m-r-10"><i class="fa fa-check"></i> Save</button>
+                        <button type="button" class="btn btn-light" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

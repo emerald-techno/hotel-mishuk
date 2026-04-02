@@ -1,0 +1,184 @@
+﻿@model Domain.ViewModel.Accounting.ChartOfAcc.ChartOfAccVm
+@using Domain.ViewModel.Accounting.ChartOfAcc
+@{
+    ViewData["Title"] = "Chart Of Account";
+}
+
+@functions {
+    public void ShowTreeData(ICollection<ChartAccHead> heades)
+    {
+        <ul>
+            @foreach (var subHead in heades)
+            {
+                <li data-jstree="{&quot;opened&quot;:true}">
+                    @(subHead.HeadCode)-@(subHead.HeadName)
+                    @if (subHead.ChartAccLedgers == null)
+                    {
+                        <span>
+                            <a class='mr-2' href='#' title='Add Sub-Head' data-bs-toggle="modal" data-bs-target="#approveModal" data-head-id="@(subHead.Id)" data-group-id="@(subHead.GroupId)"><i class="fa fa-plus-square"></i></a>
+                            @if (subHead.ChartAccSubHeads == null)
+                            {
+                                <a class='mr-2' href='#' title='Add Ladger' data-bs-toggle="modal" data-bs-target="#ladgerModal" data-head-id="@(subHead.Id)"><i class="fa fa-book"></i></a>
+                            }
+                        </span>
+                    }
+                    else
+                    {
+                        <span>
+                            <a class='mr-2' href='#' title='Add Ladger' data-bs-toggle="modal" data-bs-target="#ladgerModal" data-head-id="@(subHead.Id)"><i class="fa fa-book"></i></a>
+                        </span>
+                    }
+                    @if (subHead.ChartAccLedgers != null && subHead.ChartAccLedgers.Count > 0)
+                    {
+                        <ul>
+                            @foreach (var ledger in subHead.ChartAccLedgers)
+                            {
+                                <li data-jstree='{"icon":"fa fa-pencil"}'>@(ledger.LedgerCode)-@(ledger.LedgerName)</li>
+                            }
+                        </ul>
+                    }
+                    else if (subHead.ChartAccSubHeads != null && subHead.ChartAccSubHeads.Count > 0)
+                    {
+                        ShowTreeData(subHead.ChartAccSubHeads);
+                    }
+                </li>
+            }
+        </ul>
+    }
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Chart Of Accounts</h5>
+                <div class="setting-list">
+                </div>
+            </div>
+            <div class="card-body">
+                <div id="treeBasic">
+                    @if (Model.ChartAccGroups != null && Model.ChartAccGroups.Count > 0)
+                    {
+                        <ul>
+                            @foreach (var group in Model.ChartAccGroups)
+                            {
+                                <li data-jstree="{&quot;opened&quot;:true}">
+                                    @(group.GroupCode)-@(group.Name)
+                                    @if (group.ChartAccHeads != null && group.ChartAccHeads.Count > 0)
+                                    {
+                                        <ul>
+                                            @foreach (var head in group.ChartAccHeads)
+                                            {
+                                                @if (head.ChartAccLedgers != null && head.ChartAccLedgers.Count > 0 && head.ParentHeadId == 0)
+                                                {
+                                                    <li data-jstree="{&quot;opened&quot;:true}">
+                                                        @(head.HeadCode)-@(head.HeadName)
+                                                        <span>
+                                                            <a class='mr-2' href='#' title='Add Ladger' data-bs-toggle="modal" data-bs-target="#ladgerModal" data-head-id="@(head.Id)"><i class="fa fa-book"></i></a>
+                                                        </span>
+                                                        @if (head.ChartAccLedgers != null && head.ChartAccLedgers.Count > 0)
+                                                        {
+                                                            <ul>
+                                                                @foreach (var ledger in head.ChartAccLedgers)
+                                                                {
+                                                                    <li data-jstree='{"icon":"fa fa-pencil"}'>@(ledger.LedgerCode)-@(ledger.LedgerName)</li>
+                                                                }
+                                                            </ul>
+                                                        }
+                                                    </li>
+                                                }
+                                                else if (head.ChartAccSubHeads != null && head.ChartAccSubHeads.Count > 0)
+                                                {
+                                                    <li data-jstree="{&quot;opened&quot;:true}">
+                                                        @(head.HeadCode)-@(head.HeadName)
+                                                        <span>
+                                                            <a class='mr-2' href='#' title='Add Sub-Head' data-bs-toggle="modal" data-bs-target="#approveModal" data-head-id="@(head.Id)" data-group-id="@(head.GroupId)"><i class="fa fa-plus-square"></i></a>
+                                                        </span>
+                                                        @{
+                                                            ShowTreeData(head.ChartAccSubHeads);
+                                                        }
+                                                    </li>
+                                                }
+                                                else if (head.ParentHeadId == 0 && head.ChartAccLedgers == null)
+                                                {
+                                                    <li data-jstree="{&quot;opened&quot;:true}">
+                                                        @(head.HeadCode)-@(head.HeadName)
+                                                    </li>
+                                                }
+                                            }
+                                        </ul>
+                                    }
+                                </li>
+                            }
+                        </ul>
+                    }
+                </div>
+
+                @*modal*@
+
+                <div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel2">Add Acc Head</h5>
+                                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <input type="hidden" id="AccGroupId" />
+                                    <input type="hidden" id="AccHeadId" />
+                                    <div class="mb-3">
+                                        <label class="col-form-label">Head Name:</label>
+                                        <input type="text" class="form-control" id="HeadName" />
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-primary" id="HeadSubmitBtn" type="button">Submit</button>
+                                <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                @*modal_end*@
+
+                @*ledger_modal*@
+
+                <div class="modal fade" id="ladgerModal" tabindex="-1" role="dialog" aria-labelledby="ladgerModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel2">Add Ladger</h5>
+                                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <input type="hidden" id="lgAccHeadId" />
+                                    <div class="mb-3">
+                                        <label class="col-form-label">Ladger Name:</label>
+                                        <input type="text" class="form-control" id="LadgerName" />
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-primary" id="LadgerSubmitBtn" type="button">Submit</button>
+                                <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                @*ledger_modal_end*@
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts
+{
+    <script src="~/js/ETL/ChartOfAcc/ChartOfAcc.js"></script>
+}

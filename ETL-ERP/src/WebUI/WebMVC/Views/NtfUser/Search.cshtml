@@ -1,0 +1,41 @@
+﻿@model Domain.ViewModel.Notification.NtfUserSettingSearchVm
+@{
+    ViewData["Title"] = "User Notification Setting Search";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Notification User Settings</h5>
+                <div class="setting-list">
+                    <a asp-action="Create" asp-controller="NtfUser" class="btn btn-primary">Setup Notification User Settings</a>
+                </div>
+            </div>
+            <div class="card-body table-responsive">
+                <div class="row">
+                    <table id="NtfUserSearchTable" class="display" style="width:100%; text-align: left">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%">Serial</th>
+                                <th>User Name</th>
+                                <th>Event Name</th>
+                                <th>Is Enable</th>
+                                <th>Is Email</th>
+                                <th>Is SMS</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/js/ETL/NtfUserSetting/NtfUserSettingSearch.js"></script>
+}

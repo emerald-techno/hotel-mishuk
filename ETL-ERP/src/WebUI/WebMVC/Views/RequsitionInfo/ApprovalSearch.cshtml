@@ -1,0 +1,70 @@
+﻿@model Domain.ViewModel.Inventory.RequsitionInfo.RequsitionInfoSearchVm
+@{
+    ViewData["Title"] = "Requsition Info Search";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkInventory" />
+        <div class="card mb-3">
+            <div class="card-header bg-primary">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed text-white" data-bs-toggle="collapse" data-bs-target="#collapseicon2" aria-expanded="false" aria-controls="collapseicon2"><i class="fa fa-filter"></i>Filter</button>
+                </h5>
+            </div>
+            <div class="collapse" id="collapseicon2" data-bs-parent="#accordionoc">
+                <form>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label class="col-form-label">Order No</label>
+                                <select asp-for="DeptId" asp-items="Model.DepartmentLookUp" class="dd-type"></select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="col-form-label">Req For</label>
+                                <select asp-for="ReqById" asp-items="Model.RequsitionByLookUp" class="dd-type"></select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="col-form-label">End Date</label>
+                                <input asp-for="ReqNo" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-end p-3">
+                        <div>
+                            <button type="button" id="SearchBtn" class="btn btn-primary">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header d-flex">
+                <h5>Requsition Infos</h5>
+            </div>
+            <div class="card-body">
+                <div class="table table-responsive">
+                    <table id="ReviewRequsitionInfoSearchTable" class="display" style="width:100%; text-align: center">
+                        <thead class="bg-primary">
+                            <tr>
+                                <th style="width: 5%">Serial</th>
+                                <th>ReqNo</th>
+                                <th>Date</th>
+                                <th>Department</th>
+                                <th>Requsition For</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/ETL/RequisitionInfo/ReviewRequisitionSearch.js"></script>
+}

@@ -1,0 +1,212 @@
+﻿@model Domain.ViewModel.Website.RoomPageVm
+@using Domain.ViewModel.HotelManagement.RoomCategory;
+
+@{
+    ViewData["Title"] = "Room";
+}
+
+@section styles
+{
+    <link href="~/css/Room.css" type="text/css" rel="stylesheet" />
+    <link href="~/css/site.css" type="text/css" rel="stylesheet" />
+    <style>
+        .discount-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #e63946;
+            color: #fff;
+            font-weight: bold;
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+            .discount-badge small {
+                display: block;
+                font-size: 11px;
+                font-weight: normal;
+                margin-top: 2px;
+            }
+
+        .old-price {
+            text-decoration: line-through;
+            color: #888;
+            font-size: 14px;
+        }
+
+    </style>
+}
+
+<!-- SUB BANNER -->
+
+<section class="section-sub-banner bg-9">
+    <div class="awe-overlay"></div>
+    <div class="sub-banner">
+        <div class="container">
+            <div class="text text-center">
+                <h2>ROOMS &amp; RATES</h2>
+                <p>Our Rooms are great for individuals, couples, friends and executives. An ideal room for guests for an excellent stay at reasonable price.</p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- END / SUB BANNER -->
+<div>
+    <!-- ROOM -->
+    <section class="section-room bg-white">
+        <div class="container">
+            <!-- ITEM -->
+            <div class="wrapper-inner">
+                <!-- Rooms List -->
+                <div class="widget-rooms-list">
+
+                    <!-- Check -->
+                    @foreach (var room in Model.RoomCategories)
+                    {
+                        <div class="rooms-item">
+                            <div class="item-photo position-relative">
+                                <a asp-controller="Home" asp-action="RoomDetails" asp-route-id="@room.Id">
+                                    @if (string.IsNullOrEmpty(room.PhotoUrl))
+                                    {
+                                        <img style="height:100%" src="~/img/No_Image_Available.jpg" />
+                                    }
+                                    else
+                                    {
+                                        <img style="height:100%" src="@Url.Content(room.PhotoUrl)" />
+                                    }
+                                </a>
+
+                                @* Discount Badge *@
+                                @* @if (room.HasDiscount)
+                                {
+                                    <div class="discount-badge">
+                                        @if (room.DiscountType == DiscountType.Percent)
+                                        {
+                                            <span>-@room.DiscountValue% OFF</span>
+                                        }
+                                        else if (room.DiscountType == DiscountType.Amount)
+                                        {
+                                            <span>-৳@room.DiscountValue OFF</span>
+                                        }
+                                        <small>@room.DiscountStart?.ToString("dd MMM") - @room.DiscountEnd?.ToString("dd MMM")</small>
+                                    </div>
+                                } *@
+                            </div>
+
+                            <div class="item-desc">
+                                <h2><a asp-controller="Home" asp-action="RoomDetails" asp-route-id="@room.Id">@room.CategoryName</a></h2>
+                                <p>@room.Remarks</p>
+                                <div class="desc-features">
+                                    <ul>
+                                        @if (room.RoomFacilityList.Count > 0)
+                                        {
+                                            foreach (var facility in room.RoomFacilityList)
+                                            {
+                                                <li title="@facility.FacilityName"><i class="fa fa-check"></i> @facility.FacilityName</li>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <li>No facilities listed.</li>
+                                        }
+
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="item-price">
+                                <div class="price-inner">
+                                    <i class="fa fa-star"></i>
+
+                                    @if (room.OfferRate != null && room.OfferRate > 0)
+                                    {
+                                    <h4 class="old-price">৳ @room.Rent</h4>
+                                    <h3>৳ @room.OfferRate</h3>
+                                    <h5>PER NIGHT</h5>
+                                    }
+                                    else
+                                    {
+                                    <h3>৳ @room.Rent</h3>
+                                    <h5>PER NIGHT</h5>
+                                    }
+
+                                    @* @if (room.HasDiscount )
+                                    {
+                                        if (room.DiscountType == DiscountType.Percent)
+                                        {
+                                            var discountedRent = room.Rent - (room.Rent * (room.DiscountValue / 100));
+
+                                            <h4 class="old-price">৳ @room.Rent</h4>
+                                            <h3>৳ @(room.OfferRate)</h3>
+                                            <h5>PER NIGHT</h5>
+                                        }
+                                        if (room.DiscountType == DiscountType.Amount)
+                                        {
+                                            var discountedRent = (room.Rent - room.DiscountValue);
+
+                                            <h4 class="old-price">৳ @room.Rent</h4>
+                                            <h3>৳ @(discountedRent)</h3>
+                                            <h5>PER NIGHT</h5>
+                                        }
+                                        
+                                    }
+                                    else if (room.OfferRate != null && room.OfferRate > 0)
+                                    {
+                                        <h4 class="old-price">৳ @room.Rent</h4>
+                                        <h3>৳ @room.OfferRate</h3>
+                                        <h5>PER NIGHT</h5>
+                                    }
+                                    else
+                                    {
+                                        <h3>৳ @room.Rent</h3>
+                                        <h5>PER NIGHT</h5>
+                                    } *@
+
+                                    <a asp-controller="Home" asp-action="RoomDetails" asp-route-id="@room.Id" class="btn d-flex justify-self-center">DETAIL</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+
+
+
+@section Scripts {
+
+    <script type="text/javascript" src="~/theme/js/lib/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="~/theme/js/lib/jquery-ui.min.js"></script>
+
+    <script type="text/javascript" src="~/theme/js/lib/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/theme/js/lib/bootstrap-select.js"></script>
+    <script type="text/javascript" src="~/theme/js/lib/isotope.pkgd.min.js"></script>
+    <script type="text/javascript" src="~/theme/js/lib/jquery.themepunch.revolution.min.js"></script>
+    <script type="text/javascript" src="~/theme/js/lib/jquery.themepunch.tools.min.js"></script>
+    <script type="text/javascript" src="~/theme/js/lib/owl.carousel.js"></script>
+    <script type="text/javascript" src="~/theme/js/lib/jquery.appear.min.js"></script>
+    <script type="text/javascript" src="~/theme/js/lib/jquery.countTo.js"></script>
+    <script type="text/javascript" src="~/theme/js/lib/jquery.countdown.min.js"></script>
+    <script type="text/javascript" src="~/theme/js/lib/jquery.parallax-1.1.3.js"></script>
+    <script type="text/javascript" src="~/theme/js/lib/jquery.magnific-popup.min.js"></script>
+    <script type="text/javascript" src="~/theme/js/lib/SmoothScroll.js"></script>
+    <!-- validate -->
+    <script type="text/javascript" src="~/theme/js/lib/jquery.form.min.js"></script>
+    <script type="text/javascript" src="~/theme/js/lib/jquery.validate.min.js"></script>
+    <!-- Custom jQuery -->
+    @* <script type="text/javascript" src="~/theme/js/scripts.js"></script> *@
+
+
+
+
+
+}

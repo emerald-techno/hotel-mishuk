@@ -1,0 +1,45 @@
+USE [HOTELERPDB]
+GO
+SET IDENTITY_INSERT [dbo].[NtfEventInfos] ON 
+
+INSERT [dbo].[NtfEventInfos] ([Id], [EventName], [EventCode], [EventType], [NotifyBefore], [IsEmailNtf], [IsSmsNtf], [Remarks], [ActionDate], [ActionById], [UpdateDate], [UpdatedById], [IsDeleted]) 
+VALUES (1, N'Requsition Review Submit', N'REQREVNTF', N'A', 0, 1, 1, N'test', GETDATE(), 1, NULL, NULL, 0);
+
+INSERT [dbo].[NtfEventInfos] ([Id], [EventName], [EventCode], [EventType], [NotifyBefore], [IsEmailNtf], [IsSmsNtf], [Remarks], [ActionDate], [ActionById], [UpdateDate], [UpdatedById], [IsDeleted]) 
+VALUES (2, N'Requsition Review Approved', N'REQAPPNTF', N'E', 0, 0, 1, N'Requsition Review Approved For Issue', GETDATE(), 1, NULL, NULL, 0);
+
+INSERT [dbo].[NtfEventInfos] ([Id], [EventName], [EventCode], [EventType], [NotifyBefore], [IsEmailNtf], [IsSmsNtf], [Remarks], [ActionDate], [ActionById], [UpdateDate], [UpdatedById], [IsDeleted]) 
+VALUES (3, N'Order Review Submit', N'ORDREVNTF', N'A', 0, 1, 1, N'Order Review Submit', GETDATE(), 1, NULL, NULL, 0);
+
+INSERT [dbo].[NtfEventInfos] ([Id], [EventName], [EventCode], [EventType], [NotifyBefore], [IsEmailNtf], [IsSmsNtf], [Remarks], [ActionDate], [ActionById], [UpdateDate], [UpdatedById], [IsDeleted]) 
+VALUES (4, N'Order Review Approved', N'ORDAPPNTF', N'E', 0, 1, 1, N'Order Review Approved', GETDATE(), 1, NULL, NULL, 0);
+
+INSERT [dbo].[NtfEventInfos] ([Id], [EventName], [EventCode], [EventType], [NotifyBefore], [IsEmailNtf], [IsSmsNtf], [Remarks], [ActionDate], [ActionById], [UpdateDate], [UpdatedById], [IsDeleted]) 
+VALUES (5, N'Receive Items', N'RCVNTF', N'A', 0, 1, 1, N'Item Receive By Employee', GETDATE(), 1, NULL, NULL, 0);
+
+INSERT [dbo].[NtfEventInfos] ([Id], [EventName], [EventCode], [EventType], [NotifyBefore], [IsEmailNtf], [IsSmsNtf], [Remarks], [ActionDate], [ActionById], [UpdateDate], [UpdatedById], [IsDeleted]) 
+VALUES (6, N'Issue Items', N'ISUNTF', N'E', 0, 1, 1, N'Item Issue To Department', GETDATE(), 1, NULL, NULL, 0);
+
+INSERT [dbo].[NtfEventInfos] ([Id], [EventName], [EventCode], [EventType], [NotifyBefore], [IsEmailNtf], [IsSmsNtf], [Remarks], [ActionDate], [ActionById], [UpdateDate], [UpdatedById], [IsDeleted]) 
+VALUES (7, N'Room Booked', N'BOKNTF', N'A', 0, 1, 1, N'Booking entry save', GETDATE(), 1, NULL, NULL, 0);
+
+INSERT [dbo].[NtfEventInfos] ([Id], [EventName], [EventCode], [EventType], [NotifyBefore], [IsEmailNtf], [IsSmsNtf], [Remarks], [ActionDate], [ActionById], [UpdateDate], [UpdatedById], [IsDeleted]) 
+VALUES (8, N'Room Check In', N'CKINNTF', N'A', 0, 1, 1, N'Check in into room', GETDATE(), 1, NULL, NULL, 0);
+
+INSERT [dbo].[NtfEventInfos] ([Id], [EventName], [EventCode], [EventType], [NotifyBefore], [IsEmailNtf], [IsSmsNtf], [Remarks], [ActionDate], [ActionById], [UpdateDate], [UpdatedById], [IsDeleted]) 
+VALUES (9, N'Room Check Out', N'CKOUTNTF', N'A', 0, 1, 1, N'Check out from room', GETDATE(), 1, NULL, NULL, 0);
+
+SET IDENTITY_INSERT [dbo].[NtfEventInfos] OFF
+GO
+
+-- Room Booked Event Admin User 
+INSERT INTO NtfUserSettings(SettingDate, IsEnable, IsEmail, IsSms, EventId, UserId)
+values(GETDATE(), 1, 1, 1, 7, 14);
+
+-- Room Check-In Event Admin User
+INSERT INTO NtfUserSettings(SettingDate, IsEnable, IsEmail, IsSms, EventId, UserId)
+values(GETDATE(), 1, 1, 1, 8, 14);
+
+-- Room Check-Out Event Admin User
+INSERT INTO NtfUserSettings(SettingDate, IsEnable, IsEmail, IsSms, EventId, UserId)
+values(GETDATE(), 1, 1, 1, 9, 14);

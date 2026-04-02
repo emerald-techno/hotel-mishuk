@@ -1,0 +1,78 @@
+﻿@model Domain.ViewModel.HotelManagement.ClientCompany.ClientCompanySearchVm
+@{
+    ViewData["Title"] = "ClientCompany Search";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkHr" />
+        <form>
+            @* <div class="card">
+                <div class="card-header p-4">
+                    <h5>Client/Company List</h5>
+                    <div class="setting-list">
+                        <input class="btn btn-primary" type="button" id="EmployeeSearchBtn" value="Search" />
+                        <a asp-action="Create" asp-controller="ClientCompany" class="btn btn-primary">New Client/Company</a>
+                        <input type="button" id="LedgerReportBtn" class="btn btn-primary" value="Search" />
+                    </div>
+                </div>
+                <div class="card-body table-responsive">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="col-form-label">Client/Company Name</label>
+                                    <select asp-for="Name" asp-items="Model.DesignationLookUp" class="dd-type"></select>
+                                    <input type="type" name="name" value="" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="col-form-label">Department</label>
+                                    <select asp-for="DepartmentId" asp-items="Model.DepartmentLookUp" class="dd-type"></select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="col-form-label">Status</label>
+                                    <select asp-for="EnableStatus" asp-items="Model.EmployeeIsEnableLookUp" class="dd-type"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> *@
+
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Client Company List</h5>
+                    <div class="setting-list">
+                        @* <a href="#" id="ExcelBtn" class="btn btn-primary">Excel File</a>
+                        <a href="#" id="printBtn" class="btn btn-primary">PDF Print</a> *@
+                        <a asp-action="Create" asp-controller="ClientCompany" class="btn btn-primary">New Company</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table table-responsive">
+                        <table id="ClientSearchTable" class="display" style="width:100%; text-align: left">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th style="width: 5%">Sl</th>
+                                    <th>Client/Company name</th>
+                                    <th>Address</th>
+                                    <th>Mobile</th>
+                                    <th>Email</th>
+                                    <th>Website</th>
+                                    <th>Image/Logo</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/ETL/ClientCompany/ClientCompanySearch.js"></script>
+}

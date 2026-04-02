@@ -1,0 +1,76 @@
+﻿@model Domain.ViewModel.HouseKeeping.RoomAssign.RoomAssignVm
+@{
+    ViewBag.Title = "Assign Room To House Keeper";
+}
+
+@section styles{ 
+    <style>
+        .action-btn{
+            width: 120px !important;
+        }
+    </style>
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Room Assign To Keeper</h5>
+            </div>
+            <form asp-action="Create" class="form theme-form">
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>House Keeper *</label>
+                                <select class="form-control dd-type" asp-for="HouseKeeperId" asp-items="Model.EmployeeLookUp"></select>
+                            </div>
+                        </div>
+                        <div class="col-md-4"></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-5">
+                            <table class="table table-bordered" id="RoomInfoTable">
+                                <thead>
+                                    <tr>
+                                        <th style="width:5%;">SlNo.</th>
+                                        <th style="width:90%;">Room Info (Yet to assign)</th>
+                                        <th style="width:5%;">Action</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div class="col-md-1 d-flex flex-column justify-content-center align-items-center">
+                            <button class="btn btn-primary btn-sm mb-2 action-btn" id="AssignRoomBtn" type="button">Assign</button>
+                            <button class="btn btn-danger btn-sm action-btn" id="UnAssignRoomBtn" type="button">UnAssign</button>
+                        </div>
+                        <div class="col-md-5">
+                            <table class="table table-bordered" id="AssignRoomInfoTable">
+                                <thead>
+                                    <tr>
+                                        <th style="width:5%;">SlNo.</th>
+                                        <th style="width:80%;">Room Info (Already assign)</th>
+                                        <th style="width:10%;">Status</th>
+                                        <th style="width:5%;">Action</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                @*<div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>*@
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/ETL/RoomAssign/RoomAssignSave.js"></script>
+}

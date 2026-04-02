@@ -1,0 +1,77 @@
+﻿@model Domain.ViewModel.HotelManagement.OnlineBooking.OnlineBookingSearchVm
+@{
+    ViewData["Title"] = "Online Booking List";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        
+        
+        <form>
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Online Booking Search</h5>
+                    <div class="setting-list">
+                        <input class="btn btn-primary" type="button" id="OnlineBookingSearchBtn" value="Search" />
+                        <a asp-action="Booking" asp-controller="BookingService" class="btn btn-primary">Book Room</a>
+                    </div>
+                </div>
+                <div class="card-body table-responsive">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label class="col-form-label">Booking Number</label>
+                                    <input class="form-control" asp-for="OnlineBookingNumber" />
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="col-form-label">Guest Name</label>
+                                    <input class="form-control" asp-for="GuestName" />
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="col-form-label">Guest Mobile</label>
+                                    <input class="form-control" asp-for="GuestMobile" />
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="col-form-label">Status</label>
+                                    <select asp-for="Status" asp-items="Model.StatusLookUp" class="dd-type"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Online Booking List</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table table-responsive">
+                        <table id="OnlineBookingSearchTable" class="display" style="width:100%; text-align: left">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th style="width: 5%">Sl</th>
+                                    <th>Booking Info</th>
+                                    <th>Guest Info</th>
+                                    <th>Arrival</th>
+                                    <th>Departure</th>
+                                    <th>Booked Category</th>
+                                    <th>Status</th>
+                                    <th>Total Rent</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/js/ETL/OnlineBooking/OnlineBookingSearch.js"></script>
+}

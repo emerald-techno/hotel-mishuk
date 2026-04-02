@@ -1,0 +1,167 @@
+﻿@model Domain.ViewModel.Accounting.AccTranMst.AccTranMstVm
+@using Domain.Utility
+@{
+    ViewData["Title"] = "Account Opening";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkAccounts" />
+        <div class="card">
+            <div class="card-header pb-0">
+                <h3>Account Opening</h3>
+                <hr />
+            </div>
+            <form asp-controller="AccTranMst" asp-action="AccOpeningCreate" class="theme-form mega-form">
+                <div class="card-body">
+                    <input asp-for="Id" type="hidden" />
+                    <input asp-for="VcType" type="hidden" />
+                    <input asp-for="SubVacType" type="hidden" />
+                    <input asp-for="IsOpenignUpdate" type="hidden" />
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label class="form-label">Voucher Date *</label>
+                                    <input class="datepickerVcDate form-control" asp-for="VcDateStr" type="text" data-language="en">
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label">Voucher No. *</label>
+                                    <input class="form-control" asp-for="VcNo" type="text" readonly>
+                                    <span asp-validation-for="VcNo" class="text-danger"></span>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label">Ref No.*</label>
+                                    <input class="form-control" asp-for="RefNo" type="text">
+                                    <span asp-validation-for="RefNo" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label class="form-label">Currency *</label>
+                                    <select asp-for="CurrencyId" asp-items="Model.CurrencyLookup" class="form-control dd-type"></select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Financial Year *</label>
+                                    <select asp-for="FinYearId" asp-items="Model.FinYearLookup" class="form-control dd-type"></select>
+                                </div>
+                                @*<div class="col-md-4">
+                                    <label class="form-label">Account *</label>
+                                    <select asp-for="AccAccountId" asp-items="Model.AccountLookup" class="form-control dd-type"></select>
+                                </div>*@
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label class="form-label">Naration</label>
+                                    <textarea asp-for="Narration" rows="3" class="form-control"></textarea>
+                                    <span asp-validation-for="Narration" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row mb-3">
+                                <table class="table table-bordered">
+                                    <thead class="bg-primary text-center">
+                                        <tr>
+                                            <td style="width: 40%; color: white;">Ledger</td>
+                                            <td style="width: 30%; color: white;">Debit Amount(BDT)</td>
+                                            <td style="width: 30%; color: white;">Credit Amount(BDT)</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <select id="LedgerId" asp-items="Model.LedgerLookup" class="form-control dd-type"></select>
+                                            </td>
+                                            <td>
+                                                <input class="form-control" type="number" id="DrAmountBDT" />
+                                            </td>
+                                            <td>
+                                                <input class="form-control" type="number" id="CrAmountBDT" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-10"></div>
+                                <div class="col-md-2 d-flex justify-content-end">
+                                    <button type="button" id="AddLegerBtn" class="btn btn-primary">Add Ledger</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 5%">Serial</th>
+                                        <th>Ledger</th>
+                                        <th class="text-center">Debit Amount</th>
+                                        <th class="text-center">Credit Amount</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="LedgerTbody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card-footer justify-content-end text-end">
+                    <button type="button" class="btn btn-primary" id="generate-button">Generate</button>
+                    <button type="submit" class="btn btn-primary" id="submit-button">Save</button>
+                </div>
+            </form>
+        </div>
+
+        @*<div class="card">
+            <div class="card-header d-flex">
+                <h5>Account Opening</h5>
+            </div>
+            <div class="card-body">
+                <div class="table table-responsive">
+                    <table id="OpeningSearchTable" class="display" style="width:100%; text-align: center">
+                        <thead class="bg-primary">
+                            <tr>
+                                <th style="width: 5%">Sl</th>
+                                <th style="width: 45%">Ledger</th>
+                                <th style="width: 25%">Debit Amount</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>*@
+</div>
+
+@section Scripts
+    {
+    <script>
+        var currentDate = @Model.VcDateStr;
+
+        $(".datepickerVcDate").datepicker({
+            setDate: currentDate,
+            dateFormat: 'dd/mm/yyyy',
+            onSelect: function(d, i) {
+                console.log("event working..!", d);
+                getFincYearByDate(d)
+            }
+        });
+
+    </script>
+
+    <script src="~/js/ETL/AccTranMst/AccOpeningCreate.js"></script>
+}

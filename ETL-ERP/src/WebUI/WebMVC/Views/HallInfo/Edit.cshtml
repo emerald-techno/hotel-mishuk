@@ -1,0 +1,91 @@
+﻿@model Domain.ViewModel.HotelManagement.RoomInfo.HtHallInfoVm
+@{
+    ViewData["Title"] = "Hall Info Edit";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkHt" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Hall Info Edit</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="HallInfo" class="btn btn-primary">Search Hall</a>
+                </div>
+            </div>
+            <form asp-action="Edit" asp-controller="HallInfo" class="form theme-form" data-parsley-validate enctype="multipart/form-data">
+                @Html.HiddenFor(c => c.Id)
+                @Html.HiddenFor(c => c.PhotoUrl)
+                @Html.Hidden("InitHallName", Model.HallName)
+                <div class="card-body">
+                    <div class="row m-1">
+                        <div class="col-md-3">
+                            <label class="col-form-label">Hall Name *</label>
+                            <input class="form-control" asp-for="HallName" type="text">
+                            <span asp-validation-for="HallName" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="col-form-label">Rent</label>
+                            <input class="form-control" asp-for="Rent" type="text">
+                            <span asp-validation-for="Rent" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="col-form-label">VAT (%)</label>
+                            <input class="form-control" asp-for="Vat" type="text">
+                            <span asp-validation-for="Vat" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="col-form-label">Service Charge</label>
+                            <input class="form-control" asp-for="ServiceCharge" type="number">
+                            <span asp-validation-for="ServiceCharge" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label">Total Rent</label>
+                            <input class="form-control" asp-for="TotalRent" type="number" readonly>
+                            <span asp-validation-for="TotalRent" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row m-1">
+                        <div class="col-md-4">
+                            <label class="col-form-label">Photo File</label>
+                            <input asp-for="PhotoFile" class="form-control" type="file" name="PhotoFile">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="col-form-label">Active Status</label>
+                            <div class="media-body icon-state">
+                                <label class="switch">
+                                    <input type="checkbox" asp-for="IsActive"><span class="switch-state"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row m-1">
+                        <div class="col-md-4">
+                            <label class="col-form-label">Hall Information</label>
+                            <textarea asp-for="HallInformation" class="form-control" rows="3"></textarea>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label">Other Information</label>
+                            <textarea asp-for="OtherInfo" class="form-control" rows="3"></textarea>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label">Remarks</label>
+                            <textarea asp-for="Remakrs" class="form-control" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/ETL/HallInfo/HallInfoCreate.js"></script>
+}

@@ -1,0 +1,60 @@
+﻿@model Domain.ViewModel.Admin.Designation.DesignationVm
+@{
+    ViewData["Title"] = "Designation Edit";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Edit Designation</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="Designation" class="btn btn-primary">Search Designation</a>
+                </div>
+            </div>
+            <form asp-action="Edit" class="form theme-form">
+                @Html.Hidden("InitName", Model.Name)
+                @Html.Hidden("InitCode", Model.Code)
+
+                <input asp-for="Id" type="hidden">
+                <input asp-for="ActionById" type="hidden">
+                <input asp-for="ActionDate" type="hidden">
+
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Designation Name *</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="Name" type="text" placeholder="Enter designation name">
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Designation Code *</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="Code" type="text" placeholder="Enter designation code">
+                                    <span asp-validation-for="Code" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Remarks</label>
+                                <div class="col-sm-9">
+                                    <textarea class="form-control" rows="4" asp-for="Remarks"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

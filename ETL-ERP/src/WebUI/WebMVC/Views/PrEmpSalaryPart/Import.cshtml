@@ -1,0 +1,50 @@
+﻿@model Domain.ViewModel.Payroll.PrEmpSalaryPart.PrEmpSalaryPartVm
+@{
+    ViewData["Title"] = "Employee Salary Part Excel Import";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkHr" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h4>Import Employee Salary Part</h4>
+                <div class="setting-list">
+                    <a asp-action="Create" asp-controller="PrEmpSalaryPart" class="btn btn-primary">Employee Salary Part Setup</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <form asp-controller="PrEmpSalaryPart" asp-action="Import" method="post" class="row" enctype="multipart/form-data">
+                    <div class="container">
+
+                        <p style="color: purple">
+                            <span style="color: purple">Import Instructions:</span><br />
+                            <span style="color: purple">1: Name is required.</span><br />
+                            <span style="color: purple">2: Code is required.</span><br />
+                            <span style="color: purple">3: Part Code is required. Please follow the format</span><br />
+                        </p>
+                        <hr />
+                        <div>
+                            <p>Please Select Only .xls or .xlsx file only</p>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Employee Salary Part Excel File</label>
+                                        <input class="form-control" type="file" name="ImportFile" id="ImportFile">
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <button type="submit" class="btn btn-primary">Upload</button>
+                                <button type="button" class="btn btn-danger">Cancel</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>      

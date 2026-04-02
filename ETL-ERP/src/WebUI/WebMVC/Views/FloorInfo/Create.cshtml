@@ -1,0 +1,70 @@
+﻿@model Domain.ViewModel.HotelManagement.FloorInfo.HtFloorInfoVm
+
+@{
+    ViewData["Title"] = "Floor Info Create";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkHt" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Create Floor Info</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="FloorInfo" class="btn btn-primary">Search Floor Info</a>
+                </div>
+            </div>
+            <form asp-action="Create" class="form theme-form">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Floor Info Name *</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="FloorName" type="text" placeholder="Enter floor info name">
+                                    <span asp-validation-for="FloorName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Total Room</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="TotalRoom" type="number" placeholder="Enter total number of room">
+                                    <span asp-validation-for="TotalRoom" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Start Room No</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="StartRoomNo" type="number" placeholder="Enter first room number">
+                                    <span asp-validation-for="StartRoomNo" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Last Room No</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="EndRoomNo" type="number" placeholder="Enter last room number">
+                                    <span asp-validation-for="EndRoomNo" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Remarks</label>
+                                <div class="col-sm-9">
+                                    <textarea class="form-control" rows="4" asp-for="Remarks"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

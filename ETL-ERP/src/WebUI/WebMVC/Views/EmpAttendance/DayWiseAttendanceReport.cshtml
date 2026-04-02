@@ -1,0 +1,76 @@
+﻿@model Domain.ViewModel.Attendance.EmpAttendence.EmpDailyAttendanceReportVm
+@{
+    ViewData["Title"] = "Day Wise Attendance Report";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkHr" />
+        <div class="card">
+            <form class="form theme-form">
+                <div class="card-header p-4">
+                    <h4>Day Wise Attendance Report</h4>
+                    <div class="setting-list">
+                        <button class="btn btn-primary" type="button" id="DayWiseAttendanceBtn">Generate</button>
+                    </div>
+                </div>
+                <div class="card-body" style="padding-bottom:30px;">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="col-form-label">Search Date</label>
+                            <input class="form-control datepicker-here" asp-for="SearchDateStr" placeholder="Enter Search Date" data-language="en" />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label">Designation</label>
+                            <select asp-for="DesignationId" asp-items="Model.DesignationLookUp" class="dd-type"></select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label">Department</label>
+                            <select asp-for="DepartmentId" asp-items="Model.DepartmentLookUp" class="dd-type"></select>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card" id="table-section">
+            <div class="card-header p-4">
+                <h4>Day Wise Attendance</h4>
+                <div class="setting-list" id="printBtnSection">
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="table-responsive">
+                        <table id="DayWiseAttendanceSearchTable" class="display" style="width:100%; text-align: left">
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%" class="text-center">Sl</th>
+                                    <th style="width: 15%" class="text-center">Employee Name</th>
+                                    <th style="width: 15%" class="text-center">Designation</th>
+                                    <th style="width: 15%" class="text-center">Department</th>
+                                    <th style="width: 15%" class="text-center">InTime</th>
+                                    <th style="width: 15%" class="text-center">OutTime</th>
+                                    <th class="text-center">Status</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles{
+    <style>
+        #DayWiseAttendanceSearchTable tr td:nth-child(1n+3) {
+            text-align: center;
+        }
+    </style>
+}
+
+    @section Scripts
+    {
+    <script src="~/js/ETL/EmpAttendance/EmpDayWiseAttendanceSearch.js"></script>
+}

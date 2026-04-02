@@ -1,0 +1,365 @@
+﻿@model Domain.ViewModel.HotelManagement.RoomBooking.HtBookingServiceVm
+@using Domain.Utility
+@using Domain.Enums.AppEnums
+@{
+    ViewData["Title"] = "Hall Booking Details Info";
+
+    var guest = Model.BookingGuestVms.FirstOrDefault(x => x.IsMain == true);
+}
+
+@section styles
+{
+    <style>
+        .input-group .btn {
+            padding: 0.375rem 1.25rem !important;
+            width: 40%;
+        }
+    </style>
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkHt" />
+
+
+        <div class="card">
+            <form asp-action="CompleteHallBooking" class="form theme-form" id="CompleteBookingForm">
+                <div class="card-header p-4">
+                    <h5>Hall Booking Info</h5>
+                    <div class="setting-list">
+                        <a asp-action="HallSearch" asp-controller="BookingService" class="btn btn-secondary">Booked List</a>
+                        @if (Model.IsBillGenerated == false)
+                        {
+                            <a asp-action="UpdateHallBooking" asp-controller="BookingService" class="btn btn-warning" asp-route-id="@(Model.Id)">Update</a>
+                        }
+
+                        @if (Model.CheckOutTime.Date <= DateTime.Now.Date)
+                        {
+                            if (Model.IsBillGenerated == false)
+                            {
+                                <button class="btn btn-primary" type="button" id="CompleteSubmitBtn">Generate Bill</button>
+                            }
+                        }
+                    </div>
+                </div>
+
+                <input type="hidden" asp-for="Id" id="bookingId" />
+
+                <div class="card-body py-3">
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class=" row">
+                                <label class="col-sm-4 col-form-label">Booking No</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" type="text" value="@Model.BookingNo" readonly>
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <label class="col-sm-4 col-form-label">Booking Date</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" type="text" value="@(Utility.GetDate(Model.BookingDate))" readonly>
+                                </div>
+                            </div>
+                            <div class="mb-1 row">
+                                <div class="col-12">
+                                    <label class="col-sm-5 col-form-label">Visit Perpose:</label>
+                                    <span>@Model.VisitPurpose</span>
+                                </div>
+                            </div>
+                            <div class="mb-1 row">
+                                <div class="col-12">
+                                    <label class="col-sm-5 col-form-label">Remarks:</label>
+                                    <span>@Model.Remarks</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3"></div>
+
+                        <div class="col-md-5">
+                            <div class="mb-1 row">
+                                <div class="col-12">
+                                    <label class="col-sm-5 col-form-label">Start Date:</label>
+                                    <span>@Model.CheckInTime</span>
+                                </div>
+                            </div>
+                            <div class="mb-1 row">
+                                <div class="col-12">
+                                    <label class="col-sm-5 col-form-label">End Date:</label>
+                                    <span>@Model.CheckOutTime</span>
+                                </div>
+                            </div>
+                            <div class="mb-1 row">
+                                <div class="col-12">
+                                    <label class="col-sm-5 col-form-label">Booking Status:</label>
+                                    <span>@Model.BookingStatus</span>
+                                </div>
+                            </div>
+                            <div class="mb-1 row">
+                                <div class="col-12">
+                                    <label class="col-sm-5 col-form-label">Payment Status:</label>
+                                    <span>@Model.PaymentStatus</span>
+                                </div>
+                            </div>
+                            <div class="mb-1 row">
+                                <div class="col-12">
+                                    <label class="col-sm-5 col-form-label">Guest Name:</label>
+                                    <span>@(guest.GuestName)</span>
+                                </div>
+                            </div>
+                            <div class="mb-1 row">
+                                <div class="col-12">
+                                    <label class="col-sm-5 col-form-label">Guest Mobile:</label>
+                                    <span>@(guest.GuestMobile)</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <br />
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th colspan="7">
+                                            <h4>Booked Hall List</h4>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th style="width: 2%">#</th>
+                                        <th style="width: 18%">Booking Date</th>
+                                        <th style="width: 15%">Shift</th>
+                                        <th style="width: 20%">Hall Name</th>
+                                        <th style="width: 20%">Cost</th>
+                                        <th style="width: 15%">Total</th>
+                                        <th style="width: 10%">Remarks</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="HallTableTbody">
+                                    @if (Model.BookingHallVms.Count > 0)
+                                    {
+                                        var bookingHalls = Model.BookingHallVms.OrderBy(x => x.BookingDate).ToList();
+
+                                        foreach (var (hall, i) in bookingHalls.GetItemWithIndex())
+                                        {
+                                            <tr>
+                                                <td>@(i + 1)</td>
+                                                <td>@(hall.BookingDate.ToString("dd/MM/yyyy"))</td>
+                                                <td>@(hall.HallShiftText)</td>
+                                                <td>@(hall.HallName)</td>
+                                                <td>
+                                                    <b>Rent:</b> @(hall.Rent) <br />
+                                                    <b>Service Charge:</b> @(hall.ServiceCharge) <br />
+                                                </td>
+                                                <td>
+                                                    <input class="form-control text-end" type="number" value="@(hall.NetRent)" readonly />
+                                                </td>
+                                                <td>@(hall.Remarks)</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+
+                                <tfoot id="HallTableFoot">
+                                    <tr>
+                                        <th colspan="5" style="text-align: right">Net Rent</th>
+                                        <td style="font-weight: bold">
+                                            <input class="form-control text-end" id="NetRent" value="@(Model.NetRent)" readonly />
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="5" style="text-align: right">Vat</th>
+                                        <td style="font-weight: bold">
+                                            <input class="form-control text-end" asp-for="Vat" />
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="5" style="text-align: right">Tax</th>
+                                        <td style="font-weight: bold">
+                                            <input class="form-control text-end" asp-for="Tax" />
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="5" style="text-align: right">Discount</th>
+                                        <td style="font-weight: bold">
+                                            <input class="form-control text-end" asp-for="Discount" />
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="5" style="text-align: right">Net Total</th>
+                                        <td style="font-weight: bold">
+                                            <input class="form-control text-end" id="net-total" readonly />
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="5" style="text-align: right">Already Paid</th>
+                                        <td style="font-weight: bold">
+                                            <input class="form-control text-end" id="PaidAmount" value="@(Model.PaidAmount)" readonly />
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="5" style="text-align: right">Net Pay Amount</th>
+                                        <td style="font-weight: bold">
+                                            <input class="form-control text-end" id="due-amount" readonly />
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th colspan="6">
+                                            <div class="d-flex justify-content-between">
+                                                <h4>Payments</h4>
+                                                <div>
+                                                    @if (Model.BookingStatus != BookingServiceStatusEnum.CheckOut && Model.PaymentStatus != PaymentStatusEnum.FullPayment && Model.BookingStatus != BookingServiceStatusEnum.NoShow)
+                                                    {
+                                                        <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#paymentEntryModal"> Pay Now </a>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    <tr class="text-center">
+                                        <th style="width: 15%">Payment Date</th>
+                                        <th style="width: 15%">Transaction No</th>
+                                        <th style="width: 15%">Account No</th>
+                                        <th style="width: 10%">Pay Method</th>
+                                        <th style="width: 20%">Paid Amount</th>
+                                        <th style="width: 25%">Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.BookingPayments.Count > 0)
+                                    {
+                                        foreach (var item in Model.BookingPayments)
+                                        {
+                                            <tr>
+                                                <td>@(Utility.ConvertDateToStr(item.PaidDate))</td>
+                                                <td>@item.TransactionNo</td>
+                                                <td>@item.AccountNo</td>
+                                                <td>@item.PayMode</td>
+                                                <td class="text-end">
+                                                    @if (!(item.BillingId > 0))
+                                                    {
+                                                        <b>(Advance)</b>
+                                                    }
+                                                    @item.PaidAmount
+                                                </td>
+                                                <td>@item.Description</td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td class="text-center" colspan="6"><h5>There Is No Payemnt Yet...</h5></td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                                @if (Model.BookingPayments.Count > 0)
+                                {
+                                    <tfoot>
+                                        <tr>
+                                            <td class="text-end" colspan="4">Total Paid</td>
+                                            <td class="text-end">@(Model.BookingPayments.Sum(x => x.PaidAmount))</td>
+                                        </tr>
+                                    </tfoot>
+                                }
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+            </form>
+
+            @*modal*@
+
+            <div class="modal fade" id="paymentEntryModal" tabindex="-1" role="dialog" aria-labelledby="paymentEntryModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel2">Payment Entry</h5>
+                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="mb-3">
+                                    <label class="col-form-label">Pay Amount</label>
+                                    <input class="datepicker-paid-date form-control" asp-for="PaidDateStr" id="PaidDateStr" type="text" data-language="en">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="col-form-label">Payment Method</label>
+                                    <select id="PayMode" asp-items="Model.PayModeLookUp" class="dd-type"></select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="col-form-label">Pay Amount</label>
+                                    <input class="form-control" id="PayAmount" type="text">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="col-form-label">Transaction Number</label>
+                                    <input class="form-control" id="TransactionNo" type="text">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="col-form-label">Account Number</label>
+                                    <input class="form-control" id="AccountNo" type="text">
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" id="PaymentEntryBtn" type="button">Entry</button>
+                            <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            @*modal_end*@
+
+
+        </div>
+
+
+    </div>
+</div>
+
+
+@section scripts
+{
+
+    <script>
+        var paidDate = @Model.PaidDateStr;
+
+        $(".datepicker-paid-date").datepicker({
+            setDate: paidDate,
+            dateFormat: 'dd/mm/yyyy',
+            autoClose: true
+        });
+
+        $('.datepicker-paid-date').on('changeDate', function (event) {
+            $(this).datepicker('hide');
+        });
+    </script>
+    <script src="~/js/ETL/BookingService/HallDetails.js"></script>
+}

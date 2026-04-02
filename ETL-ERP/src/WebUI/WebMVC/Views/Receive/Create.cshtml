@@ -1,0 +1,108 @@
+﻿@model Domain.ViewModel.Inventory.Transaction.TransactionVm
+@{
+    ViewData["Title"] = "Receive Order Item Create";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkInventory" />
+        <form asp-action="Create" id="CreateReceiveForm" data-parsley-validate class="form-horizontal form-label-left">
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Receive Order</h5>
+                    <div class="setting-list">
+                        <a asp-action="Search" asp-controller="Receive" class="btn btn-primary">Receive Order List</a>
+                    </div>
+                </div>
+
+                <div class="card-body py-3">
+
+                    <input type="hidden" asp-for="TranType" />
+                    <input type="hidden" asp-for="SupplierId" />
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Receive No</label>
+                            <input class="form-control" asp-for="TranNo" readonly>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Receive Date *</label>
+                            <input class="datepicker-receive-date form-control" asp-for="TranDateStr" type="text" data-language="en">
+                            <span asp-validation-for="TranDateStr" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Order</label>
+                            <select asp-for="OrderId" asp-items="Model.OrderLookUp" class="dd-type"></select>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">Receive Status</label>
+                            <select asp-for="ReceiveStatus" asp-items="Model.OrderReceiveStatusLookup" class="dd-type"></select>
+                            <span class="text-danger" id="receiveStatusValidator"></span>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">Upload File</label>
+                            <input type="file" asp-for="TranFileUrl" class="form-control ">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Remarks" class="form-label">Remarks</label>
+                            <textarea type="text" asp-for="Remarks" class="form-control" rows="3"></textarea>
+                        </div>
+                        <div class="col-md-6 mb-3" id="Supplier-Sec">
+                        </div>
+                    </div>
+
+                    <div class="row mt-5">
+
+                        <table class="table table-bordered" style="text-align: center">
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%">#</th>
+                                    <th style="width: 25%">Item</th>
+                                    <th style="width: 10%">Unit</th>
+                                    <th style="width: 10%">Unit Price</th>
+                                    <th style="width: 10%">Order Quantity</th>
+                                    <th style="width: 10%">Already Received Quantity</th>
+                                    <th style="width: 10%">Receive Quantity</th>
+                                    <th style="width: 10%">Stock</th>
+                                    <th style="width: 10%">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="RcvItemTableTbody">
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button type="button" id="CreateReceiveSubmitBtn" class="btn btn-primary">Save</button>
+                        <a asp-controller="Transaction" asp-action="ReceiveSearch" class="btn btn-warning">Search</a>
+                        <button class="btn btn-danger" type="reset">Clear</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+        var currentDate = @Model.TranDateStr;
+
+        $(".datepicker-receive-date").datepicker({
+            setDate: currentDate,
+            dateFormat: 'dd/mm/yyyy',
+            autoClose: true
+        });
+    </script>
+    <script src="~/js/ETL/Transaction/CreateReceive.js"></script>
+}

@@ -1,0 +1,149 @@
+﻿@model Domain.ViewModel.Inventory.RequsitionInfo.RequsitionInfoVm
+@{
+    ViewData["Title"] = "Requsition Entry";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkInventory" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Requsition Entry</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="RequsitionInfo" class="btn btn-primary">Search Requsition</a>
+                </div>
+            </div>
+            <form asp-action="Create" id="CreateRequsitionForm" class="form theme-form">
+                <div class="card-body py-3">
+
+                    <div class="row g-3">
+                        
+                        <div class="col-md-4 d-flex align-items-center">
+                            <label class=" col-md-4 text-start pe-2">Requisition No</label>
+                            <div class="col-md-7">
+                                <input class="form-control form-control-sm" asp-for="ReqNo" readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 d-flex align-items-center">
+                            <label class=" col-md-4 text-start pe-2">Requisition Date *</label>
+                            <div class="col-md-7">
+                                <input class="datepicker-req-date form-control form-control-sm" asp-for="ReqDateStr" type="text" data-language="en">
+                            </div>
+                            <span asp-validation-for="ReqDateStr" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-4 d-flex align-items-center">
+                            <label class=" col-md-4 text-start pe-2">Req Department</label>
+                            <div class="col-md-8">
+                                <select asp-for="DeptId" asp-items="Model.DepartmentLookUp" class="dd-type form-control form-control-sm"></select>
+                            </div>
+                            <span asp-validation-for="ReqDateStr" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        
+                        <div class="col-md-4 d-flex align-items-center">
+                            <label class=" col-md-4 text-start pe-2">Requisition For</label>
+                            <div class="col-md-7">
+                                <select asp-for="ReqById" asp-items="Model.EmployeeLookUp" class="dd-type form-control form-control-sm"></select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 d-flex align-items-center">
+                            <label class=" col-md-4 text-start pe-2">Req Priority</label>
+                            <div class="col-md-7">
+                                <select asp-for="Priority" asp-items="Model.PriorityLookUp" class="dd-type form-control form-control-sm"></select>
+                            </div>
+                            <span asp-validation-for="Priority" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-4 d-flex align-items-center">
+                            <label class=" col-md-4 text-start pe-2">Remarks</label>
+                            <div class="col-md-8 mt-1">
+                                <textarea class="form-control form-control-sm" rows="1" asp-for="Remarks"></textarea>
+                            </div>
+                            <span asp-validation-for="Remarks" class="text-danger"></span>
+                        </div>
+                    </div>
+
+
+
+                    <br />
+                    <hr />
+                    <br />
+
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label >Req. Item *</label>
+                            <select id="ItemId" asp-items="Model.ItemLookUp" class="form-control dd-type"></select>
+                            <input type="hidden" id="IsMonthly" value="false" />
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <label >Item Unit</label>
+                            <select id="UnitId" asp-items="Model.UnitLookUp" class="form-control dd-type"></select>
+                        </div>
+                        <div class="col-md-1 mb-3">
+                            <label >Quantity</label>
+                            <input class="form-control" type="number" id="Qty">
+                        </div>
+                        <div class="col-md-1 mb-3">
+                            <label >Stock</label>
+                            <input class="form-control" type="number" id="Stock" readonly>
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <label >Remarks</label>
+                            <input class="form-control" type="text" id="Dtl_Remarks">
+                        </div>
+                        <div class="col-md-2 mb-3 d-flex align-items-end">
+                            <button type="button" id="AddItemBtn" class="btn btn-outline-primary mb-1 w-100">Add Item</button>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 5%">#</th>
+                                        <th style="width: 20%">Item</th>
+                                        <th style="width: 20%">Unit</th>
+                                        <th style="width: 10%">Quantity</th>
+                                        <th style="width: 10%">Stock</th>
+                                        <th style="width: 20%">Remarks</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ItemTableTbody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-outline-primary" type="button" id="CreateRequsitionSubmitBtn">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script>
+        var currentDate = @Model.ReqDateStr;
+
+        $(".datepicker-req-date").datepicker({
+            setDate: currentDate,
+            dateFormat: 'dd/mm/yyyy',
+            autoClose: true
+        });
+    </script>
+    <script src="~/js/ETL/RequisitionInfo/RequisitionCreate.js"></script>
+}

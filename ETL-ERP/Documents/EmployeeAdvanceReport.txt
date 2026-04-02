@@ -1,0 +1,14 @@
+select e.id EmployeeId,e.Code EmployeeCode,e.Name EmployeeName,e.Mobile,e.Email,sd.Name Designation,dp.Name Department
+,lm.LoanAmount,lm.InterestRate,lm.InsAmount InstallmentAmount,convert(Date,lm.FirstInsDate)FirstInsDate,convert(date,lm.LoanPassDate)LoanPassDate,convert(date,lm.LoanPayDate)LoanPayDate
+,count(ld.id)  TotalInstallment,sum(case when ld.IsPaid = 'true' then 1 else 0 end) PaidInstallment,count(ld.id) - sum(case when ld.IsPaid = 'true' then 1 else 0 end) RemainingInstallment
+,sum(case when ld.IsPaid = 'true' then ld.LoanAmount else 0 end) PaidLoanAmount,sum(case when ld.IsPaid = 'false' then ld.LoanAmount else 0 end) RemainingLoanAmount
+,sum(case when ld.IsPaid = 'true' then ld.InterestAmount else 0 end) PaidInterestAmount,sum(case when ld.IsPaid = 'false' then ld.InterestAmount else 0 end) RemainingInterestAmount
+,sum(case when ld.IsPaid = 'true' then ld.InsAmount else 0 end) PaidAmount,sum(case when ld.IsPaid = 'false' then ld.InsAmount else 0 end) RemainingAmount
+,sum(ld.InsAmount) TotalPayableAmount,sum(ld.InterestAmount) TotalInterestAmount
+from EmpLoanDtls ld
+inner join EmpLoanMsts lm on lm.Id = ld.LoanId
+inner join Employees e on e.Id = lm.EmployeeId
+left join Designations sd on sd.Id = e.DesignationId
+left join Departments dp on dp.Id = e.DepartmentId
+where ld.IsDeleted = 0 and lm.IsDeleted = 0
+group by e.id,e.Code,e.Name,e.Mobile,e.Email,sd.Name,dp.Name,lm.LoanAmount,lm.InterestRate,lm.InsAmount,convert(Date,lm.FirstInsDate),convert(date,lm.LoanPassDate),convert(date,lm.LoanPayDate)

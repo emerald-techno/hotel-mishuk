@@ -1,0 +1,400 @@
+﻿@model Domain.ViewModel.HotelManagement.BusinessDaySummary.BusinessDaySummaryVm
+@using Domain.Utility
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <form>
+                <div class="card-header p-4">
+                    <h5>Daily Audit Summary Report</h5>
+                    <div class="setting-list">
+                        @if (Model.AuditStatus == 0)
+                        {
+                            <button type="button" id="DayCloseBtn" class="btn btn-secondary mx-2">Close The Day</button>
+                        }
+
+                        @*<button class="btn btn-primary" id="ReportPrintBtn">PDF</button>*@
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="BusinessDaySummaryTable" class="table table-bordered" style="width:100%; text-align:center;">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="text-start">Business Day Summary | @(Model.BusinessDate.ToString("dd-MMM-yyyy"))</th>
+                                    <th class="text-end">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <!-- ROOM REVENUE SECTION -->
+                                <tr class="table-secondary">
+                                    <td colspan="2" class="text-start fw-bold">Room Revenue</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">Revenue From Room Rentals</td>
+                                    <td class="text-end">@(Model.TotalRoomRevenue.ToString("N2"))</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">Room Rental Discounts</td>
+                                    <td class="text-end">@(Model.TotalRoomDiscounts.ToString("N2"))</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">Service Charge (Rooms)</td>
+                                    <td class="text-end">@(Model.TotalRoomServiceCharge.ToString("N2"))</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">VAT (Rooms)</td>
+                                    <td class="text-end">@(Model.TotalRoomVat.ToString("N2"))</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">Number of Rooms Occupied</td>
+                                    <td class="text-end">@(Model.TotalRoomsOccupied)</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">% of Occupancy</td>
+                                    <td class="text-end">@(Model.OccupancyPercentage.ToString("N2"))%</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">No. of Guests (Adult + Child)</td>
+                                    <td class="text-end">
+                                        @(Model.TotalAdults) + @(Model.TotalChildren) = @(Model.TotalGuests)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">Average Room Rate (ARR)</td>
+                                    <td class="text-end">@(Model.ARR.ToString("N2"))</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">Average Daily Rate (ADR)</td>
+                                    <td class="text-end">@(Model.ADR.ToString("N2"))</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">Revenue per Available Room (RevPAR)</td>
+                                    <td class="text-end">@(Model.RevPAR.ToString("N2"))</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">Average Guests per Room</td>
+                                    <td class="text-end">@(Model.AvgGuestsPerRoom.ToString("N2"))</td>
+                                </tr>
+
+                                <!-- FOOD & BEVERAGE SECTION -->
+                                <tr class="table-secondary">
+                                    <td colspan="2" class="text-start fw-bold">Food & Beverage Revenue</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">Revenue from Restaurant & Room Service</td>
+                                    <td class="text-end">@(Model.TotalRestaurantSales.ToString("N2"))</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">F&amp;B Discounts</td>
+                                    <td class="text-end">@(Model.TotalFnbDiscounts.ToString("N2"))</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">Service Charge (F&amp;B)</td>
+                                    <td class="text-end">@(Model.TotalFnbServiceCharge.ToString("N2"))</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">VAT (F&amp;B)</td>
+                                    <td class="text-end">@(Model.TotalFnbVat.ToString("N2"))</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start fw-bold">Net Food & Beverage Revenue</td>
+                                    <td class="text-end fw-bold">
+                                        @(Model.TotalRestaurantRevenue.ToString("N2"))
+                                    </td>
+                                </tr>
+
+                                <!-- SERVICE & OTHER REVENUE SECTION -->
+                                <tr class="table-secondary">
+                                    <td colspan="2" class="text-start fw-bold">Service & Other Revenue</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">Other Service Revenue (Laundry, Transport, etc.)</td>
+                                    <td class="text-end">@(Model.TotalOtherRevenue.ToString("N2"))</td>
+                                </tr>
+
+                                <!-- Banquet/Hall SECTION -->
+                                <tr class="table-secondary">
+                                    <td colspan="2" class="text-start fw-bold">Hall Revenue</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">Banquet Hall Revenue</td>
+                                    <td class="text-end">@(Model.TotalBanquetRevenue.ToString("N2"))</td>
+                                </tr>
+
+                                <!-- GRAND TOTAL SECTION -->
+                                <tr class="fw-bold ">
+                                    <td class="text-start">Total Sales (All Sources)</td>
+                                    <td class="text-end">
+                                        @{
+                                            var totalAmount = Model.TotalBaseRate
+                                                            + Model.TotalRestaurantSales
+                                                            + Model.TotalOtherRevenue;
+                                        }
+                                        @(totalAmount.ToString("N2"))
+                                    </td>
+                                </tr>
+                                <tr class="fw-bold">
+                                    <td class="text-start">Total Service Charge</td>
+                                    <td class="text-end">
+                                        @{
+                                            var totalSC = Model.TotalRoomServiceCharge
+                                            + Model.TotalFnbServiceCharge
+                                            + Model.TotalOtherServiceCharge;
+                                        }
+                                        @(totalSC.ToString("N2"))
+                                    </td>
+                                </tr>
+                                <tr class="fw-bold">
+                                    <td class="text-start">Total VAT</td>
+                                    <td class="text-end">
+                                        @{
+                                            var totalVat = Model.TotalRoomVat
+                                            + Model.TotalFnbVat
+                                            + Model.TotalOtherVat;
+                                        }
+                                        @(totalVat.ToString("N2"))
+                                    </td>
+                                </tr>
+                                @* <tr class="fw-bold">
+                <td class="text-start">Grand Total Revenue</td>
+                <td class="text-end">
+                @{
+                var grandTotal = Model.TotalRoomRevenue
+                + Model.TotalRestaurantRevenue
+                + Model.TotalOtherRevenue;
+                }
+                @(grandTotal.ToString("N2"))
+                </td>
+                </tr> *@
+                                <tr class="fw-bold">
+                                    <td class="text-start">Grand Total Revenue</td>
+                                    <td class="text-end">
+                                        @{
+                                            var grandTotal = Model.TotalRoomRevenue
+                                            + Model.TotalRestaurantRevenue
+                                            + Model.TotalOtherRevenue;
+                                        }
+                                        @(grandTotal.ToString("N2"))
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- Front Office Collection SECTION -->
+
+                        <table class="table table-bordered mt-3" style="width:100%; font-size:14px;">
+                            <thead>
+                                <tr class="table-secondary">
+                                    <th class="text-start fw-bold">Front Office Payment Collection</th>
+                                    <th class="text-center fw-bold">Cover</th>
+                                    <th class="text-end fw-bold">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-start">Cash Collection</td>
+                                    <td class="text-center">@Model.FrontOfficeCashCover.ToString("N2")</td>
+                                    <td class="text-end">@Model.TotalFrontOfficeCash.ToString("N2")</td>
+                                </tr>
+
+                                <tr>
+                                    <td class="text-start">Card Collection</td>
+                                    <td class="text-center">@Model.FrontOfficeCardCover.ToString("N2")</td>
+                                    <td class="text-end">@Model.TotalFrontOfficeCard.ToString("N2")</td>
+                                </tr>
+
+                                <tr>
+                                    <td class="text-start">M-Banking Collection</td>
+                                    <td class="text-center">@Model.FrontOfficeMbankingCover.ToString("N2")</td>
+                                    <td class="text-end">@Model.TotalFrontOfficeMbanking.ToString("N2")</td>
+                                </tr>
+
+                                <tr>
+                                    <td class="text-start">Bank Collection</td>
+                                    <td class="text-center">@Model.FrontOfficeBankCover.ToString("N2")</td>
+                                    <td class="text-end">@Model.TotalFrontOfficeBank.ToString("N2")</td>
+                                </tr>
+
+                                @{
+                                    var totalFrontOfficeCover = Model.FrontOfficeCashCover
+                                    + Model.FrontOfficeCardCover
+                                    + Model.FrontOfficeMbankingCover
+                                    + Model.FrontOfficeBankCover;
+                                }
+
+                                <tr class="fw-bold">
+                                    <td class="text-start">Total Collection (Front Office)</td>
+                                    <td class="text-center">@totalFrontOfficeCover.ToString("N2")</td>
+                                    <td class="text-end">@Model.TotalFrontOfficeCollections.ToString("N2")</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- Front Office Advance Collection SECTION -->
+
+                        <table class="table table-bordered mt-3" style="width:100%; font-size:14px;">
+                            <thead>
+                                <tr class="table-secondary">
+                                    <th class="text-start fw-bold">Front Office Advance Payment Collection</th>
+                                    <th class="text-center fw-bold">Cover</th>
+                                    <th class="text-end fw-bold">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-start">Total Advance Collection</td>
+                                    <td class="text-center">@(Model.FrontOfficeAdvanceCover.ToString("N2"))</td>
+                                    <td class="text-end">@(Model.TotalFrontOfficeAdvance.ToString("N2"))</td>
+                                </tr>
+                                <tr class="fw-bold">
+                                    <td class="text-start">Total Advance Collection (Front Office)</td>
+                                    <td class="text-center">@Model.FrontOfficeAdvanceCover.ToString("N2")</td>
+                                    <td class="text-end">@Model.TotalFrontOfficeAdvance.ToString("N2")</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- Restaurant Collection SECTION -->
+
+                        <table class="table table-bordered mt-3" style="width:100%; font-size:14px;">
+                            <thead>
+                                <tr class="table-secondary">
+                                    <th class="text-start fw-bold">Restaurant Payment Collection</th>
+                                    <th class="text-center fw-bold">Cover</th>
+                                    <th class="text-end fw-bold">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-start">Cash Collection</td>
+                                    <td class="text-center">@(Model.RestaurantCashCover.ToString("N2"))</td>
+                                    <td class="text-end">@(Model.TotalRestaurantCash.ToString("N2"))</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">Card Collection</td>
+                                    <td class="text-center">@(Model.RestaurantCardCover.ToString("N2"))</td>
+                                    <td class="text-end">@(Model.TotalRestaurantCard.ToString("N2"))</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">M-Banking Collection</td>
+                                    <td class="text-center">@(Model.RestaurantMbankingCover.ToString("N2"))</td>
+                                    <td class="text-end">@(Model.TotalRestaurantMbanking.ToString("N2"))</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">Bank Collection</td>
+                                    <td class="text-center">@(Model.RestaurantBankCover.ToString("N2"))</td>
+                                    <td class="text-end">@(Model.TotalRestaurantBank.ToString("N2"))</td>
+                                </tr>
+
+                                @{
+                                    var totalRsPaymentCover = Model.RestaurantCashCover
+                                    + Model.RestaurantCardCover
+                                    + Model.RestaurantMbankingCover
+                                    + Model.RestaurantBankCover;
+                                }
+
+                                <tr class="fw-bold">
+                                    <td class="text-start">Total Collection (Restaurant)</td>
+                                    <td class="text-center">@totalRsPaymentCover.ToString("N2")</td>
+                                    <td class="text-end">@Model.TotalRestaurantCollections.ToString("N2")</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                        <!-- Total Collection BreakDown SECTION -->
+
+                        <table class="table table-bordered mt-3" style="width:100%; font-size:14px;">
+                            <thead>
+                                <tr class="table-secondary">
+                                    <th class="text-start fw-bold">Total Payment Collection</th>
+                                    <th class="text-center fw-bold">Cover</th>
+                                    <th class="text-end fw-bold">Total</th>
+                                </tr>
+                            </thead>
+                            @{
+                                var totalCashCover = Model.FrontOfficeCashCover + Model.RestaurantCashCover;
+                                var totalCardCover = Model.FrontOfficeCardCover + Model.RestaurantCardCover;
+                                var totalMbankingCover = Model.FrontOfficeMbankingCover + Model.RestaurantMbankingCover;
+                                var totalBankCover = Model.FrontOfficeBankCover + Model.RestaurantBankCover;
+
+                                var totalCollectionCover = totalCashCover
+                                                        + totalCardCover
+                                                        + totalMbankingCover
+                                                        + totalBankCover;
+
+                                var totalCashCollection = Model.TotalFrontOfficeCash + Model.TotalRestaurantCash;
+                                var totalCardCollection = Model.TotalFrontOfficeCard + Model.TotalRestaurantCard;
+                                var totalMbankingCollection = Model.TotalFrontOfficeMbanking + Model.TotalRestaurantMbanking;
+                                var totalBankCollection = Model.TotalFrontOfficeBank + Model.TotalRestaurantBank;
+
+                                var totalCollectionAmount = Model.TotalFrontOfficeCollections
+                                                        + Model.TotalRestaurantCollections;
+                            }
+                            <tbody>
+                                <tr>
+                                    <td class="text-start">Cash Collection</td>
+                                    <td class="text-center">@(totalCashCover.ToString("N2"))</td>
+                                    <td class="text-end">@totalCashCollection.ToString("N2")</td>
+                                </tr>
+
+                                <tr>
+                                    <td class="text-start">Card Collection</td>
+                                    <td class="text-center">@(totalCardCover.ToString("N2"))</td>
+                                    <td class="text-end">@totalCardCollection.ToString("N2")</td>
+                                </tr>
+
+                                <tr>
+                                    <td class="text-start">M-Banking Collection</td>
+                                    <td class="text-center">@(totalMbankingCover.ToString("N2"))</td>
+                                    <td class="text-end">@totalMbankingCollection.ToString("N2")</td>
+                                </tr>
+
+                                <tr>
+                                    <td class="text-start">Bank Collection</td>
+                                    <td class="text-center">@(totalBankCover.ToString("N2"))</td>
+                                    <td class="text-end">@totalBankCollection.ToString("N2")</td>
+                                </tr>
+
+                                <tr class="fw-bold">
+                                    <td class="text-start">Total Collection</td>
+                                    <td class="text-center">@totalCollectionCover.ToString("N2")</td>
+                                    <td class="text-end">@totalCollectionAmount.ToString("N2")</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- Receivable SECTION -->
+
+                        <table class="table table-bordered mt-3" style="width:100%; font-size:14px;">
+                            <thead>
+                                <tr class="table-secondary">
+                                    <th class="text-start fw-bold">Receivable</th>
+                                    <th class="text-end fw-bold">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-start">Front Office Receivable</td>
+                                    <td class="text-end">@Model.FrontOfficeReceivable.ToString("N2")</td>
+                                </tr>
+
+                                <tr>
+                                    <td class="text-start">Food & Beverage Receivable</td>
+                                    <td class="text-end">@Model.FNBReceivable.ToString("N2")</td>
+                                </tr>
+
+                                <tr class="fw-bold">
+                                    <td class="text-start">Total Receivable (All Source)</td>
+                                    <td class="text-end">@Model.TotalReceivable.ToString("N2")</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

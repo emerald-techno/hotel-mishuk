@@ -1,0 +1,38 @@
+﻿@model Domain.ViewModel.Payroll.PrSalaryPart.PrSalaryPartSearchVm
+@{
+    ViewData["Title"] = "Payroll Salary Part";
+}
+
+<div class="row">
+    <div class="col-md-12 default-according">
+        <partial name="_QuickLinkPayroll" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h4>Payroll Salary Part List</h4>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="PrSalaryPart" class="btn btn-primary">Salary Parts Setup</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="PrSalaryPartSearchPartialTable" class="display" style="width:100%;">
+                        <thead class="bg-primary" style="text-align:center">
+                            <tr>
+                                <th style="width: 5%">Serial</th>
+                                <th>Part Name</th>
+                                <th>Part Type</th>
+                                <th>Value Type</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/js/ETL/PrSalaryPart/PrSalaryPartSearchPartial.js"></script>
+}

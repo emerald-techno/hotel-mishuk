@@ -1,0 +1,71 @@
+﻿@model Domain.ViewModel.Restaurant.FoodIngredient.FoodIngredientVM
+@{
+    ViewData["Title"] = "Food Ingredient Setup";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Create Food Ingredient</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="FoodCategory" class="btn btn-primary">Search Food Category</a>
+                </div>
+            </div>
+            <form asp-action="Create" class="form theme-form" data-parsley-validate">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Quantity</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="Quantity" type="number" placeholder="Enter Quantity">
+                                    <span asp-validation-for="Quantity" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Price</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="Price" type="number" placeholder="Enter Price">
+                                    <span asp-validation-for="Price" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Amount</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="Amount" type="number" placeholder="Enter Price" />
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Food Item</label>
+                                <div class="col-sm-9">
+                                        <select class="dd-type" asp-for="FoodItemId" asp-items="Model.FoodItemLookUp"></select>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Item</label>
+                                <div class="col-sm-9">
+                                        <select class="dd-type" asp-for="ItemId" asp-items="Model.ItemLookUp"></select>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Unit</label>
+                                <div class="col-sm-9">
+                                        <select class="dd-type" asp-for="UnitId" asp-items="Model.UnitLookUp"></select>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

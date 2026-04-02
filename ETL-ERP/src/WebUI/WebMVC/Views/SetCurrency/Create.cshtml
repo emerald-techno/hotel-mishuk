@@ -1,0 +1,68 @@
+﻿@model Domain.ViewModel.Admin.SetCurrency.SetCurrencyVm
+@{
+    ViewData["Title"] = "New Currency Create";
+    Layout = "_Layout";
+}
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkAccounts" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Create Currency</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="SetCurrency" class="btn btn-primary">Search Currency</a>
+                </div>
+            </div>
+            <form asp-action="Create" class="form theme-form">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Currency Name *</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="CurrencyName" type="text" placeholder="Enter currency name">
+                                    <span asp-validation-for="CurrencyName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Symbol *</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="Symbol" type="text" placeholder="Enter symbol">
+                                    <span asp-validation-for="Symbol" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Country Symbol *</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="CountrySymbol" type="text" placeholder="Enter country symbol">
+                                    <span asp-validation-for="CountrySymbol" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Exchange Rate</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="ExRate" type="number" placeholder="Enter exchange rate">
+                                    <span asp-validation-for="ExRate" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $(".form-control").attr("autocomplete", "off");
+        })
+    </script>
+}

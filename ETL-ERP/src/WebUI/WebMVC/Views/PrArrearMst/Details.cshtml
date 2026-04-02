@@ -1,0 +1,90 @@
+﻿@model Domain.ViewModel.Payroll.PrArrearMst.PrArrearMstVm
+@using Domain.Utility
+@{
+    ViewData["Title"] = "Arrear Details";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkPayroll" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h3>Arrear Details</h3>
+                <div class="setting-list">
+                    <a asp-action="ArrearDetailsReportPrint" asp-controller="PrArrearMst" asp-route-id=@Model.Id class="btn btn-primary" target="_blank">Print PDF</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td>Year</td>
+                                    <td>@(Model.Year)</td>
+                                    <td>Month</td>
+                                    <td>@Utility.GetMonthName(Model.Month)</td>
+                                </tr>
+                                <tr>
+                                    <td>Approval</td>
+                                    <td>@(Model.IsApproved ? "Approved" : "Not Approved")</td>
+                                    <td>Approve Date</td>
+                                    <td>@Utility.ConvertDateToStr(Model.ApprovedDate)</td>
+                                </tr>
+                                <tr>
+                                    <td>Approve By</td>
+                                    <td>@Model.ApprovedByFullName</td>
+                                    <td>Remarks</td>
+                                    <td>@Model.Remarks</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+                <div class="row mt-5">
+                    <div class="col-md-12">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%">Serial</th>
+                                    <th>Employee</th>
+                                    <th>Amount</th>
+                                    <th>Arrear For</th>
+                                    <th>Remarks</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.PrArrearDtls.Count > 0)
+                                {
+                                    foreach (var (arrear, i) in Model.PrArrearDtls.GetItemWithIndex())
+                                    {
+                                        <tr>
+                                            <td>@(i+1)</td>
+                                            <th>@(arrear.EmployeeName)</th>
+                                            <th>@(arrear.Amount)</th>
+                                            <th>@(arrear.ArrearFor == "L" ? "Leave" : arrear.ArrearFor == "S" ? "Salary" : "Normal")</th>
+                                            <th>@(arrear.Remarks)</th>
+                                            <th>@(arrear.IsPaid ? "Paid" : "Pending")</th>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+            <div class="card-footer d-flex justify-content-end">
+                @if (!Model.IsApproved)
+                {
+                    <a asp-controller="PrArrearMst" asp-action="ApproveArrear" asp-route-id="@Model.Id" class="btn btn-primary">
+                        <i class="icofont icofont-ui-check"></i>&nbsp; Approve
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

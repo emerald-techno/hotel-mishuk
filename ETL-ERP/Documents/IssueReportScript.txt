@@ -1,0 +1,23 @@
+select tm.TranNo,tm.Id IssueId,convert(date,tm.TranDate)TranDate,ci.Id CategoryId, ci.CategoryName,ii.Id ItemId,ii.ItemName,ui.Id UnitId,ui.UnitName UnitName
+,dp.Id DepartmentId,dp.Name DepartmentName,ui.Id TranById,u.Id TranById,u.FullName TranByName,rq.Id ReqId,rq.ReqNo
+,td.ItemQty IssueQty,isnull(ir.ReturnQty,0) ReturnQty,td.ItemQty - isnull(ir.ReturnQty,0) ActualIssueQty
+from TranDtls td
+inner join ItemInfos ii ON ii.Id = td.ItemId
+inner join CategoryInfos ci on ci.Id = ii.CategoryId
+inner join TranMsts tm ON tm.Id = td.TranMstId
+inner join UnitInfos ui on ui.Id = ii.UnitId
+inner join Departments dp on dp.Id = tm.IssueDeptId
+left join AspNetUsers u on u.Id = tm.TranById
+left join RequsitionInfos rq on rq.Id = tm.ReqMstId
+left join (
+select ii.Id,tm.RefTranId,sum(td.ItemQty) ReturnQty
+from TranDtls td
+inner join TranMsts tm ON tm.Id = td.TranMstId
+inner join ItemInfos ii ON ii.Id = td.ItemId
+where tm.TranType = 'E'
+group by ii.id,tm.RefTranId
+) ir on ir.Id = ii.id and ir.RefTranId = tm.Id
+where tm.IsDeleted = 0 and td.IsDeleted =0 and tm.TranType = 'I'
+--and convert(date,tm.TranDate) >= '01/Jan/2024' and convert(date,tm.TranDate) <= '31/Dec/2024'
+order by tm.TranDate,ci.CategoryName,ii.ItemName
+

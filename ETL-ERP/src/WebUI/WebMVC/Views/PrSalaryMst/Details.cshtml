@@ -1,0 +1,518 @@
+﻿@model Domain.ViewModel.Payroll.PrSalaryMst.PrSalaryMstVm
+@{
+    ViewData["Title"] = "Payroll Details";
+    var enableAdditionParts = Model.EnablePrSalaryParts.Where(c => c.PartType == "A").ToList();
+    var enableDiductionParts = Model.EnablePrSalaryParts.Where(c => c.PartType == "D").ToList();
+    var addCount = enableAdditionParts.Count();
+    var diductCount = enableDiductionParts.Count();
+}
+
+@section Styles{
+    <style>
+        .fixTableHead {
+            overflow-y: auto;
+            height: 600px;
+        }
+
+            .fixTableHead thead {
+                position: sticky;
+                top: 0;
+            }
+
+        #PayrollDetailsTable {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+            #PayrollDetailsTable th,
+            td {
+                border: 2px solid #529432;
+            }
+
+            #PayrollDetailsTable th {
+                background-color: #24695c !important;
+                color: #fff;
+            }
+    </style>
+}
+
+<div class="col-md-12">
+    <div class="row">
+        <div class="col-sm-12 default-according">
+            <partial name="_QuickLinkPayroll" />
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5 class="text-center">SALARY OF HOTEL MISHUK STAFFS</h5>
+                    <h5 class="text-center">THE MONTH OF @Utility.GetMonthName(Model.Month)-@(Model.Year)</h5>
+                    <div class="setting-list">
+                        <button class="btn btn-primary align-self-end" id="PaySalaryBtn" type="button">Pay Marked Salary</button>
+                        @* <a class="btn btn-primary align-self-end" asp-controller="PrSalaryMst" asp-action="PrintBankSheet" asp-route-id="@Model.Id" target="_blank">Print Bank Sheet</a> *@
+                        <a class="btn btn-primary align-self-end" asp-controller="PrSalaryMst" asp-action="PrintPayroll" asp-route-id="@Model.Id" target="_blank">Print</a>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="row mb-3 px-3">
+                        <div class="col-md-2">
+                            <b>Salary Date:&nbsp;&nbsp;<span>@Utility.ConvertDateToStr(Model.SalaryDate)</span></b>
+                        </div>
+                        <div class="col-md-7"></div>
+                        <div class="col-md-3 d-flex flex-column align-items-end">
+                            <b>Approval:&nbsp;&nbsp;<span>@(Model.ApprovedDate != null ? "Approved" : "Not-Approved")</span></b>
+                            <b>Approval Date:&nbsp;&nbsp;<span>@(Model.ApprovedDate != null ? Utility.ConvertDateToStr(Model.ApprovedDate) : "Not-Approved")</span></b>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="table-responsive">
+                            <div class="fixTableHead p-2">
+                                <table id="PayrollDetailsTable" class="table table-bordered" style="width: 100%; text-align: center; font-size: 12px;">
+                                    <thead>
+                                        <tr>
+                                            <th rowspan="2" style="width: 5%">Serial</th>
+                                            <th rowspan="2" style="width: 10%">Employee Name</th>
+                                            <th rowspan="2">Employee Code</th>
+                                            <th rowspan="2">Department</th>
+                                            <th rowspan="2">Designation</th>
+                                            <th colspan="@addCount">Addition</th>
+                                            <th rowspan="2">Groos Salary</th>
+                                            <th colspan="@diductCount">Deduction</th>
+                                            <th rowspan="2">Deduction Total</th>
+                                            <th rowspan="2">Net Salary</th>
+                                            @if (Model.ApprovedDate != null)
+                                            {
+                                                <th rowspan="2">
+                                                    Action <br />
+                                                    Select All <input type="checkbox" id="selectAll" />
+                                                </th>
+                                            }
+                                        </tr>
+                                        <tr>
+                                            @if (enableAdditionParts.Count > 0)
+                                            {
+                                                enableAdditionParts = enableAdditionParts.OrderBy(c => c.SlNo).ToList();
+
+                                                foreach (var addItem in enableAdditionParts)
+                                                {
+                                                    <th>@(addItem.PartName)</th>
+                                                }
+                                            }
+                                            @if (enableDiductionParts.Count > 0)
+                                            {
+                                                enableDiductionParts = enableDiductionParts.OrderBy(c => c.SlNo).ToList();
+
+                                                foreach (var deductItem in enableDiductionParts)
+                                                {
+                                                    <th>@(deductItem.PartName)</th>
+                                                }
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model.PrSalaryDtls.Count > 0)
+                                        {
+                                            var groupedDepartments = Model.PrSalaryDtls
+                                                    .GroupBy(x => new { x.EmpDepartmentName, x.EmpDepartmentCode, x.EmpDepartmentSlNo })
+                                                    .OrderBy(g => g.Key.EmpDepartmentSlNo);
+
+                                            enableAdditionParts = enableAdditionParts.OrderBy(c => c.SlNo).ToList();
+                                            enableDiductionParts = enableDiductionParts.OrderBy(c => c.SlNo).ToList();
+                                            var totalSalarySpan = ((addCount + diductCount) + 7);
+
+                                            foreach (var departmentGroup in groupedDepartments)
+                                            {
+                                                var departmentName = departmentGroup.Key.EmpDepartmentName;
+
+                                                <!-- Department Heading Row -->
+                                                <tr>
+                                                    <td colspan="@(totalSalarySpan + 2)" style="font-weight: bold; background-color: #f2f2f2;">
+                                                        @departmentName
+                                                    </td>
+                                                </tr>
+
+                                                foreach (var (employee, i) in departmentGroup.OrderBy(x => x.EmpDesignationCode).GetItemWithIndex())
+                                                {
+                                                    var color = employee.IsHeldUp ? "lightyellow" : "white";
+
+                                                    <tr style="background-color:@color">
+                                                        <td style="width: 5%">@(i + 1)</td>
+                                                        <td>
+                                                            @employee.EmployeeName <br />
+                                                            <small>@(employee.IsHeldUp ? "(On Hold)" : "")</small>
+                                                        </td>
+                                                        <td>
+                                                            @employee.EmployeeCode
+                                                        </td>
+                                                        <td>
+                                                            @employee.EmpDepartmentName
+                                                        </td>
+                                                        <td>
+                                                            @employee.EmpDesignationName
+                                                        </td>
+
+                                                        @foreach (var item in enableAdditionParts)
+                                                        {
+                                                            if (item.PartCode == "BASIC")
+                                                            {
+                                                                <td>
+                                                                    @(employee.BasicSalary)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColA))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColA)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColB))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColB)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColC))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColC)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColD))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColD)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColE))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColE)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColF))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColF)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColG))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColG)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColH))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColH)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColI))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColI)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColK))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColK)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColL))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColL)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColM))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColM)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColN))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColN)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColO))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColO)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColP))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColP)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColQ))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColQ)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColR))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColR)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColS))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColS)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColT))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColT)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColU))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColU)
+                                                                </td>
+                                                            }
+                                                        }
+
+                                                        <td>
+                                                            @employee.GrossSalary
+                                                        </td>
+
+                                                        @foreach (var item in enableDiductionParts)
+                                                        {
+                                                            if (item.PartCode == nameof(employee.ColA))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColA)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColB))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColB)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColC))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColC)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColD))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColD)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColE))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColE)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColF))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColF)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColG))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColG)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColH))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColH)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColJ))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColJ)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColK))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColK)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColL))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColL)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColM))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColM)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColN))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColN)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColO))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColO)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColP))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColP)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColQ))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColQ)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColR))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColR)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColS))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColS)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColT))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColT)
+                                                                </td>
+                                                            }
+                                                            else if (item.PartCode == nameof(employee.ColU))
+                                                            {
+                                                                <td>
+                                                                    @(employee.ColU)
+                                                                </td>
+                                                            }
+                                                        }
+                                                        <td>
+                                                            @employee.TotalDeduction
+                                                        </td>
+                                                        <td>
+                                                            @employee.NetSalary
+                                                        </td>
+                                                        @if (Model.ApprovedDate != null)
+                                                        {
+                                                            <td>
+                                                                @if (employee.IsPaid)
+                                                                {
+                                                                    <a asp-controller="PrSalaryMst" asp-action="Payslip" asp-route-id="@employee.Id" class="text-center" title="Generate Payslip" style="font-size:medium;"><i class="fa fa-file-text-o"></i></a>
+                                                                }
+                                                                else if (!employee.IsHeldUp)
+                                                                {
+                                                                    <input type="checkbox" value="@employee.Id" class="checkbox" onclick="addPaidSalaryId(this);" />
+                                                                }
+                                                                else
+                                                                {
+                                                                    <b>Hold</b>
+                                                                }
+                                                            </td>
+                                                        }
+                                                    </tr>
+                                                }
+                                            }
+
+
+
+                                            <tr>
+                                                <td class="text-end" colspan="@totalSalarySpan"><b>Total Salary</b></td>
+                                                <td><b>@(Model.TotalSalary)</b></td>
+                                                @if (Model.ApprovedDate != null)
+                                                {
+                                                    <td></td>
+                                                }
+                                            </tr>
+                                            <tr>
+                                                <td class="text-end" colspan="@totalSalarySpan"><b>Hold Salary</b></td>
+                                                <td><b>@(Model.PrSalaryDtls.Where(c=>c.IsHeldUp).Sum(n=>n.NetSalary))</b></td>
+                                                @if (Model.ApprovedDate != null)
+                                                {
+                                                    <td></td>
+                                                }
+                                            </tr>
+                                            <tr>
+                                                <td class="text-end" colspan="@totalSalarySpan"><b>Payable Salary</b></td>
+                                                <td><b>@(Model.PrSalaryDtls.Where(c=> !c.IsHeldUp).Sum(n=>n.NetSalary))</b></td>
+                                                @if (Model.ApprovedDate != null)
+                                                {
+                                                    <td></td>
+                                                }
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @if (Model.ApprovedDate == null && (Model.ApprovedById == 0 || Model.ApprovedById == null))
+                {
+
+                    <div class="card-footer py-3 d-flex justify-content-end">
+                        <div>
+                            <button class="btn btn-primary mr-2" type="button" data-bs-toggle="modal" data-bs-target="#approveModal">Approve Payroll</button>
+                            @*<button type="button" class="btn btn-danger">Reject Payroll</button>*@
+                            <a asp-controller="PrSalaryMst" asp-action="RejectPayroll" asp-route-id="@Model.Id" class="btn btn-danger">Reject Payroll</a>
+                        </div>
+                    </div>
+                }
+
+                @*modal*@
+
+                <div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel2">Approve Payroll</h5>
+                                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <input type="hidden" id="PrId" asp-for="@Model.Id" />
+                                    <div class="mb-3">
+                                        <label class="col-form-label">Approval Remarks:</label>
+                                        <textarea class="form-control" id="ApproveRemarks"></textarea>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button class="btn btn-primary" id="ApprovePrBtn" type="button">Approve Payroll</button>
+                                <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                @*modal_end*@
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/js/ETL/PrSalaryMst/PrSalaryMstDetails.js"></script>
+}

@@ -1,0 +1,38 @@
+﻿@model Domain.ViewModel.Admin.Department.DepartmentSearchVm
+@{
+    ViewData["Title"] = "Academic Department Search";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <h4>Academic Department</h4>
+                @Html.Hidden("IsAcademic",Model.IsAcademic)
+                <div class="setting-list">
+                    <a asp-action="CreateAcademicDepartment" asp-controller="Department" class="btn btn-primary">Add Academic Department</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="DepartmentSearchTable" class="display" style="width:100%; text-align: left">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%">Serial</th>
+                                <th>Department Name</th>
+                                <th>Code</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/js/UMS/Department/DepartmentSearch.js"></script>
+}

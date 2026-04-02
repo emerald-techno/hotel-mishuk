@@ -1,0 +1,47 @@
+﻿@model Domain.ViewModel.Payroll.PrSalaryMst.PrSalaryMstVm
+@{
+    ViewData["Title"] = "Payroll Generate";
+}
+
+<div class="col-md-12">
+    <div class="row">
+        <div class="col-sm-12 p-1">
+            <div class="card">
+                <div class="card-header" style="padding: 20px 10px 0px 20px;">
+                    <h3>Generate Salary</h3>
+                    <div class="setting-list">
+                        <button type="button" id="GaneratePayrollBtn" class="btn btn-secondary mx-2">Generate</button>
+                        <a asp-action="Search" asp-controller="PrSalaryMst" class="btn btn-primary">Go Back</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form class="theme-form mega-form">
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Year</label>
+                                @Html.DropDownListFor(model => model.Year, Enumerable.Range((DateTime.Now.Year - 2), 10).Select(x => new SelectListItem { Value = x.ToString(), Text = x.ToString() }), "Select Year", new { @class = "form-control dd-type" })
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label">Month</label>
+                                @Html.DropDownListFor(model => model.Month, Enumerable.Range(1, 12).Select(x => new SelectListItem { Value = x.ToString(), Text = System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(x) }), "Select Month", new { @class = "form-control dd-type" })
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label">Salary Date</label>
+                                <input class="datepicker-here form-control" asp-for="SalaryDateStr" type="text" data-language="en">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="PayrollPartialDiv"></div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/ETL/PrSalaryMst/PrSalaryMstGenerate.js"></script>
+}

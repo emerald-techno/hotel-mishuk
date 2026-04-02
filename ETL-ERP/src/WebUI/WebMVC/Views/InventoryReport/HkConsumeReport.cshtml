@@ -1,0 +1,79 @@
+﻿@model Domain.ViewModel.Report.ConsumeReportVm
+@{
+    ViewData["Title"] = "Hk Consume Report";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkInventory" />
+        <form>
+            <input type="hidden" asp-for="DepartmentId" />
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Hk Consume Report</h5>
+                    <div class="setting-list">
+                        <input type="button" id="ShowReportBtn" class="btn btn-primary" value="Show Report" />
+                    </div>
+                </div>
+                <div class="card-body table-responsive">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="col-form-label">Category</label>
+                            <select asp-for="CategoryId" asp-items="Model.CategoryLookUp" class="form-control dd-type"></select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label">Item</label>
+                            <select asp-for="ItemId" asp-items="Model.ItemLookUp" class="form-control dd-type"></select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="col-form-label">From Date</label>
+                            <input class="form-control from_dt" asp-for="StrFromDate" placeholder="Enter start date" data-language="en" />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label">To Date</label>
+                            <input asp-for="StrToDate" class="form-control to_dt" placeholder="Enter end date" data-language="en" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Hk Consume Report</h5>
+                    <div class="setting-list">
+                        <button class="btn btn-primary" id="ReportPrintBtn">PDF</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <dvi class="table-responsive">
+                        <div style="text-align: center;">
+                            <div style="text-align: center; font-weight: bold; font-size: 16px; line-height: 20px">HK ITEM CONSUME REPORT</div>
+                        </div>
+                        <div id="ReportContainer"></div>
+                    </dvi>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        var fromDate = @Model.StrFromDate;
+        var toDate = @Model.StrToDate;
+
+        $(".from_dt").datepicker({
+            setDate: fromDate,
+            dateFormat: 'dd/mm/yyyy',
+        });
+        $(".to_dt").datepicker({
+            setDate: toDate,
+            dateFormat: 'dd/mm/yyyy',
+        });
+    </script>
+    <script src="~/js/ETL/InventoryReport/DepartmentConsumeReport.js"></script>
+}

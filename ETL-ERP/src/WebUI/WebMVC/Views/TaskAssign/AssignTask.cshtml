@@ -1,0 +1,70 @@
+﻿@model Domain.ViewModel.HouseKeeping.TaskAssign.TaskAssignSaveVm
+@{
+    ViewBag.Title = "Assign Task To House Keeper";
+}
+
+@section styles{
+    <style>
+    </style>
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Task Assign To Keeper</h5>
+            </div>
+            <form asp-action="Create" class="form theme-form">
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>House Keeper *</label>
+                                <select class="form-control dd-type" asp-for="HouseKeeperId" asp-items="Model.EmployeeLookUp"></select>
+                            </div>
+                        </div>
+                        <div class="col-md-4"></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table table-bordered" id="AssignRoomInfoTable">
+                                <thead>
+                                    <tr>
+                                        <th style="width:5%;">SlNo.</th>
+                                        <th style="width:80%;">House Keeper Assigned Room</th>
+                                        <th style="width:10%;">Status</th>
+                                        <th style="width:5%;">Action</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <table class="table table-bordered" id="TaskInfoTable">
+                                <thead>
+                                    <tr>
+                                        <th style="width:5%;">SlNo.</th>
+                                        <th style="width:60%;">Task Info</th>
+                                        <th style="width:30%;">Remarks</th>
+                                        <th style="width:5%;">Action</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="button" id="TaskAssignBtn">Assign</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/ETL/TaskAssign/TaskAssignSave.js"></script>
+}

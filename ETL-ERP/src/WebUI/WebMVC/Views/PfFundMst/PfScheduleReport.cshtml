@@ -1,0 +1,61 @@
+﻿@model Domain.ViewModel.Pf.PfFund.PfFundMstVm
+@{
+    ViewData["Title"] = "PF Schedule Report";
+    Layout = "_Layout";
+}
+
+<div class="col-sm-12 default-according">
+    <partial name="_QuickLinkPf" />
+<form>
+    <div class="card">
+        <div class="card-header p-4">
+            <h5>PF Schedule Report</h5>
+            <div class="setting-list">
+                <input type="button" id="ReportBtn" class="btn btn-primary" value="Show Report" />
+            </div>
+        </div>
+        <div class="card-body table-responsive">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="col-form-label">From Date</label>
+                            <input class="form-control datepicker-here" asp-for="FormDateStr" placeholder="Enter start date" data-language="en" />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label">To Date</label>
+                            <input asp-for="ToDateStr" class="form-control datepicker-here" placeholder="Enter end date" data-language="en" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header p-4">
+            <h5>PF Schedule Report</h5>
+            <div class="setting-list">
+                <button class="btn btn-primary" id="PrintBtn">PDF</button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <div style="text-align: center;">
+                    <div style="text-align: center; font-weight: bold; font-size: 16px; line-height: 20px">PF SCHEDULE REPORT</div>
+                    <div style="text-align: center; font-weight: bold; font-size: 11px; line-height: 16px">
+                        <div id="ltReportFilter" runat="server" Text=""></div>
+                    </div>
+                </div>
+                <div id="ReportContainer"></div>
+            </div>
+        </div>
+    </div>
+
+</form>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/ETL/PfFund/PfScheduleReport.js"></script>
+}

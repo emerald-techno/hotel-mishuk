@@ -1,0 +1,114 @@
+﻿@model Domain.ViewModel.Pf.EmpLoan.EmpLoanMstVm
+@{
+    ViewData["Title"] = "Employee Loan Setup";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <h3>Loan Setup</h3>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="EmpLoanMst" class="btn btn-primary">Search Employee Loan</a>
+                </div>
+            </div>
+            <form asp-controller="EmpLoanMst" asp-action="Create" class="theme-form mega-form">
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label class="form-label">Employee *</label>
+                                    <select asp-for="EmployeeId" asp-items="Model.EmployeeLookup" class="form-control dd-type"></select>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label">Loan Pass Date *</label>
+                                    <input class="datepicker-here form-control" asp-for="LoanPassDateStr" type="text" data-language="en">
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label">Loan Disbursed Date *</label>
+                                    <input class="datepicker-here form-control" asp-for="LoanPayDateStr" type="text" data-language="en">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label class="form-label">Loan Amount *</label>
+                                    <input type="number" asp-for="LoanAmount" class="form-control" />
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label">Interest Rate (%) *</label>
+                                    <input type="number" asp-for="InterestRate" class="form-control" />
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label">Instalment Amount *</label>
+                                    <input type="number" asp-for="InsAmount" class="form-control" />
+                                </div>
+
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label class="form-label">First Instalment Date *</label>
+                                    <input class="datepicker-here form-control" asp-for="FirstInsDateStr" type="text" data-language="en">
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label">Loan Document</label>
+                                    <input class="form-control" type="file" name="LoanFile">
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label">Remarks</label>
+                                    <textarea asp-for="Remarks" rows="3" class="form-control"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-10"></div>
+                                <div class="col-md-2 d-flex justify-content-end">
+                                    <button type="button" id="InstalmetGenBtn" class="btn btn-primary">Generate Instalment</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-bordered" id="instalment-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 5%">Serial</th>
+                                        <th>Instalment Date</th>
+                                        <th>Instalment Amount</th>
+                                        <th>Interest Amount</th>
+                                        <th>Net Pay Amount</th>
+                                        <th>Due Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="InstalmentTbody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card-footer d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/js/ETL/EmpLoan/EmpLoanCreate.js"></script>
+}

@@ -1,0 +1,45 @@
+﻿@using WebMVC.Models.IdentityModels;
+@model Domain.ViewModel.Admin.Department.DepartmentSearchVm
+@{
+    var currentUser = User.Identity;
+    ViewData["Title"] = "Department Search";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="row">
+        <div class="col-sm-12 default-according">
+            <div class="card">
+                <div class="card-header p-4">
+                    <h4>Department</h4>
+                    @Html.Hidden("IsAcademic",Model.IsAcademic)
+                    <div class="setting-list">
+                        @if (currentUser.HasPermission(Permissions.SuperAdmin, Permissions.Departments.Create))
+                        {
+                            <a asp-action="Create" asp-controller="Department" class="btn btn-primary">Add Department</a>
+                        }
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="DepartmentSearchTable" class="display" style="width:100%; text-align: left">
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%">Serial</th>
+                                    <th>Department Name</th>
+                                    <th>Code</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/js/ETL/Department/DepartmentSearch.js"></script>
+}

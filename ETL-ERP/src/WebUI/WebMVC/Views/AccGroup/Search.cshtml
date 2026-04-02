@@ -1,0 +1,36 @@
+﻿@model Domain.ViewModel.Accounting.AccGroup.AccGroupSearchVm
+@{
+    ViewData["Title"] = "Account Group Search";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkAccounts" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h4>Account Group</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="AccGroupSearchTable" class="display" style="width:100%; text-align: left">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%">Serial</th>
+                                <th>Name</th>
+                                <th>Group Code</th>
+                                <th>Group Short Code</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/js/ETL/AccGroup/AccGroupSearch.js"></script>
+}

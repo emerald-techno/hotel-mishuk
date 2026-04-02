@@ -1,0 +1,43 @@
+﻿@model Domain.ViewModel.Attendance.MonthlyAttSheet.MonthlyAttSheetMstVm
+@{
+    ViewData["Title"] = "Monthly Attendance Sheet";
+    var startYear = DateTime.Now.Year - 2;
+}
+
+<div class="col-md-12">
+    <div class="row">
+        <div class="col-sm-12 default-according" style="padding-bottom:40px;">
+            <partial name="_QuickLinkPayroll" />
+            <div class="card">
+                <div class="card-header pb-4">
+                    <h3>Attendance Report</h3>
+                    <div class="setting-list">
+                        <button type="button" id="ManualGanerateReportBtn" class="btn btn-primary">Manual Generate</button>
+                        <button type="button" id="GanerateReportBtn" class="btn btn-primary">Auto Generate</button>
+                    </div>
+                </div>
+                <form class="theme-form mega-form">
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Year</label>
+                                @Html.DropDownListFor(model => model.Year, Enumerable.Range(startYear, 10).Select(x => new SelectListItem { Value = x.ToString(), Text = x.ToString() }), "Select Year", new { @class = "form-control dd-type" })
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Month</label>
+                                @Html.DropDownListFor(model => model.Month, Enumerable.Range(1, 12).Select(x => new SelectListItem { Value = x.ToString(), Text = System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(x) }), "Select Month", new { @class = "form-control dd-type" })
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="ReportPartialDiv"></div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/ETL/MonthlyAttSheet/MonthlyAttSheetSetup.js"></script>
+}

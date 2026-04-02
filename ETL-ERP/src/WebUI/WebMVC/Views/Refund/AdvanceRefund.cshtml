@@ -1,0 +1,60 @@
+﻿@model Domain.ViewModel.HotelManagement.AdvanceRefund.AdvanceRefundVm
+@{
+    ViewData["Title"] = "Refund Advance";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Refund Booking Advance Amount</h5>
+            </div>
+            <form asp-action="AdvanceRefund" id="RefundForm" class="form theme-form">
+                <div class="card-body py-3">
+
+                    <div class="row mb-3">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Booking *</label>
+                            <select asp-for="BookingId" asp-items="Model.BookingServiceLookUp" class="dd-type"></select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3" id="booking-sec">
+                            @*<table class="table table-bordered" style="width:100%;">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th colspan="2"><h4>Booking Info</h4></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ReceiveTBody">
+                                    <tr>
+                                        <td><b>Booking No</b></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>*@
+                        </div>
+                        <div class="col-md-6 mb-3">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="button" id="RefundSubmitBtn">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="~/js/ETL/AdvanceRefund/RefundEntry.js"></script>
+}

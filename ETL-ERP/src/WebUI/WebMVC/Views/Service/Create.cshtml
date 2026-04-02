@@ -1,0 +1,53 @@
+﻿@model Domain.ViewModel.HotelManagement.Service.ServiceVm
+@{
+    ViewData["Title"] = "Service Create";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkHt" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Create Service</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="Service" class="btn btn-primary">Search Service</a>
+                </div>
+            </div>
+            <form asp-action="Create" class="form theme-form">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Service Name</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="ServiceName" type="text" placeholder="Enter Service name">
+                                    <span asp-validation-for="ServiceName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Service Code</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="ServiceCode" type="text" readonly>
+                                    <span asp-validation-for="ServiceCode" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Service Ladger</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control dd-type" asp-for="LedgerId" asp-items="Model.LadgerLookUp"></select>
+                                    <span asp-validation-for="LedgerId" class="text-danger" ></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

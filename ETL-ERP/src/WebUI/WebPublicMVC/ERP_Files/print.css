@@ -1,0 +1,489 @@
+﻿
+#div_print_cnt {
+    font-family: Arial,'Arial Unicode MS',Verdana,SolaimanLipi;
+}
+
+.table {
+    width: 100%;
+    border: 0.5px solid #7b7b7b;
+    border-collapse: collapse;
+    font-size: 10px;
+}
+
+#print_table {
+    border: 0.5px solid #7b7b7b;
+    border-collapse: collapse;
+    font-size: 12px;
+    padding: 0px;
+    margin: 0px;
+}
+
+.table th {
+    padding: 5px 2px;
+    text-align: center;
+    font-weight: bold;
+    border: 0.5px solid #7b7b7b;
+    height: 20px;
+}
+
+.table td {
+    text-align: left;
+    border: 0.5px solid #7b7b7b;
+    padding: 3px; /*IT WAS COMMENTED */
+    height: 20px;
+}
+
+.table-md td {
+    text-align: left;
+    border: 0.5px solid #7b7b7b;
+    padding: 3px; /*IT WAS COMMENTED */
+    font-size: 9px;
+}
+
+.brd-ls-table {
+    width: 100%;
+    font-size: 8px;
+    font-family: 'Times New Roman',Verdana,Arial;
+}
+
+#print_table td {
+    text-align: center;
+}
+
+
+
+
+/*Pay Slip Box*/
+.pay-slip-box {
+    width: 47%;
+    float: left;
+    border: 1px solid #7d7d7d;
+    margin: 5px;
+    font-size: 12px !important;
+}
+
+.center-text {
+    text-align: center;
+}
+
+.header-part h1, .header-part h2, .header-part h3 {
+    padding: 0px;
+    margin: 0px;
+}
+
+.header-part h2 {
+    font-size: 13px;
+}
+
+.header-part h3 {
+    font-size: 11px;
+}
+
+.border-less, .border-less th, .border-less td {
+    border: 0px !important;
+    font-size: 12px !important;
+    padding: 1px 4px !important;
+}
+
+.border, .border th, .border td {
+    border: 0.5px solid #7d7d7d !important;
+    font-size: 12px !important;
+}
+
+    .border th {
+        border: 0.5px solid #7d7d7d !important;
+        font-size: 12px !important;
+    }
+
+    .border td {
+        border: 0.5px solid #7d7d7d !important;
+        font-size: 12px !important;
+    }
+
+#tbl_item td {
+    border: 0.5px solid #7d7d7d !important;
+    font-size: 11px !important;
+}
+
+#tbl_item th {
+    background-color: #ebebeb;
+    font-weight: normal;
+    font-size: 11px !important;
+}
+
+#pi_table, #pi_table th, #pi_table td {
+    border: 0px;
+    font-size: 11px;
+}
+
+    #pi_table td {
+        border: 0px;
+        padding: 3px;
+        font-family: 'Times New Roman' !important;
+    }
+
+#rules_table {
+    padding: 0px;
+    margin: 0px;
+}
+
+    #rules_table td {
+        padding: 3px;
+    }
+
+#desc_table td {
+    padding-bottom: 3px;
+}
+
+.disable-row {
+    background-color: darkgray !important;
+}
+
+.tbl-font-md td {
+    font-size: 9px;
+}
+
+.right-text {
+    text-align: right !important;
+}
+
+.font-time {
+    font-family: 'Times New Roman';
+}
+
+
+
+.md-font-table td {
+    text-align: left;
+    border: 0.5px solid #7b7b7b;
+    padding: 3px; /*IT WAS COMMENTED */
+    font-size: 9px;
+}
+
+.md-font-table-2 th {
+    font-size: 13px;
+}
+
+.md-font-table-2 td {
+    text-align: left;
+    border: 0.5px solid #7b7b7b;
+    padding: 2px; /*IT WAS COMMENTED */
+    font-size: 12px;
+}
+
+#dtl_table th {
+    font-size: 11px !important;
+}
+
+#dtl_table td {
+    font-size: 9px !important;
+}
+
+#master_table td {
+    font-size: 10px !important;
+}
+
+.text-start {
+    text-align: left !important;
+}
+
+.text-end {
+    text-align: right !important;
+}
+
+.text-center {
+    text-align: center !important;
+}
+
+
+.PayslipPrintTable {
+    width: 100%;
+    font-size: 12px;
+}
+
+    .PayslipPrintTable td {
+        text-align: left;
+        padding: 3px;
+        font-size: 12px;
+    }
+
+
+.PayrollPrintTable {
+    width: 100%;
+    border: 0.5px solid #7b7b7b;
+    border-collapse: collapse;
+    font-size: 8px;
+    margin-top: 10px;
+}
+
+    .PayrollPrintTable th {
+        padding: 5px 2px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 10px;
+        border: 0.5px solid #7b7b7b;
+        height: 25px;
+    }
+
+    .PayrollPrintTable td {
+        text-align: left;
+        border: 0.5px solid #7b7b7b;
+        padding: 3px; /*IT WAS COMMENTED */
+        font-size: 8px;
+        height: 25px;
+    }
+
+.addition_print-table {
+    width: 100%;
+    border: 0.5px solid #7b7b7b;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+    .addition_print-table tr th {
+        padding: 8px;
+        font-weight: bold;
+        border: 0.5px solid #7b7b7b;
+        background-color: aliceblue;
+    }
+
+        .addition_print-table tr th:last-child {
+            padding: 8px;
+            background-color: aliceblue;
+            text-align: end;
+        }
+
+    .addition_print-table tr td {
+        padding: 8px;
+        border: 0.5px solid #7b7b7b;
+    }
+
+        .addition_print-table tr td:last-child {
+            padding: 8px;
+            text-align: end;
+        }
+
+    .addition_print-table tr:last-child {
+        font-weight: bold;
+        background-color: aliceblue;
+    }
+
+        .addition_print-table tr:last-child td:first-child {
+            text-align: end;
+        }
+
+.deduction_print-table {
+    width: 100%;
+    border: 0.5px solid #7b7b7b;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+    .deduction_print-table tr:last-child {
+        font-weight: bold;
+        background-color: aliceblue;
+    }
+
+        .deduction_print-table tr:last-child td:first-child {
+            text-align: end;
+        }
+
+    .deduction_print-table tr th {
+        padding: 8px;
+        background-color: aliceblue;
+        border: 0.5px solid #7b7b7b;
+    }
+
+        .deduction_print-table tr th:last-child {
+            padding: 8px;
+            background-color: aliceblue;
+            text-align: end;
+        }
+
+    .deduction_print-table tr td {
+        padding: 8px;
+        border: 0.5px solid #7b7b7b;
+    }
+
+        .deduction_print-table tr td:last-child {
+            padding: 8px;
+            text-align: end;
+        }
+
+.netpay_print-table {
+    width: 100%;
+    border: 0.5px solid #7b7b7b;
+    border-collapse: collapse;
+    font-weight: bold;
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+    .netpay_print-table tr td {
+        padding: 8px;
+        text-align: end;
+        background-color: aliceblue;
+        border: 0.5px solid #7b7b7b;
+    }
+
+
+.TranscriptPrintTable {
+    width: 100%;
+    border: 0.5px solid #7b7b7b;
+    border-collapse: collapse;
+    font-size: 11px;
+}
+
+    .TranscriptPrintTable th {
+        padding: 5px 2px;
+        text-align: center;
+        font-weight: bold;
+        border: 0.5px solid #7b7b7b;
+        height: 22px;
+    }
+
+    .TranscriptPrintTable td {
+        text-align: left;
+        border: 0.5px solid #7b7b7b;
+        padding: 3px; /*IT WAS COMMENTED */
+        height: 20px;
+    }
+
+.PfFundDetailSummaryTable {
+    width: 100%;
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+    .PfFundDetailSummaryTable td {
+        text-align: left;
+        padding: 3px;
+        height: 20px;
+    }
+
+
+.master-table {
+    width: 100%;
+    font-size: 10px;
+}
+
+    .master-table th {
+        padding: 5px 2px;
+        text-align: center;
+        font-weight: bold;
+        height: 20px;
+    }
+
+    .master-table td {
+        text-align: left;
+        padding: 3px; /*IT WAS COMMENTED */
+        height: 20px;
+    }
+
+.cv-table {
+    width: 100%;
+    font-size: 12px;
+}
+
+.td-top-heading {
+    font-size: 25px;
+    padding: 30px;
+    text-align: center;
+}
+
+.td-data {
+    font-size: 12px;
+    padding: 10px;
+    text-align: left;
+}
+
+.td-heading {
+    font-size: 18px;
+    padding: 35px 35px 35px 0;
+    text-align: left;
+    text-decoration: underline;
+    font-weight: 700;
+}
+
+.receipt-table {
+    width: 100%;
+    font-size: 10px;
+}
+
+    .receipt-table th {
+        padding: 5px 2px;
+        text-align: center;
+        font-weight: bold;
+        height: 20px;
+    }
+
+    .receipt-table td {
+        text-align: left;
+        padding: 3px; /*IT WAS COMMENTED */
+        height: 20px;
+    }
+
+.receipt-table-dtl {
+    border: 0px !important;
+    border-bottom: 0.5px dotted #808080;
+}
+
+    .receipt-table-dtl td {
+        height: 20px;
+        padding: 2px;
+    }
+
+.receipt-border {
+    padding-bottom: 5px;
+    border-bottom: 0.5px dotted #808080 !important;
+}
+
+.last-child {
+    border: 0.5px dotted #808080 !important;
+}
+
+.f-26 {
+    font-size: 26px;
+}
+
+.f-12 {
+    font-size: 12px;
+}
+
+.f-11 {
+    font-size: 11px;
+}
+
+.f-10 {
+    font-size: 10px;
+}
+
+.f-9 {
+    font-size: 9px;
+}
+
+.f-8 {
+    font-size: 8px;
+}
+
+.bill-seal {
+    border: 2px solid #7b7b7b;
+    border-collapse: collapse;
+    margin-top: 200px;
+}
+
+    .bill-seal td {
+        text-align: center;
+        padding: 10px; /*IT WAS COMMENTED */
+        height: 20px;
+    }
+
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+.ml-5 {
+    margin-left: 5px;
+}

@@ -1,0 +1,61 @@
+﻿@model Domain.ViewModel.Admin.SetHoliday.SetHolidaySearchVm
+@{
+    ViewData["Title"] = "Holiday Search";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkLeave" />
+        <form>
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Holiday</h5>
+                    <div class="setting-list">
+                        <a asp-action="Create" asp-controller="SetHoliday" class="btn btn-secondary">Add Holiday</a>
+                        <input class="btn btn-primary" type="button" id="HolidaySearchBtn" value="Search" />
+                    </div>
+                </div>
+                <div class="card-body table-responsive">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Year</label>
+                                <select asp-for="HolidayYear" asp-items="Model.YearLookUp" class="dd-type"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header p-4">
+                    <h4>Holiday</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="SetHolidaySearchTable" class="display" style="width:100%; text-align: left">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th style="width: 5%">Serial</th>
+                                    <th id="holiday-year">Holiday Year</th>
+                                    <th>Holiday Name</th>
+                                    <th>Holiday Type</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Length (Day)</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/js/ETL/SetHoliday/SetHolidaySearch.js"></script>
+}

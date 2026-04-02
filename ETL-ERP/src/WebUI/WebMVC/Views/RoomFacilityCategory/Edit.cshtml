@@ -1,0 +1,54 @@
+﻿@model Domain.ViewModel.HotelManagement.RoomFacilityCategory.HtRoomFacilityCategoryVm
+@{
+    ViewData["Title"] = "Room Facility Category Edit";
+    Layout = "_Layout";
+}
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkHt" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Edit Room Facility Category</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="RoomFacilityCategory" class="btn btn-primary">Search Room Facility Category</a>
+                </div>
+            </div>
+            <form asp-action="Edit" class="form theme-form">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Room Facility Category Name</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="CategoryName" type="text" placeholder="Enter room facility category name">
+                                    <span asp-validation-for="CategoryName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Active Status</label>
+                                <div class="col-sm-9">
+                                    <div class="form-group">
+                                        <input asp-for="IsActive" type="checkbox" />
+                                    </div>
+                                    <span asp-validation-for="IsActive" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Description</label>
+                                <div class="col-sm-9">
+                                    <textarea class="form-control" rows="4" asp-for="Description"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

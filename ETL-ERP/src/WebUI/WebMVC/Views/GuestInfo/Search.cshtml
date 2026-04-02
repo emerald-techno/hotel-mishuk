@@ -1,0 +1,46 @@
+﻿@model Domain.ViewModel.HotelManagement.GuestInfo.HtGuestInfoSearchVm
+@{
+    ViewData["Title"] = "Guest Info Search";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkHt" />
+        <form>
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Guest List</h5>
+                    <div class="setting-list">
+                        <input class="btn btn-primary" type="button" id="GuestSearchBtn" value="Search" />
+                        <a asp-action="Create" asp-controller="GuestInfo" class="btn btn-primary">New Guest</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table table-responsive">
+                        <table id="GuestInfoSearchTable" class="display" style="width:100%; text-align: left">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th style="width: 5%">Sl</th>
+                                    <th>Photo</th>
+                                    <th>Guest Code</th>
+                                    <th>Name</th>
+                                    <th>Mobile</th>
+                                    <th>Company</th>
+                                    <th>Vip Status</th>
+                                    <th>Note</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/ETL/GuestInfo/GuestInfoSearch.js"></script>
+}

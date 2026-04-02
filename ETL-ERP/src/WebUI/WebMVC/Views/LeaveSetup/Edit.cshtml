@@ -1,0 +1,72 @@
+﻿@model Domain.ViewModel.Leave.LeaveSetup.LeaveSetupVm
+@{
+    ViewData["Title"] = "Leave Setup Edit";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Edit Leave Setup</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="LeaveSetup" class="btn btn-primary">Search LeaveSetup</a>
+                </div>
+            </div>
+            <form asp-action="Edit" class="form theme-form">
+                @Html.HiddenFor(c=>c.ActionById)
+                @Html.HiddenFor(c=>c.ActionDate)
+                <div class="card-body">
+                    <div class="row">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label class="col-form-label">Leave Type</label>
+                                <select asp-for="LeaveTypeId" asp-items="Model.LeaveTypeLookUp" class="dd-type"></select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="col-form-label">Leave Balance</label>
+                                <input class="form-control" id="leaveBalance" asp-for="LeaveBalance" type="number">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="col-form-label">Gender</label>
+                                <input class="form-control" asp-for="Gender" type="hidden">
+                                <input class="form-control" id="leaveGender" asp-for="GenderText" type="text" readonly>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label class="col-form-label">Leave Limit Type *</label>
+                                <select asp-for="LeaveLimitType" asp-items="Model.LeaveLimitTypeLookUp" class="dd-type"></select>
+                                <span asp-validation-for="LeaveLimitType" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="col-form-label">Leave After</label>
+                                <input class="form-control" asp-for="LeaveAfter" type="number">
+                            </div>
+                            <div class="col-md-4">
+                                <div class="media" style="margin-top:35px;margin-left:20px;">
+                                    <label class="col-form-label m-r-10">Is Carry Forward</label>
+                                    <div class="media-body icon-state">
+                                        <label class="switch">
+                                            <input type="checkbox" asp-for="IsCarryForward"><span class="switch-state"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/js/ETL/LeaveSetup/LeaveSetupCreate.js"></script>
+}

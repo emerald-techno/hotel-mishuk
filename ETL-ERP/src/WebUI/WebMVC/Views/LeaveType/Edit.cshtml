@@ -1,0 +1,63 @@
+﻿@model Domain.ViewModel.Leave.LeaveType.LeaveTypeVm
+@{
+    ViewData["Title"] = "Leave Type Edit";
+}
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Edit LeaveType</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="LeaveType" class="btn btn-primary">Search Leave Type</a>
+                </div>
+            </div>
+            <form asp-action="Edit" class="form theme-form">
+                <input type="hidden" asp-for="Gender" />
+                @Html.HiddenFor(c=>c.ActionById)
+                @Html.HiddenFor(c=>c.ActionDate)
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Type Name *</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="TypeName" type="text" placeholder="Enter Type name" readonly>
+                                    <span asp-validation-for="TypeName" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Balance</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="Balance" type="text" placeholder="Enter balance">
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Description</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="Desc" type="text" placeholder="Enter description">
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Gender *</label>
+                                <div class="col-sm-9">
+                                    <select asp-for="Gender" asp-items="Model.GenderLookUp" class="form-control dd-type" disabled></select>
+                                    <span asp-validation-for="Gender" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

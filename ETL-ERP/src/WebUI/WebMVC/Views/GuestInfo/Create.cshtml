@@ -1,0 +1,136 @@
+﻿@model Domain.ViewModel.HotelManagement.GuestInfo.HtGuestInfoVm
+@{
+    ViewData["Title"] = "Guest Info Create";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkHt" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Guest Setup</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="GuestInfo" class="btn btn-primary">Search Guest</a>
+                </div>
+            </div>
+            <form asp-action="Create" class="form theme-form" data-parsley-validate enctype="multipart/form-data">
+                <div class="card-body">
+                    <div class="row m-1">
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label class="col-form-label">Initial</label>
+                                    <select asp-for="Salutation" asp-items="Model.SalutationLookUp" class="dd-type"></select>
+                                    <span asp-validation-for="Salutation" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-5">
+                                    <label class="col-form-label">First Name *</label>
+                                    <input class="form-control" asp-for="FirstName" type="text">
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-5">
+                                    <label class="col-form-label">Last Name *</label>
+                                    <input class="form-control" asp-for="LastName" type="text">
+                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label">Mobile</label>
+                            <input class="form-control" asp-for="Mobile" type="number">
+                            <span asp-validation-for="Mobile" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label">Company</label>
+                            <select asp-for="CompanyId" asp-items="Model.ClientCompanyLookUp" class="dd-type"></select>
+                        </div>
+                    </div>
+                    <div class="row m-1">
+                        <div class="col-md-4">
+                            <label class="col-form-label">Date of Birth</label>
+                            <input class="form-control" asp-for="Dob" type="date">
+                            <span asp-validation-for="Dob" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label">Gender *</label>
+                            <select asp-for="Gender" asp-items="Model.GenderLookUp" class="dd-type"></select>
+                            <span asp-validation-for="Gender" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label">Guest Photo</label>
+                            <input asp-for="PhotoFile" class="form-control" type="file" name="PhotoFile">
+                            <span asp-validation-for="PhotoFile" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row m-1">
+                        
+                        <div class="col-md-4">
+                            <label class="col-form-label">Email</label>
+                            <input class="form-control" asp-for="Email" type="email">
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label">Occupation</label>
+                            <input class="form-control" asp-for="Occupation" type="text">
+                            <span asp-validation-for="Occupation" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row m-1">
+                        <div class="col-md-4">
+                            <label class="col-form-label">Identity *</label>
+                            <select asp-for="IdentityType" asp-items="Model.IdentityTypeLookUp" class="dd-type"></select>
+                            <span asp-validation-for="IdentityType" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label">Id No</label>
+                            <input class="form-control" asp-for="IdentityNo" type="number">
+                            <span asp-validation-for="IdentityNo" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Identity Photo</label>
+                            <input asp-for="IdentityFile" class="form-control" type="file" name="IdentityFile">
+                        </div>
+                    </div>
+                    <div class="row m-1">
+                        <div class="col-md-4">
+                            <label class="col-form-label">Country *</label>
+                            <select asp-for="CountryId" asp-items="Model.CountryLookUp" class="dd-type"></select>
+                            <span asp-validation-for="CountryId" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label">District *</label>
+                            <select asp-for="DistrictId" asp-items="Model.DistrictLookUp" class="dd-type"></select>
+                            <span asp-validation-for="DistrictId" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="media" style="margin-top:35px;">
+                                <label class="col-form-label m-r-10">VIP Status</label>
+                                <div class="media-body icon-state">
+                                    <label class="switch">
+                                        <input type="checkbox" asp-for="IsVip"><span class="switch-state"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row m-1">
+                        <div class="col-md-6">
+                            <label class="col-form-label">Address</label>
+                            <textarea asp-for="Address" class="form-control" rows="3"></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="col-form-label">Notes</label>
+                            <textarea asp-for="Note" class="form-control" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

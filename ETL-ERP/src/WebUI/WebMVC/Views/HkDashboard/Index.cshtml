@@ -1,0 +1,127 @@
+﻿@model Domain.ViewModel.HouseKeeping.Dashboard.HkDashboard
+@{
+    ViewData["Title"] = "House Keeping Dashboard";
+}
+
+<div class="container-fluid general-widget">
+    <div class="row">
+        <div class="col-sm-6 col-xl-3 col-lg-6">
+            <div class="card o-hidden border-0">
+                <div class="bg-warning b-r-4 card-body">
+                    <div class="media static-top-widget">
+                        <div class="align-self-center text-center"><i data-feather="calendar"></i></div>
+                        <div class="media-body">
+                            <span class="m-0">Dirty Room</span>
+                            <h4 class="mb-0 counter">@Model.DirtyRoom</h4><i class="icon-bg" data-feather="calendar"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3 col-lg-6">
+            <div class="card o-hidden border-0">
+                <div class="bg-secondary b-r-4 card-body">
+                    <div class="media static-top-widget">
+                        <div class="align-self-center text-center"><i data-feather="book"></i></div>
+                        <div class="media-body">
+                            <span class="m-0">Available Worker</span>
+                            <h4 class="mb-0 counter">@Model.AvailableWorker</h4><i class="icon-bg" data-feather="book"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3 col-lg-6">
+            <div class="card o-hidden border-0">
+                <div class="bg-primary b-r-4 card-body">
+                    <div class="media static-top-widget">
+                        <div class="align-self-center text-center"><i data-feather="log-in"></i></div>
+                        <div class="media-body">
+                            <span class="m-0">Today Task Complete</span>
+                            <h4 class="mb-0 counter">@Model.TaskCompleted</h4><i class="icon-bg" data-feather="log-in"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3 col-lg-6">
+            <div class="card o-hidden border-0">
+                <div class="bg-info b-r-4 card-body">
+                    <div class="media static-top-widget">
+                        <div class="align-self-center text-center"><i data-feather="user-plus"></i></div>
+                        <div class="media-body">
+                            <span class="m-0">Task Remaining</span>
+                            <h4 class="mb-0 counter">@Model.TaskRemaining</h4><i class="icon-bg" data-feather="user-plus"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-7">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Room Infos</h5>
+                    <div class="setting-list d-flex">
+                        <p style="margin-right:5px;"><span class="badge rounded-pill badge-primary">&nbsp;&nbsp;</span>&nbsp; CO</p>
+                        <p style="margin-right:5px;"><span class="badge rounded-pill badge-warning">&nbsp;&nbsp;</span>&nbsp; VD</p>
+                        <p style="margin-right:5px;"><span class="badge rounded-pill badge-danger">&nbsp;&nbsp;</span>&nbsp; OOO</p>
+                    </div>
+                </div>
+                <div class="card-body btn-showcase" style="padding:15px">
+                    <div class="col-sm-12">
+                        @foreach (var room in Model.DirtyRooms)
+                        {
+                            if (room.CleaningStatus == Domain.Enums.AppEnums.CleaningStatusEnum.OOO)
+                            {
+                                <div class="btn btn-danger" style="max-width: 120px" data-bs-toggle="tooltip" data-bs-placement="top" title="Out Of Order">
+                                    <span>Room: @room.RoomNo</span>
+                                </div>
+                            }
+                            else if (room.CleaningStatus == Domain.Enums.AppEnums.CleaningStatusEnum.VD)
+                            {
+                                <div class="btn btn-warning" style="max-width: 120px" data-bs-toggle="tooltip" data-bs-placement="top" title="Dirty">
+                                    <span>Room: @room.RoomNo</span>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="btn btn-secondary" style="max-width: 120px" data-bs-toggle="tooltip" data-bs-placement="top" title="Checked Out">
+                                    <span>Room: @room.RoomNo</span>
+                                </div>
+                            }
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Task Status</h5>
+                </div>
+                <div class="card-body" style="padding:15px">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>House Keeper Name</th>
+                                <th>Room No</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.TaskLists)
+                            {
+                                <tr>
+                                    <td>@item.HouseKeeperName</td>
+                                    <td>@item.RoomNo</td>
+                                    <td>@item.Status</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

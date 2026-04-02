@@ -1,0 +1,82 @@
+﻿@model Domain.ViewModel.Inventory.BillPayment.InventoryBillPaymentVm
+@{
+    ViewData["Title"] = "Order Bill Payment";
+}
+@section styles {
+    <style>
+        /* Chrome, Safari, Edge, Opera */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
+}
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Bill Payment</h5>
+            </div>
+            <form asp-action="OrderPayBill" id="OrderBillPaymentForm" class="form theme-form">
+                <div class="card-body py-3">
+
+                    <div class="row mb-3">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Order *</label>
+                            <select asp-for="OrderMstId" asp-items="Model.OrderLookUp" class="dd-type"></select>
+                        </div>
+
+                        <div class="col-md-6 mb-3" id="order-sec">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <table class="table table-bordered" style="width:100%;">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th style="width:10%;">Sl No.</th>
+                                        <th style="width:60%;">Receive Info</th>
+                                        <th style="width:30%;">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ReceiveTBody">
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="form-label">Pay Mode *</label>
+                                    <select asp-for="PayMode" asp-items="Model.PayModeLookUp" class="dd-type"></select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Pay Amount *</label>
+                                    <input class="form-control" id="BillAmount" asp-for="BillAmount" type="number">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="button" id="OrderPaySubmitBtn">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="~/js/ETL/Order/OrderBillPay.js"></script>
+}

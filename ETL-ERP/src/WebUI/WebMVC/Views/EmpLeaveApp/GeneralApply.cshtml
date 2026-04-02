@@ -1,0 +1,66 @@
+﻿
+@model Domain.ViewModel.Leave.EmpLeaveApplication.EmpLeaveApplicationVm
+@{
+    ViewData["Title"] = "Apply For Leave";
+}
+
+<div class="col-md-12">
+    <div class="row">
+        <div class="col-sm-12 pb-3">
+            <div class="card">
+                <div class="card-header p-4">
+                    <h3>Generate Application</h3>
+                    <div class="setting-list">
+                        @*<button type="button" id="GanerateAppBtn" class="btn btn-secondary mx-2">Generate</button>*@
+                        <a asp-action="Search" asp-controller="EmpLeaveAppOnline" class="btn btn-primary">Go Back</a>
+                    </div>
+                </div>
+                <form asp-action="GeneralApply" asp-controller="EmpLeaveApp" class="theme-form mega-form">
+                    <div class="card-body">
+                        <div class="row mb-3">
+
+                            <div class="col-md-6">
+                                <label class="col-form-label">Employee *</label>
+                                <select asp-for="EmployeeId" asp-items="Model.EmployeeLookUp" class="dd-type"></select>
+                                <span asp-validation-for="EmployeeId" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="col-form-label">Leave Type *</label>
+                                <select asp-for="LeaveTypeId" asp-items="Model.LeaveTypeLookUp" class="dd-type"></select>
+                                <span asp-validation-for="LeaveTypeId" class="text-danger"></span>
+                            </div>
+
+                            
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label class="col-form-label">From Date *</label>
+                                <input class="datepicker-here form-control" asp-for="FromDateStr" type="text" data-language="en">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="col-form-label">To Date *</label>
+                                <input class="datepicker-here form-control" asp-for="ToDateStr" type="text" data-language="en">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="col-form-label">Reason *</label>
+                                <textarea class="form-control" asp-for="Reason" rows="3"></textarea>
+                                <span asp-validation-for="Reason" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-end">
+                        <div class="col-sm-9 offset-sm-3">
+                            <button class="btn btn-primary" type="submit">Submit</button>
+                            <input class="btn btn-light" type="reset" value="Clear">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+}

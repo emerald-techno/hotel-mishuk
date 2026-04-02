@@ -1,0 +1,77 @@
+﻿@model Domain.ViewModel.Accounting.AccLedger.AccLedgerVm
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkAccounts" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Create Account Ledger</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="AccLedger" class="btn btn-primary">Search Account Ledger</a>
+                </div>
+            </div>
+            <form asp-action="Create" class="form theme-form">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Account Head *</label>
+                                <div class="col-sm-9">
+                                    <select asp-for="HeadId" asp-items="Model.HeadLookUp" class="form-control dd-type"></select>
+                                    <span asp-validation-for="HeadId" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Account Ledger Name *</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="LedgerName" type="text" placeholder="Enter ledger name">
+                                    <span asp-validation-for="LedgerName" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            @*<div class="mb-3 row">
+                            <label class="col-sm-3 col-form-label">Ledger Code *</label>
+                            <div class="col-sm-9">
+                            <input class="form-control" asp-for="LedgerCode" type="text" placeholder="Enter ledger code">
+                            <span asp-validation-for="LedgerCode" class="text-danger"></span>
+                            </div>
+                            </div>*@
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Description</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="Description" type="text" placeholder="Enter description">
+                                    <span asp-validation-for="Description" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Remarks</label>
+                                <div class="col-sm-9">
+                                    <textarea class="form-control" rows="4" asp-for="Remarks"></textarea>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $(".form-control").attr("autocomplete", "off");
+        });
+    </script>
+}

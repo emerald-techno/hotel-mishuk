@@ -1,0 +1,74 @@
+﻿@model Domain.ViewModel.Inventory.CategoryInfo.CategoryInfoVm
+
+@{
+    ViewData["Title"] = "Category Info Edit";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkInventory" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Edit Category</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="CategoryInfo" class="btn btn-primary">Search Category</a>
+                </div>
+            </div>
+            <form asp-action="Edit" class="form theme-form" data-parsley-validate enctype="multipart/form-data">
+                @Html.HiddenFor(c => c.Id)
+                @Html.HiddenFor(c => c.PhotoDocUrl)
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Category Name</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="CategoryName" type="text" placeholder="Enter Category name">
+                                    <span asp-validation-for="CategoryName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Category Code</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="CategoryCode" type="text" readonly>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Category Type</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control dd-type" asp-for="CategoryType" asp-items="Model.CategoryTypeLookUp"></select>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Category Ladger</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control dd-type" asp-for="LedgerId" asp-items="Model.LadgerLookUp"></select>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Photo File</label>
+                                <div class="col-sm-9">
+                                    <div class="form-group">
+                                        <input asp-for="PhotoFile" class="form-control" type="file" name="PhotoFile">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Remarks</label>
+                                <div class="col-sm-9">
+                                    <textarea class="form-control" rows="4" asp-for="Remarks"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

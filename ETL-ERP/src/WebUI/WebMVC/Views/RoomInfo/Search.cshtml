@@ -1,0 +1,98 @@
+﻿@model Domain.ViewModel.HotelManagement.RoomInfo.HtRoomInfoSearchVm
+@{
+    ViewData["Title"] = "Room Search";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkHt" />
+        <form>
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Room List Advance Search</h5>
+                    <div class="setting-list">
+                        <input class="btn btn-primary" type="button" id="RoomSearchBtn" value="Search" />
+                        <a asp-action="Create" asp-controller="RoomInfo" class="btn btn-primary">New Room</a>
+                    </div>
+                </div>
+                <div class="card-body table-responsive">
+                    
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="col-form-label">Room Category</label>
+                                    <select asp-for="RoomCategoryId" asp-items="Model.RoomCategoryLookUp" class="dd-type"></select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="col-form-label">Floor</label>
+                                    <select asp-for="FloorId" asp-items="Model.FloorLookUp" class="dd-type"></select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="col-form-label">Bed Type</label>
+                                    <select asp-for="BedTypeId" asp-items="Model.BedTypeLookUp" class="dd-type"></select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="col-form-label">Booking Status</label>
+                                    <select asp-for="BookingStatus" asp-items="Model.BookedStatusLookUp" class="dd-type"></select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="col-form-label">Cleaning Status</label>
+                                    <select asp-for="CleaningStatus" asp-items="Model.CleanStatusLookUp" class="dd-type"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card p-4">
+                <div class="row">
+                    <div class="col-md-2"><b>Booked: </b> &nbsp;&nbsp;@(Model.BookingCount)</div>
+                    <div class="col-md-2"><b>Available: </b> &nbsp;&nbsp;@(Model.AvailableCount)</div>
+                    <div class="col-md-2"><b>Occupied: </b> &nbsp;&nbsp;@(Model.OccCount)</div>
+                    <div class="col-md-2"><b>VC: </b> &nbsp;&nbsp;@(Model.VcCount)</div>
+                    <div class="col-md-2"><b>VD: </b> &nbsp;&nbsp;@(Model.VdCount)</div>
+                    <div class="col-md-2"><b>CO: </b> &nbsp;&nbsp;@(Model.CoCount)</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Room List</h5>
+                </div>
+                <div class="card-body">
+                    
+                    <div class="table table-responsive">
+                        <table id="RoomSearchTable" class="display" style="width:100%; text-align: left">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th style="width: 5%">Sl</th>
+                                    <th>Category</th>
+                                    <th>Floor</th>
+                                    <th>Room No</th>
+                                    <th>Bed Type</th>
+                                    <th>Ac /Belcony</th>
+                                    <th>Person</th>
+                                    <th>Cost</th>
+                                    <th>Booking Status</th>
+                                    <th>Availability Status</th>
+                                    <th>Cleaning Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/js/ETL/RoomInfo/RoomInfoSearch.js"></script>
+}

@@ -1,0 +1,112 @@
+﻿@model Domain.ViewModel.Accounting.AccHead.AccHeadVm
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkAccounts" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Edit Account Head</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="AccHead" class="btn btn-primary">Search Account Head</a>
+                </div>
+            </div>
+            <form asp-action="Edit" class="form theme-form">
+                @Html.HiddenFor(c => c.Id)
+                @Html.Hidden("InitName", Model.HeadName)
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+
+                            <div class="mb-3 row">
+                                <label class="col-form-label col-sm-3">Account Group Name</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control dd-type" asp-for="GroupId" asp-items="Model.AccGroupLookUp"></select>
+                                    <span asp-validation-for="GroupId" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Account Head Name *</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" asp-for="HeadName" placeholder="Enter Head Name" />
+                                    <span asp-validation-for="HeadName" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Account Head Code *</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="HeadCode" type="text" readonly />
+                                    <span asp-validation-for="HeadCode" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-3 offset-3">
+                                    <div class="media">
+                                        <label class="col-form-label m-r-10">Budget Head</label>
+                                        <div class="media-body icon-state">
+                                            <label class="switch">
+                                                <input type="checkbox" asp-for="BudgetHead"><span class="switch-state"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="media">
+                                        <label class="col-form-label m-r-10">Asset Head</label>
+                                        <div class="media-body icon-state">
+                                            <label class="switch">
+                                                <input type="checkbox" asp-for="AssetHead"><span class="switch-state"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="media">
+                                        <label class="col-form-label m-r-10">Petty Head</label>
+                                        <div class="media-body icon-state">
+                                            <label class="switch">
+                                                <input type="checkbox" asp-for="PettyHead"><span class="switch-state"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Description</label>
+                                <div class="col-sm-9">
+                                    <textarea class="form-control" asp-for="Description" rows="2" readonly></textarea>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Remarks</label>
+                                <div class="col-sm-9">
+                                    <textarea class="form-control" rows="4" asp-for="Remarks" readonly></textarea>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Update</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $(".form-control").attr("autocomplete", "off");
+        });
+    </script>
+}

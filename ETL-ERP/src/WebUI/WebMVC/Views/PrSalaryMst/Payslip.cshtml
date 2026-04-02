@@ -1,0 +1,449 @@
+﻿@model Domain.ViewModel.Payroll.PrSalaryDtl.PayslipVm
+@using Domain.Utility.Common
+@{
+    ViewData["Title"] = "Payslip";
+    var empAdditionParts = Model.PrSalaryParts.Where(c => c.PartType == "A" && c.PartLink != PrSalaryPartLink.GratuityA).ToList();
+    var empDiductionParts = Model.PrSalaryParts.Where(c => c.PartType == "D" && c.PartLink != PrSalaryPartLink.GratuityD).ToList();
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <partial name="_QuickLinkPayroll" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Pay Slip For @Utility.GetMonthName(Model.SalaryMonth)-@(Model.SalaryYear)</h5>
+                <div class="setting-list">
+                    <a class="btn btn-primary align-self-end" asp-controller="PrSalaryMst" asp-action="PrintPayslip" asp-route-id="@Model.Id" target="_blank">Print</a>
+                </div>
+            </div>
+            <div class="card-body p-2">
+                <div class="row px-3 mb-2">
+                    <div class="col-md-4 py-2" id="EmpSection">
+                        <ul>
+                            <li><h5>@(Model.EmployeeName)</h5></li>
+                            <li>@(Model.EmployeeCode)</li>
+                            <li>@(Model.EmpDepartmentName)</li>
+                            <li>@(Model.EmpDesignationName)</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-5"></div>
+                    <div class="col-md-3 d-flex flex-column align-items-end">
+                        <b>Payment Status:&nbsp;&nbsp;<span>@(Model.IsPaid ? "Paid" : "Not-Paid")</span></b>
+                        <b>Payment Date:&nbsp;&nbsp;<span>@(Model.PaidDate != null ? Utility.ConvertDateToStr(Model.PaidDate) : "Not-Paid")</span></b>
+                    </div>
+                </div>
+                <div class="row px-3 mb-2">
+                    <div class="col-md-12">
+                        <table class="table table-bordered" id="addition-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:80%">Earnings</th>
+                                    <th style="width:20%">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (empAdditionParts.Count > 0)
+                                {
+                                    empAdditionParts = empAdditionParts.OrderBy(c => c.PartCode).ToList();
+
+                                    foreach (var addItem in empAdditionParts)
+                                    {
+                                        <tr>
+                                            <td>@(addItem.PartName)</td>
+                                            @if (addItem.PartCode == "BASIC")
+                                            {
+                                                <td>
+                                                    @(Model.BasicSalary)
+                                                </td>
+                                            }
+                                            else if (addItem.PartCode == nameof(Model.ColA))
+                                            {
+                                                <td>
+                                                    @(Model.ColA)
+                                                </td>
+                                            }
+                                            else if (addItem.PartCode == nameof(Model.ColB))
+                                            {
+                                                <td>
+                                                    @(Model.ColB)
+                                                </td>
+                                            }
+                                            else if (addItem.PartCode == nameof(Model.ColC))
+                                            {
+                                                <td>
+                                                    @(Model.ColC)
+                                                </td>
+                                            }
+                                            else if (addItem.PartCode == nameof(Model.ColD))
+                                            {
+                                                <td>
+                                                    @(Model.ColD)
+                                                </td>
+                                            }
+                                            else if (addItem.PartCode == nameof(Model.ColE))
+                                            {
+                                                <td>
+                                                    @(Model.ColE)
+                                                </td>
+                                            }
+                                            else if (addItem.PartCode == nameof(Model.ColF))
+                                            {
+                                                <td>
+                                                    @(Model.ColF)
+                                                </td>
+                                            }
+                                            else if (addItem.PartCode == nameof(Model.ColG))
+                                            {
+                                                <td>
+                                                    @(Model.ColG)
+                                                </td>
+                                            }
+                                            else if (addItem.PartCode == nameof(Model.ColH))
+                                            {
+                                                <td>
+                                                    @(Model.ColH)
+                                                </td>
+                                            }
+                                            else if (addItem.PartCode == nameof(Model.ColI))
+                                            {
+                                                <td>
+                                                    @(Model.ColI)
+                                                </td>
+                                            }
+                                            else if (addItem.PartCode == nameof(Model.ColK))
+                                            {
+                                                <td>
+                                                    @(Model.ColK)
+                                                </td>
+                                            }
+                                            else if (addItem.PartCode == nameof(Model.ColL))
+                                            {
+                                                <td>
+                                                    @(Model.ColL)
+                                                </td>
+                                            }
+                                            else if (addItem.PartCode == nameof(Model.ColM))
+                                            {
+                                                <td>
+                                                    @(Model.ColM)
+                                                </td>
+                                            }
+                                            else if (addItem.PartCode == nameof(Model.ColN))
+                                            {
+                                                <td>
+                                                    @(Model.ColN)
+                                                </td>
+                                            }
+                                            else if (addItem.PartCode == nameof(Model.ColO))
+                                            {
+                                                <td>
+                                                    @(Model.ColO)
+                                                </td>
+                                            }
+                                            else if (addItem.PartCode == nameof(Model.ColP))
+                                            {
+                                                <td>
+                                                    @(Model.ColP)
+                                                </td>
+                                            }
+                                            else if (addItem.PartCode == nameof(Model.ColQ))
+                                            {
+                                                <td>
+                                                    @(Model.ColQ)
+                                                </td>
+                                            }
+                                            else if (addItem.PartCode == nameof(Model.ColR))
+                                            {
+                                                <td>
+                                                    @(Model.ColR)
+                                                </td>
+                                            }
+                                            else if (addItem.PartCode == nameof(Model.ColS))
+                                            {
+                                                <td>
+                                                    @(Model.ColS)
+                                                </td>
+                                            }
+                                            else if (addItem.PartCode == nameof(Model.ColT))
+                                            {
+                                                <td>
+                                                    @(Model.ColT)
+                                                </td>
+                                            }
+                                            else if (addItem.PartCode == nameof(Model.ColU))
+                                            {
+                                                <td>
+                                                    @(Model.ColU)
+                                                </td>
+                                            }
+                                        </tr>
+                                    }
+
+                                    <tr>
+                                        <td>Gross Pay</td>
+                                        <td>@(Model.GrossSalary)</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row px-3 mb-2">
+                    <div class="col-md-12">
+                        <table class="table table-bordered" id="deduction-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:80%">Deductions</th>
+                                    <th style="width:20%">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (empDiductionParts.Count > 0)
+                                {
+                                    empDiductionParts = empDiductionParts.OrderBy(c => c.PartCode).ToList();
+
+                                    foreach (var deductItem in empDiductionParts)
+                                    {
+                                        <tr>
+                                            <td>@(deductItem.PartName)</td>
+                                            @if (deductItem.PartCode == nameof(Model.ColA))
+                                            {
+                                                <td>
+                                                    @(Model.ColA)
+                                                </td>
+                                            }
+                                            else if (deductItem.PartCode == nameof(Model.ColB))
+                                            {
+                                                <td>
+                                                    @(Model.ColB)
+                                                </td>
+                                            }
+                                            else if (deductItem.PartCode == nameof(Model.ColC))
+                                            {
+                                                <td>
+                                                    @(Model.ColC)
+                                                </td>
+                                            }
+                                            else if (deductItem.PartCode == nameof(Model.ColD))
+                                            {
+                                                <td>
+                                                    @(Model.ColD)
+                                                </td>
+                                            }
+                                            else if (deductItem.PartCode == nameof(Model.ColE))
+                                            {
+                                                <td>
+                                                    @(Model.ColE)
+                                                </td>
+                                            }
+                                            else if (deductItem.PartCode == nameof(Model.ColF))
+                                            {
+                                                <td>
+                                                    @(Model.ColF)
+                                                </td>
+                                            }
+                                            else if (deductItem.PartCode == nameof(Model.ColG))
+                                            {
+                                                <td>
+                                                    @(Model.ColG)
+                                                </td>
+                                            }
+                                            else if (deductItem.PartCode == nameof(Model.ColH))
+                                            {
+                                                <td>
+                                                    @(Model.ColH)
+                                                </td>
+                                            }
+                                            else if (deductItem.PartCode == nameof(Model.ColJ))
+                                            {
+                                                <td>
+                                                    @(Model.ColI)
+                                                </td>
+                                            }
+                                            else if (deductItem.PartCode == nameof(Model.ColK))
+                                            {
+                                                <td>
+                                                    @(Model.ColK)
+                                                </td>
+                                            }
+                                            else if (deductItem.PartCode == nameof(Model.ColL))
+                                            {
+                                                <td>
+                                                    @(Model.ColL)
+                                                </td>
+                                            }
+                                            else if (deductItem.PartCode == nameof(Model.ColM))
+                                            {
+                                                <td>
+                                                    @(Model.ColM)
+                                                </td>
+                                            }
+                                            else if (deductItem.PartCode == nameof(Model.ColN))
+                                            {
+                                                <td>
+                                                    @(Model.ColN)
+                                                </td>
+                                            }
+                                            else if (deductItem.PartCode == nameof(Model.ColO))
+                                            {
+                                                <td>
+                                                    @(Model.ColO)
+                                                </td>
+                                            }
+                                            else if (deductItem.PartCode == nameof(Model.ColP))
+                                            {
+                                                <td>
+                                                    @(Model.ColP)
+                                                </td>
+                                            }
+                                            else if (deductItem.PartCode == nameof(Model.ColQ))
+                                            {
+                                                <td>
+                                                    @(Model.ColQ)
+                                                </td>
+                                            }
+                                            else if (deductItem.PartCode == nameof(Model.ColR))
+                                            {
+                                                <td>
+                                                    @(Model.ColR)
+                                                </td>
+                                            }
+                                            else if (deductItem.PartCode == nameof(Model.ColS))
+                                            {
+                                                <td>
+                                                    @(Model.ColS)
+                                                </td>
+                                            }
+                                            else if (deductItem.PartCode == nameof(Model.ColT))
+                                            {
+                                                <td>
+                                                    @(Model.ColT)
+                                                </td>
+                                            }
+                                            else if (deductItem.PartCode == nameof(Model.ColU))
+                                            {
+                                                <td>
+                                                    @(Model.ColU)
+                                                </td>
+                                            }
+                                        </tr>
+                                    }
+
+                                    <tr>
+                                        <td>Total Deduction</td>
+                                        <td>@(Model.TotalDeduction)</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row px-3 mb-2">
+                    <div>
+                        <table class="table table-bordered" id="netpay-table">
+                            <tbody>
+                                <tr>
+                                    <td style="width:80%">NET PAY</td>
+                                    <td style="width:20%">@(Model.NetSalary)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            @if (!Model.IsPaid)
+            {
+                <div class="card-footer py-3 d-flex justify-content-end">
+                    <div>
+                        <a asp-controller="PrSalaryMst" asp-action="PayPayslip" asp-route-id="@Model.Id" class="btn btn-primary mr-2">Pay Salary</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Styles{
+    <style>
+        #EmpSection ul li {
+            margin-bottom: 5px;
+        }
+
+        #addition-table {
+            font-size: 12px;
+        }
+
+            #addition-table tr th {
+                padding: 8px;
+                background-color: aliceblue;
+            }
+
+                #addition-table tr th:last-child {
+                    padding: 8px;
+                    background-color: aliceblue;
+                    text-align: end;
+                }
+
+            #addition-table tr td {
+                padding: 8px;
+            }
+
+                #addition-table tr td:last-child {
+                    padding: 8px;
+                    text-align: end;
+                }
+
+            #addition-table tr:last-child {
+                font-weight: bold;
+                background-color: aliceblue;
+            }
+
+                #addition-table tr:last-child td:first-child {
+                    text-align: end;
+                }
+
+        #deduction-table {
+            font-size: 12px;
+        }
+
+            #deduction-table tr:last-child {
+                font-weight: bold;
+                background-color: aliceblue;
+            }
+
+                #deduction-table tr:last-child td:first-child {
+                    text-align: end;
+                }
+
+            #deduction-table tr th {
+                padding: 8px;
+                background-color: aliceblue;
+            }
+
+                #deduction-table tr th:last-child {
+                    padding: 8px;
+                    background-color: aliceblue;
+                    text-align: end;
+                }
+
+            #deduction-table tr td {
+                padding: 8px;
+            }
+
+                #deduction-table tr td:last-child {
+                    padding: 8px;
+                    text-align: end;
+                }
+
+        #netpay-table {
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+            #netpay-table tr td {
+                padding: 8px;
+                text-align: end;
+                background-color: aliceblue;
+            }
+    </style>
+}

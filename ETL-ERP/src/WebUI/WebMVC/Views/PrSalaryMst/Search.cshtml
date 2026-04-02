@@ -1,0 +1,39 @@
+﻿@model Domain.ViewModel.Payroll.PrSalaryMst.PrSalaryMstSearchVm
+@{
+    ViewData["Title"] = "Employee Payroll List";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkPayroll" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h4>Employee Payroll List</h4>
+                <div class="setting-list">
+                    <a asp-action="Payroll" asp-controller="PrSalaryMst" class="btn btn-primary">Payroll Setup</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <table id="PayrollSearchTable" class="display" style="width:100%; text-align: left">
+                    <thead>
+                        <tr>
+                            <th style="width: 5%">Sl</th>
+                            <th style="width: 15%">Year</th>
+                            <th style="width: 15%">Month</th>
+                            <th style="width: 20%">Salary Date</th>
+                            <th style="width: 15%">Employee Total</th>
+                            <th style="width: 20%">Salary Total</th>
+                            <th style="width: 10%">Action</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/js/ETL/PrSalaryMst/PrSalaryMstSearch.js"></script>
+}

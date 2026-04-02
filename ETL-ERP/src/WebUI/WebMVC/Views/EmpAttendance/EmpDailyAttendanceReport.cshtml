@@ -1,0 +1,83 @@
+﻿@model Domain.ViewModel.Attendance.EmpAttendence.EmpDailyAttendanceReportVm
+@{
+    ViewData["Title"] = "Employee Daily Attendance Report";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkHr" />
+        <div class="card">
+            <form class="form theme-form">
+                <div class="card-header p-4">
+                    <h4>Daily Attendance Report</h4>
+                    <div class="setting-list">
+                        <button class="btn btn-primary" type="button" id="EmpAttReportBtn">Generate</button>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="row">
+
+                        <div class="col-md-4 pt-2">
+                            <label>Employee</label>
+                            <select asp-for="EmployeeId" asp-items="Model.EmployeeLookUp" class="dd-type"></select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="col-form-label">From Date</label>
+                            <input class="form-control datepicker-here" asp-for="FormDateStr" placeholder="Enter start date" data-language="en" />
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="col-form-label">To Date</label>
+                            <input asp-for="ToDateStr" class="form-control datepicker-here" placeholder="Enter end date" data-language="en" />
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+        <div class="card" id="table-section">
+            <div class="card-header p-4">
+                <h4>Employee Daily Attendance</h4>
+                <div class="setting-list" id="printBtnSection">
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="row">
+                    <div class="table-responsive">
+                        <table id="EmpDailyAttendanceSearchTable" class="display" style="width:100%; text-align: left">
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%" class="text-center">Sl</th>
+                                    <th style="width: 15%" class="text-center">Attendance Date</th>
+                                    <th style="width: 15%" class="text-center">InTime</th>
+                                    <th style="width: 15%" class="text-center">OutTime</th>
+                                    <th style="width: 15%" class="text-center">Late-In</th>
+                                    <th style="width: 15%" class="text-center">Lunch</th>
+                                    <th class="text-center">Status</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles{
+    <style>
+        #EmpDailyAttendanceSearchTable tr td:nth-child(1n+3) {
+            text-align: center;
+        }
+    </style>
+}
+
+    @section Scripts
+    {
+    <script src="~/js/ETL/EmpAttendance/EmpDailyAttendanceSearch.js"></script>
+}

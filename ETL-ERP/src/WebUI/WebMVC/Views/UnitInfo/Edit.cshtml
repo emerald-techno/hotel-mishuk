@@ -1,0 +1,51 @@
+﻿@model Domain.ViewModel.Inventory.UnitInfo.UnitInfoVm
+@{
+    ViewData["Title"] = "Unit Info Edit";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkInventory" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Edit Unit Info</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="UnitInfo" class="btn btn-primary">Search Unit Info</a>
+                </div>
+            </div>
+            <form asp-action="Edit" class="form theme-form">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Unit Name</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="UnitName" type="text" placeholder="Enter Unit name">
+                                    <span asp-validation-for="UnitName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Unit Code</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="UnitCode" type="text" readonly>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Remarks</label>
+                                <div class="col-sm-9">
+                                    <textarea class="form-control" rows="4" asp-for="Remarks"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

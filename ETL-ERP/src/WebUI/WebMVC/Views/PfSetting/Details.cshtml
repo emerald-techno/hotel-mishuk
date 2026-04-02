@@ -1,0 +1,80 @@
+﻿@model Domain.ViewModel.Pf.PfSetting.PfSettingVm
+@using Domain.Utility
+@{
+    ViewData["Title"] = "Provident Fund Setting";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkPf" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h4>Provident Fund Setting</h4>
+                <div class="setting-list">
+                    <a asp-action="Edit" asp-controller="PfSetting" asp-route-id="@Model.Id" class="btn btn-primary">Update Setting</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <form>
+                    @Html.HiddenFor(c => c.Id);
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8">
+                            <div class="row">
+                                <label class="col-form-label col-md-4">Provident Fund Source</label>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input asp-for="PfSourceText" type="text" class="form-control" placeholder="Enter provident fund source" readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <label class="col-form-label col-md-4">Employee Contribution (0.35%)</label>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+
+                                        <input asp-for="EmpCon" type="text" class="form-control" placeholder="Enter employee contribution" readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <label class="col-form-label col-md-4">Company Contribution (0.35%)</label>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+
+                                        <input asp-for="CompCon" type="text" class="form-control" placeholder="Enter company contribution" readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <label class="col-form-label col-md-4">Maturity Month</label>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+
+                                        <input asp-for="MaturityMonth" type="text" class="form-control" placeholder="Enter maturity month" readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <label class="col-form-label col-md-4">Loan After <small>(Month)</small></label>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+
+                                        <input asp-for="LoanAfter" type="text" class="form-control" placeholder="Enter loan after" readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-2"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

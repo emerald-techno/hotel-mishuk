@@ -1,0 +1,19 @@
+select o.OrderId,o.OrderNo,o.OrderDate,o.SupplierId,o.SupplierName
+,(string_agg(cast(m.TranNo as nvarchar(max)), ',') within group (order by m.TranNo)) MrrNoList
+,max(o.OrderAmount) OrderAmount,sum(d.ItemQty * d.UnitPrice) MrrAmount,max(isnull(p.PaidAmount,0)) PaidAmount
+,sum(d.ItemQty * d.UnitPrice) - max(isnull(p.PaidAmount,0)) DueAmount
+from TranDtls d
+inner join TranMsts m on m.Id = d.TranMstId
+inner join (
+select om.Id OrderId,convert(date,om.OrderDate) OrderDate,om.OrderNo,s.Id SupplierId,s.SupplierName,sum(od.AprOrderQty * od.Rate) OrderAmount
+from OrderDtls od
+inner join OrderMsts om on om.Id = od.OrderId
+inner join SupplierInfos s on s.Id = om.SupplierId
+group by om.Id,om.OrderDate,om.OrderNo,s.Id,s.SupplierName
+) o on o.OrderId = m.OrderId
+left join (
+select OrderMstId OrderId,sum(b.BillAmount) PaidAmount from InventoryBillPayments b group by OrderMstId
+) p on p.OrderId = o.OrderId
+where m.TranType = 'R'
+group by o.OrderId,o.OrderNo,o.OrderDate,o.SupplierId,o.SupplierName
+having sum(d.ItemQty * d.UnitPrice) - max(isnull(p.PaidAmount,0))  > 0

@@ -1,0 +1,44 @@
+﻿@model Domain.ViewModel.HouseKeeping.TaskName.HkTaskNameVm
+@{
+    ViewData["Title"] = "Task Edit";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Edit Task Type Info</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="TaskName" class="btn btn-primary">Search Task Name</a>
+                </div>
+            </div>
+            <form asp-action="Edit" class="form theme-form">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Name</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="Name" type="text" placeholder="Enter Task name">
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Task Type</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control dd-type" asp-for="TypeId" asp-items="Model.TaskTypeLookUp"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

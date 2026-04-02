@@ -1,0 +1,546 @@
+﻿@model Domain.ViewModel.HotelManagement.RoomBooking.HtBookingServiceVm
+@using Domain.Utility
+@{
+    ViewData["Title"] = "Room Check In";
+}
+
+@section styles
+{
+    <style>
+        .input-group .btn {
+            padding: 0.375rem 1.25rem !important;
+            width: 40%;
+        }
+
+        #RoomTableTbody .input-group-text {
+            font-size: smaller;
+        }
+
+        .custom-modal-size .modal-dialog {
+            max-width: 1200px; /* Adjust the maximum width as needed */
+        }
+
+        .custom-modal-size .modal-content {
+            width: 100%; /* Make sure the content fills the modal */
+        }
+    </style>
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkHt" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Room Check In</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="BookingService" class="btn btn-primary">Booked Room List</a>
+                </div>
+            </div>
+            <form asp-action="CheckIn" class="form theme-form" id="CheckInForm">
+                <input type="hidden" asp-for="Id" id="bookingId" />
+
+                <div class="card-body py-3">
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class=" row">
+                                <label class="col-sm-4 col-form-label">Booking No</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" type="text" value="@Model.BookingNo" readonly>
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <label class="col-sm-4 col-form-label">Booking Date</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" type="text" value="@(Utility.GetDate(Model.BookingDate))" readonly>
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <label class="col-sm-4 col-form-label">Visit Perpose</label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" rows="1" asp-for="VisitPurpose" type="text">Enter Visit Perpose Here</textarea>
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <label class="col-sm-4 col-form-label">Remarks</label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" rows="1" asp-for="Remarks" type="text">Enter Discount Info Or Other Info</textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3"></div>
+
+                        <div class="col-md-5">
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label">Check In</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="check-in-time" type="text" value="@(Utility.ConvertDateTimeToStr(Model.CheckInTime))" readonly>
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <label class="col-sm-4 col-form-label">Check Out</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="check-out-time" type="text" value="@(Utility.ConvertDateTimeToStr(Model.CheckOutTime))" readonly>
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <label class="col-sm-4 col-form-label">Actual Check In</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="date-time-picker-check-from" asp-for="ActualCheckInTimeStr" type="text" autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <br />
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th colspan="8">
+                                            <div class="d-flex justify-content-between">
+                                                <div>
+                                                    <h4>Booked Room List</h4>
+                                                </div>
+                                                <div id="clearDiv">
+                                                    <a class="btn btn-outline-primary" title="Clear All Actual Check-In Time" id="clearCheckOut">Clear All</a>
+                                                    <a class="btn btn-outline-primary" title="Clear All Actual Check-In Time That Are Not Selected" id="otherCheckOutTimeClear">Clear Other</a>
+                                                </div>
+                                            </div>
+                                        </th>
+
+                                    </tr>
+                                    <tr>
+                                        <th style="width: 2%"><input type="checkbox" id="selectAll"></th>
+                                        <th style="width: 2%">#</th>
+                                        <th style="width: 20%"> Check In/Out</th>
+                                        <th style="width: 15%">Room Category</th>
+                                        <th style="width: 15%">Room Info</th>
+                                        <th style="width: 15%">Cost</th>
+                                        <th style="width: 20%">Complementary</th>
+                                        <th style="width: 3%">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="RoomTableTbody">
+                                </tbody>
+                                <tfoot id="RoomTableFoot">
+                                    <tr>
+                                        <th colspan="5" style="text-align: right">Net Total</th>
+                                        <td style="font-weight: bold">
+                                            <input class="form-control" id="net-total" readonly />
+                                        </td>
+                                        <td colspan="2"></td>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="5" style="text-align: right">Already Paid</th>
+                                        <td style="font-weight: bold">
+                                            <input class="form-control" asp-for="PaidAmount" readonly />
+                                        </td>
+                                        <td colspan="2"></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+
+                        <div class="col-md-4">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th colspan="4">
+                                            <h4>Guest List</h4>
+
+                                            <div class="setting-list" style="top:12px;">
+                                                <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#guestEntryModal"> New Guest </a>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th style="width: 5%">#</th>
+                                        <th style="width: 80%">Guest Info</th>
+                                        <th style="width: 10%">Contact Person</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="GuestTableTbody">
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+
+                        <h4>Payment Info</h4>
+
+                        <div class="col-md-2">
+                            <label class="col-form-label">Pay Date</label>
+                            <input class="datepicker-paid-date form-control" asp-for="PaidDateStr" type="text" data-language="en">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="col-form-label">Pay Mode</label>
+                            <select asp-for="PaymentVm.PayMode" asp-items="Model.PayModeLookUp" class="dd-type"></select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="col-form-label">Pay Amount</label>
+                            <input class="form-control" asp-for="PaymentVm.PaidAmount" type="text">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label">Transaction Number</label>
+                            <input class="form-control" asp-for="PaymentVm.TransactionNo" type="text" readonly>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label">Account Number</label>
+                            <input class="form-control" asp-for="PaymentVm.AccountNo" type="text">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="button" id="CheckInSubmitBtn">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+
+            
+            @*guest_modal*@
+            <div class="modal fade guest-modal-size" id="guestEntryModal" tabindex="-1" role="dialog" aria-labelledby="guestEntryModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel2">New Guest</h5>
+                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="mb-3">
+                                    <div class="row">
+                                        <div class="col-md-9">
+                                            <div class="row">
+                                                <label class="col-form-label">Guest Name</label>
+                                                <div class="col-md-4">
+                                                    <input class="form-control" id="salutation" placeholder="Salutation" />
+                                                </div>
+                                                <div class="col-md-4 p-0">
+                                                    <input class="form-control" id="first-name" placeholder="First Name" />
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <input class="form-control" id="last-name" placeholder="Last Name" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <label class="col-form-label">Date of Birth</label>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <input class="form-control dob" id="Dob" placeholder="Date of Birth" data-language="en" autocomplete="off" />
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label class="col-form-label">Gender *</label>
+                                            <select id="Gender" asp-items="Model.GenderLookUp" class="dd-type"></select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="col-form-label">Mobile</label>
+                                            <input class="form-control" id="mobile" placeholder="Ex. 01521450553" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="col-form-label">Email</label>
+                                            <input class="form-control" type="email" id="Email" placeholder="example@gmail.com" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="col-form-label">Address</label>
+                                            <input id="address" class="form-control" />
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="row">
+                                        <div class="col-md-3 nid">
+                                            <label class="col-form-label">NID No</label>
+                                            <input class="form-control" id="nid" placeholder="Enter NID Here.." />
+                                        </div>
+                                        <div class="col-md-3 passport">
+                                            <label class="col-form-label">Passport No </label>
+                                            <input class="form-control" id="passport" placeholder="Enter Passport No Here.." />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="col-form-label">Country *</label>
+                                            @* <select id="CountryId" asp-items="Model.CountryWithCodeLookUp" class="dd-type"></select> *@
+                                            <select id="CountryId" class="dd-type">
+                                                @foreach (var item in Model.CountryWithCodeLookUp)
+                                                {
+                                                    <option value="@item.Value" data-code="@item.Code">@item.Text</option>
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="col-form-label">District</label>
+                                            <select id="DistrictId" asp-items="Model.DistrictLookUp" class="dd-type"></select>
+                                        </div>
+                                        <div class="col-md-3" style="align-items: center;display: flex;flex-direction: column;">
+                                            <label class="col-form-label">Is VIP</label>
+                                            <div class="mt-2">
+                                                <label class="switch">
+                                                    <input type="checkbox" id="vip">
+                                                    <span class="switch-state bg-primary"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @* <div class="mb-3">
+                                <div class="row">
+                                <div class="col-md-6">
+                                <label class="col-form-label">Visit Purpose</label>
+                                <textarea id="note" class="form-control" rows="1"></textarea>
+                                </div>
+                                </div>
+                                </div> *@
+
+                                <div class="mb-3">
+                                    <label class="col-form-label">Company:</label>
+                                    <div>
+                                        <input type="radio" id="existingCompany" name="companyOption" />
+                                        <label for="existingCompany">Existing Company</label>
+                                        <input type="radio" id="newCompany" name="companyOption" class="ms-3" />
+                                        <label for="newCompany">New Company</label>
+                                    </div>
+
+
+                                    <div id="existingCompanySection" class="mt-3" style="display: none;">
+                                        <label class="col-form-label">Guest Company</label>
+                                        <select id="GuestCompanyId" asp-items="Model.CompanyLookUp" class="dd-type"></select>
+                                    </div>
+
+                                    <div id="newCompanySection" class="mt-3" style="display: none;">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <input class="form-control mb-2" id="CompanyName" placeholder="Company Name" />
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input class="form-control" id="CompanyMobile" placeholder="Company Mobile" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-outline-primary" id="GuestEntryBtn" type="button">Entry</button>
+                            <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*modal_end*@
+
+            @*guest_edit_modal*@
+            <div class="modal fade guest-modal-size" id="guestEditModal" tabindex="-1" role="dialog" aria-labelledby="guestEditModal" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel2">Edit Guest</h5>
+                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="mb-3">
+                                    <div class="row">
+                                        <div class="col-md-9">
+                                            <div class="row">
+                                                <label class="col-form-label">Guest Name</label>
+                                                <div class="col-md-4">
+                                                    <input class="form-control" id="E_salutation" placeholder="Salutation" />
+                                                </div>
+                                                <div class="col-md-4 p-0">
+                                                    <input class="form-control" id="E_first-name" placeholder="First Name" />
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <input class="form-control" id="E_last-name" placeholder="Last Name" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <label class="col-form-label">Date of Birth</label>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <input class="form-control dob" id="E_Dob" placeholder="Date of Birth" data-language="en" autocomplete="off" />
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label class="col-form-label">Gender *</label>
+                                            <select id="E_Gender" asp-items="Model.GenderLookUp" class="dd-type"></select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="col-form-label">Mobile</label>
+                                            <input class="form-control" id="E_mobile" placeholder="Ex. 01521450553" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="col-form-label">Email</label>
+                                            <input class="form-control" type="email" id="E_Email" placeholder="example@gmail.com" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="col-form-label">Address</label>
+                                            <input id="E_address" class="form-control" />
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="row">
+                                        <div class="col-md-3 nid">
+                                            <label class="col-form-label">NID No</label>
+                                            <input class="form-control" id="E_nid" placeholder="Enter NID Here.." />
+                                        </div>
+                                        <div class="col-md-3 passport">
+                                            <label class="col-form-label">Passport No </label>
+                                            <input class="form-control" id="E_passport" placeholder="Enter Passport No Here.." />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="col-form-label">Country *</label>
+                                            @* <select id="CountryId" asp-items="Model.CountryWithCodeLookUp" class="dd-type"></select> *@
+                                            <select id="E_CountryId" class="dd-type">
+                                                @foreach (var item in Model.CountryWithCodeLookUp)
+                                                {
+                                                    <option value="@item.Value" data-code="@item.Code">@item.Text</option>
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="col-form-label">District</label>
+                                            <select id="E_DistrictId" asp-items="Model.DistrictLookUp" class="dd-type"></select>
+                                        </div>
+                                        <div class="col-md-3" style="align-items: center;display: flex;flex-direction: column;">
+                                            <label class="col-form-label">Is VIP</label>
+                                            <div class="mt-2">
+                                                <label class="switch">
+                                                    <input type="checkbox" id="E_vip">
+                                                    <span class="switch-state bg-primary"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @* <div class="mb-3">
+                                <div class="row">
+                                <div class="col-md-6">
+                                <label class="col-form-label">Visit Purpose</label>
+                                <textarea id="note" class="form-control" rows="1"></textarea>
+                                </div>
+                                </div>
+                                </div> *@
+
+                                <div class="mb-3">
+                                    <label class="col-form-label">Company:</label>
+                                    <div>
+                                        <input type="radio" id="E_existingCompany" name="companyOption" />
+                                        <label for="E_existingCompany">Existing Company</label>
+
+                                        <input type="radio" id="E_newCompany" name="companyOption" class="ms-3" />
+                                        <label for="E_newCompany">New Company</label>
+                                    </div>
+
+
+                                    <div id="E_existingCompanySection" class="mt-3" style="display:none;">
+                                        <label class="col-form-label">Guest Company</label>
+                                        <select id="E_GuestCompanyId" asp-items="Model.CompanyLookUp" class="dd-type"></select>
+                                    </div>
+
+                                    <div id="E_newCompanySection" class="mt-3" style="display:none;">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <input class="form-control mb-2" id="E_CompanyName" placeholder="Company Name" />
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input class="form-control" id="E_CompanyMobile" placeholder="Company Mobile" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-outline-primary" id="GuestEditBtn" type="button">Entry</button>
+                            <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*modal_end*@
+
+
+        </div>
+    </div>
+</div>
+
+
+@section scripts
+{
+    <script>
+        var paidDate = @Model.PaidDateStr;
+
+        $(".datepicker-paid-date").datepicker({
+            setDate: paidDate,
+            dateFormat: 'dd/mm/yyyy',
+            autoClose: true
+        });
+
+        $('.datepicker-paid-date').on('changeDate', function (event) {
+            $(this).datepicker('hide');
+        });
+
+        $("#date-time-picker-check-from").datetimepicker({
+            // defaultTime: '12:00'
+        });
+
+        $("#date-time-picker-check-to").datetimepicker({
+             defaultTime: '12:00'
+        });
+
+        // $("#group-book-check-in-picker").datetimepicker({
+        //    defaultTime: '12:00'
+        // });
+
+        // $("#group-book-check-out-picker").datetimepicker({
+        //    defaultTime: '12:00'
+        // });
+
+        $(".dob").datepicker({
+            dateFormat: 'dd/mm/yyyy',
+            autoClose: true
+        });
+
+    </script>
+    @*<script src="~/js/ETL/BookingService/CheckIn.js"></script>*@
+
+    <script src="~/js/ETL/BookingService/CheckIn.js?v=@DateTime.UtcNow.Ticks"></script>
+}

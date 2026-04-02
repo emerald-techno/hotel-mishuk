@@ -1,0 +1,12 @@
+select rc.Id RoomCategoryId,rc.CategoryName RoomCategory,ri.Id RoomId,ri.RoomNo,fi.Id FloorId,fi.FloorName,hr.CheckInTime,hr.CheckOutTime,hr.ActualCheckInTime,hr.ActualCheckOutTime,hr.Rent,hr.ServiceCharge,
+hr.NetRent,hr.Adult,hr.Child,hb.Id BookingId,hb.BookingDate,hb.BookingNo,hb.BookingStatus,hb.BookingType,hp.PaidAmount,
+case when hb.BookingStatus = 1 then 'Pending' when hb.BookingStatus = 2 then 'Approved' when hb.BookingStatus = 3 then 'Checkin' when hb.BookingStatus = 4 then 'Checkout' when hb.BookingStatus = 5 then 'Cenceled' else '' end 
+BookingStatusName,hb.PaymentStatus,case when hb.PaymentStatus = 0 then 'Pending' when hb.PaymentStatus = 1 then 'Partial Payment' when hb.PaymentStatus = 2 then 'Full Payment' else '' end PaymentStatusName
+from HtBookingRooms hr
+inner join HtBookingServices hb on hb.Id = hr.BookingId
+inner join HtRoomCategories rc on rc.Id = hr.RoomCategoryId
+left join HtRoomInfos ri on ri.Id = hr.RoomId
+left join HtFloorInfos fi on fi.Id = ri.FloorId
+left join (select BookingId,sum(PaidAmount) PaidAmount from HtBookingPayments  group by BookingId) hp on hp.BookingId = hb.Id
+where hr.IsDeleted =0 
+order by ri.RoomNo

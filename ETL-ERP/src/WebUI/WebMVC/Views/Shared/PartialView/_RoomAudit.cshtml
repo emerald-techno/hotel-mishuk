@@ -1,0 +1,124 @@
+﻿@model List<Domain.ViewModel.HotelManagement.RoomDayAudit.RoomDayAuditVm>
+@using Domain.Utility
+@using Domain.Utility.Common
+@{
+    var isSuperAdmin = User.Claims.Any(x => x.Type == CustomClaimType.Permission &&
+                                                        x.Value == Permissions.SuperAdmin &&
+                                                        x.Issuer == "LOCAL AUTHORITY");
+}
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <form>
+                <div class="card-header p-4">
+                    <h5>Room Audit Report <span style="margin-left:15px;font-size:small;"><input type="checkbox" id="selectAll" /> Select All </span></h5>
+                    
+                    <div class="setting-list">
+                        <button type="button" id="MakeApproveBtn" class="btn btn-primary float-left">Approve</button>
+                        <button class="btn btn-primary" id="RoomAuditPrintBtn">PDF</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table id="ReportTable" class="table table-bordered" style="width:100%; text-align: center">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%">Serial</th>
+                                <th>Room No.</th>
+                                <th>Category Name</th>
+                                <th>Guest Info</th>
+                                <th>Booking Info</th>
+                                <th>Rack Rate</th>
+                                <th>Room Rate</th>
+                                <th>S. Charge</th>
+                               @*  <th>VAT</th> *@
+                                <th>Discount(%)</th>
+                                <th>Total Amount</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Count > 0)
+                            {
+                                foreach (var (room, i) in Model.OrderBy(x => x.RoomNo).GetItemWithIndex())
+                                {
+                                    <tr>
+                                        <td style="width: 5%">
+                                            @(i + 1)
+                                            @if (!room.IsCharged)
+                                            {
+                                                <input type="checkbox" value="@room.Id" class="checkbox" onclick="addRoomAuditId(this);" />
+                                            }
+                                        </td>
+                                        <td>
+                                            <input type="hidden" id="audit_id_@(i)" value="@(room.Id)" />
+                                            @room.RoomNo
+                                        </td>
+                                        <td>
+                                            @room.RoomCategoryName
+                                        </td>
+                                        <td>
+                                            @room.GuestName<br />
+                                            @(room.GuestMobile)
+                                        </td>
+                                        <td>
+                                            <a href="../../BookingService/Details/@room.BookingId" target="_blank">@room.BookingNo</a> <br />
+                                            @* @room.BookingNo<br /> *@
+                                            @(room.BookingDate?.ToString("dd-MMM-yyyy"))
+                                        </td>
+                                        <td class="text-end">
+                                            @(room.RackRate)
+                                        </td>
+                                        <td class="text-end">
+                                            @(room.BaseRate)
+                                        </td>
+                                        <td class="text-end">
+                                            @room.ServiceCharge
+                                        </td>
+                                        <td class="text-center">
+                                            @room.DiscountPercent.ToString("N2")
+                                        </td>
+                                        <td class="text-end">
+                                            @room.NetAmount
+                                        </td>
+                                        <td class="text-center">
+                                            @if (!room.IsCharged && isSuperAdmin)
+                                            {
+                                                <a href="#" class="apr_btn" data-index="@(i)" data-audit-id="@(room.Id)"><i class="icofont icofont-check-circled text-primary" style="font-size: 26px;"></i></a>
+                                                <a href="#"><i class="icofont icofont-close-circled text-danger" style="font-size: 26px;"></i></a>
+                                            }
+                                            else
+                                            {
+                                                <a class="badge badge-primary" href="#" data-bs-original-title="" title="">--</a>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+
+                                <tr class='subtotal-row'>
+                                <td colspan='5' style='text-align:right;font-weight:600;'>Total</td>
+                                <td style='text-align:right;font-weight:600;color:#2c3e50;'>@Model.Sum(x=>x.RackRate).ToString("N2")</td>
+                                <td style='text-align:right;font-weight:600;color:#2c3e50;'>@Model.Sum(x=>x.BaseRate).ToString("N2")</td>
+                                <td style='text-align:right;font-weight:600;color:#2c3e50;'>@Model.Sum(x=>x.ServiceCharge).ToString("N2")</td>
+                                <td style='text-align:right;font-weight:600;color:#2c3e50;'></td>
+                                <td style='text-align:right;font-weight:600;color:#2c3e50;'>@Model.Sum(x=>x.NetAmount).ToString("N2")</td>
+                                <td></td>
+                                </tr>;
+
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td style="text-align:center" colspan="8"><b>No Generated Audit Found..</b></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="~/theme/assets/js/scrollable/perfect-scrollbar.min.js"></script>
+<script src="~/theme/assets/js/scrollable/scrollable-custom.js"></script>
+<script src="~/theme/assets/js/sweet-alert/sweetalert.min.js"></script>

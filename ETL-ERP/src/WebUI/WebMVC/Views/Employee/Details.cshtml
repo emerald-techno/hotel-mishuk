@@ -1,0 +1,1058 @@
+﻿@model Domain.ViewModel.Hr.Employees.EmployeeVm
+@using Domain.Utility
+@{
+    ViewData["Title"] = "Employee Profile";
+    Layout = "_Layout";
+}
+@Html.HiddenFor(c => c.Id);
+
+<div class="container-fluid">
+    <div class="email-wrap bookmark-wrap">
+        <div class="row">
+            <partial name="_QuickLinkHr" />
+            <div class="col-xl-3 box-col-4 xl-30">
+                <div class="email-sidebar">
+                    <a class="btn btn-primary email-aside-toggle" href="javascript:void(0)">bookmark filter</a>
+                    <div class="email-left-aside">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="email-app-sidebar left-bookmark">
+                                    <div class="media mb-3">
+                                        <div class="media-size-email"><img class="me-3 img-50 rounded-circle" src="@Model.PhotoUrl" alt=""></div>
+                                        <div class="media-body">
+                                            <h6 class="f-w-600">@(Model.Name)</h6>
+                                            <p>@(Model.DesignationName)</p>
+                                        </div>
+                                    </div>
+                                    <ul class="nav main-menu" role="tablist">
+                                        <li><a id="pills-created-tab" data-bs-toggle="pill" href="#pills-created" role="tab" aria-controls="pills-created" aria-selected="true"><span class="title">Employee Info</span></a></li>
+                                        <li><a class="show" id="pills-todaytask-tab" data-bs-toggle="pill" href="#pills-todaytask" role="tab" aria-controls="pills-todaytask" aria-selected="false"><span class="title"> Personal Info </span></a></li>
+                                        <li><a class="show" id="pills-delayed-tab" data-bs-toggle="pill" href="#pills-delayed" role="tab" aria-controls="pills-delayed" aria-selected="false"><span class="title"> Contact Info </span></a></li>
+                                        <li><a class="show" id="pills-upcoming-tab" data-bs-toggle="pill" href="#pills-upcoming" role="tab" aria-controls="pills-upcoming" aria-selected="false"><span class="title">Education Info</span></a></li>
+                                        <li><a class="show" id="pills-weekly-tab" data-bs-toggle="pill" href="#pills-weekly" role="tab" aria-controls="pills-weekly" aria-selected="false"><span class="title">Experience Info</span></a></li>
+                                        <li><a class="show" id="pills-monthly-tab" data-bs-toggle="pill" href="#pills-monthly" role="tab" aria-controls="pills-monthly" aria-selected="false"><span class="title">Reference Info</span></a></li>
+                                        <li><a class="show" id="pills-nomine-tab" data-bs-toggle="pill" href="#pills-nomine" role="tab" aria-controls="pills-nomine" aria-selected="false"><span class="title">Nominee Info</span></a></li>
+                                        <li><a class="show" id="pills-emergency-tab" data-bs-toggle="pill" href="#pills-emergency" role="tab" aria-controls="pills-emergency" aria-selected="false"><span class="title">Emergency Contact Info</span></a></li>
+                                        <li><a class="show" id="pills-assigned-tab" data-bs-toggle="pill" href="#pills-assigned" role="tab" aria-controls="pills-assigned" aria-selected="false"><span class="title">Training Info</span></a></li>
+                                        <li><a class="show" id="pills-tasks-tab" data-bs-toggle="pill" href="#pills-tasks" role="tab" aria-controls="pills-tasks" aria-selected="false"><span class="title">Posting Info</span></a></li>
+                                        <li><a class="show" id="pills-discipline-tab" data-bs-toggle="pill" href="#pills-discipline" role="tab" aria-controls="pills-discipline" aria-selected="false"><span class="title">Discipline Action</span></a></li>
+                                        <li><a class="show" id="pills-journal-tab" data-bs-toggle="pill" href="#pills-journal" role="tab" aria-controls="pills-journal" aria-selected="false"><span class="title">Journal</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-9 col-md-12 box-col-8 xl-70">
+                <div class="email-right-aside bookmark-tabcontent">
+                    <div class="card email-body radius-left">
+                        <div class="ps-0">
+                            <div class="tab-content">
+
+                                <div class="tab-pane fade active show" id="pills-created" role="tabpanel" aria-labelledby="pills-created-tab">
+                                    <div class="card mb-0">
+                                        <div class="card-header p-4">
+                                            <h6 class="mb-0">Employee Information</h6>
+                                            <div class="setting-list">
+                                                <a asp-action="Search" asp-controller="Employee" class="btn btn-primary">Back</a>
+                                                <a asp-action="Edit" asp-controller="Employee" asp-route-id="@Model.Id" class="btn btn-primary"><i class="fa fa-pencil m-r-5"></i>Edit</a>
+                                                <a asp-action="EmployeeCVPrint" asp-controller="Employee" asp-route-id="@Model.Id" class="btn btn-primary" target="_blank">Print CV</a>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <table class="table table-responsive table-bordered">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><b>Name</b></td>
+                                                        <td>@(Model.Name)</td>
+                                                        <td><b>Code</b></td>
+                                                        <td>@(Model.Code)</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><b>Email</b></td>
+                                                        <td>@(Model.Email)</td>
+                                                        <td><b>Mobile</b></td>
+                                                        <td>@(Model.Mobile)</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><b>Designation</b></td>
+                                                        <td>
+                                                            <input type="hidden" id="DesignationId" value="@(Model.DesignationId)" />
+                                                            @(Model.DesignationName)
+                                                        </td>
+                                                        <td><b>Department</b></td>
+                                                        <td>
+                                                            <input type="hidden" id="DepartmentId" value="@(Model.DepartmentId)" />
+                                                            @(Model.DepartmentName)
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><b>Academic Department</b></td>
+                                                        <td>
+                                                            @(Model.AcademicDepartmentName)
+                                                        </td>
+                                                        <td><b>Job Status</b></td>
+                                                        <td>@(Model.EmployeeStatusText)</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><b>Join Date</b></td>
+                                                        <td>@Utility.ConvertDateToStr(Model.JoinDate)</td>
+                                                        <td><b>Probation Date</b></td>
+                                                        <td>@Model.ProbationDate?.ToString("dd-MMM-yyyy")</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><b>Confirmation Date</b></td>
+                                                        <td>@Model.ConfirmationDate?.ToString("dd-MMM-yyyy")</td>
+                                                        <td><b>Basic Salary</b></td>
+                                                        <td>@(Model.Salary) (@Model.SalaryTypeText)</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><b>Bank Account No.</b></td>
+                                                        <td>@(Model.BankAccNo)</td>
+                                                        <td><b>PF Member</b></td>
+                                                        <td>@(Model.IsPfMember ? "Member" : "Not A Member")</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><b>Duty Shift</b></td>
+                                                        <td>@(Model.PermanentDutyShiftName)</td>
+                                                        <td colspan="2"></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    @* @if (Model.EmpLeaveInfo.LeaveBalanceVms.Count > 0)
+                                    {
+                                        <div class="card mt-5 mb-0">
+                                            <div class="card-header p-4">
+                                                <h6 class="mb-0">Employee Leave Info</h6>
+                                                <div class="setting-list">
+                                                    <button class="btn btn-primary" type="button" id="PrintBtn">PDF Print</button>
+                                                    <a asp-action="Create" asp-controller="EmpLeaveApplication" asp-route-empId="@Model.Id" class="btn btn-primary" target="_blank"><i class="fa fa-plus-circle m-r-5"></i>Add Application</a>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <table id="" class="table table-bordered" style="width:100%; text-align: center">
+                                                    <thead class="bg-primary">
+                                                        <tr>
+                                                            <th>Leave Type</th>
+                                                            <th>Current Year Balance</th>
+                                                            <th>Carry Forward</th>
+                                                            <th>Total</th>
+                                                            <th>Taken</th>
+                                                            <th>Remaining</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var leave in Model.EmpLeaveInfo.LeaveBalanceVms)
+                                                        {
+                                                            <tr>
+                                                                <td>@(leave.LeaveTypeName)</td>
+                                                                <td>@(leave.CurrentYearBalance)</td>
+                                                                <td>@(leave.CarryForwardBalance)</td>
+                                                                <td>@(leave.LeaveBalance)</td>
+                                                                <td>@(leave.LeaveTaken)</td>
+                                                                <td>@(leave.LeaveRemain)</td>
+                                                            </tr>
+                                                        }
+                                                        <tr>
+                                                            <td class="text-end"><b>Total</b></td>
+                                                            <td><b>@(Model.EmpLeaveInfo.LeaveBalanceVms.Sum(c => c.CurrentYearBalance))</b></td>
+                                                            <td><b>@(Model.EmpLeaveInfo.LeaveBalanceVms.Sum(c => c.CarryForwardBalance))</b></td>
+                                                            <td><b>@(Model.EmpLeaveInfo.LeaveBalanceVms.Sum(c => c.LeaveBalance))</b></td>
+                                                            <td><b>@(Model.EmpLeaveInfo.LeaveBalanceVms.Sum(c => c.LeaveTaken))</b></td>
+                                                            <td><b>@(Model.EmpLeaveInfo.LeaveBalanceVms.Sum(c => c.LeaveRemain))</b></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    } *@
+
+                                </div>
+
+                                <div class="fade tab-pane" id="pills-todaytask" role="tabpanel" aria-labelledby="pills-todaytask-tab">
+                                    <div class="card mb-0">
+                                        <div class="card-header d-flex align-items-center">
+                                            <h6 class="mb-0">Personal Information</h6>
+                                            <a asp-action="Edit" asp-controller="Employee" asp-route-id="@Model.Id" class="btn btn-primary"><i class="fa fa-pencil m-r-5"></i>Edit</a>
+                                        </div>
+                                        <div class="card-body">
+                                            <table class="table table-responsive table-bordered">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><b>Father Name</b></td>
+                                                        <td>@(Model.FatherName)</td>
+                                                        <td><b>Mother Name</b></td>
+                                                        <td>@(Model.MotherName)</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><b>Gender</b></td>
+                                                        <td>@(Model.GenderText)</td>
+                                                        <td><b>Marital Status</b></td>
+                                                        <td>@(Model.MaritalStatusText)</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><b>Religion</b></td>
+                                                        <td>@(Model.ReligionText)</td>
+                                                        <td><b>Nationality</b></td>
+                                                        <td>@(Model.Nationality)</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><b>Birth Date</b></td>
+                                                        <td>@Utility.ConvertDateToStr(Model.Dob)</td>
+                                                        <td><b>Blood Group</b></td>
+                                                        <td>@(Model.BloodGroup)</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><b>NID</b></td>
+                                                        <td>@(Model.NID)</td>
+                                                        <td colspan="2"></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="fade tab-pane" id="pills-delayed" role="tabpanel" aria-labelledby="pills-delayed-tab">
+                                    <div class="card mb-0">
+                                        <div class="card-header d-flex align-items-center">
+                                            <h6 class="mb-0">Contact Information</h6>
+                                            <a asp-action="Edit" asp-controller="Employee" asp-route-id="@Model.Id" class="btn btn-primary"><i class="fa fa-pencil m-r-5"></i>Edit</a>
+                                        </div>
+                                        <div class="card-body">
+                                            <table class="table table-responsive table-bordered">
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="width: 20%"><b>Present Address</b></td>
+                                                        <td>@(Model.PreAddress)</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="width: 20%"><b>Permanent Address</b></td>
+                                                        <td>@(Model.PerAddress)</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="fade tab-pane" id="pills-upcoming" role="tabpanel" aria-labelledby="pills-upcoming-tab">
+                                    <div class="card mb-0">
+                                        <div class="card-header d-flex p-4 align-items-center">
+                                            <h6 class="mb-0">Education Information</h6>
+                                            <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#educationModal"><i class="me-2" data-feather="plus-circle"></i>Add Education</button>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-responsive table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Course</th>
+                                                            <th>Institute</th>
+                                                            <th>Board/University</th>
+                                                            <th>Form Year</th>
+                                                            <th>To Year</th>
+                                                            <th>Subject/Group</th>
+                                                            <th>Passing year</th>
+                                                            <th>Certificate</th>
+                                                            <th>Action</th>
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="EmpEducationTBody">
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                        @*education_modal_start*@
+
+                                        <div class="modal fade modal-bookmark" id="educationModal" tabindex="-1" role="dialog" aria-labelledby="educationModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="educationModalLabel">Add Education</h5>
+                                                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form class="form-bookmark needs-validation" id="EmpEducationFrom" novalidate="">
+                                                            <input type="hidden" name="IsAjaxPost" id="IsAjaxPost" value="true" />
+                                                            <input type="hidden" name="EmployeeId" id="EmployeeId" value="@(Model.Id)" />
+
+                                                            <div class="row">
+                                                                <div class="form-group col-md-6">
+                                                                    <label>Course</label>
+                                                                    <input class="form-control" name="CourseName" id="CourseName" type="text" required="" autocomplete="off">
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label>Institution</label>
+                                                                    <input class="form-control" name="InstitutionName" id="InstitutionName" type="text" required="" autocomplete="off">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="form-group col-md-6">
+                                                                    <label>Board/University</label>
+                                                                    <input class="form-control" name="BoardUniversity" id="BoardUniversity" type="text" required="" autocomplete="off">
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label>Subject/Group</label>
+                                                                    <input class="form-control" name="SubjectGroup" id="SubjectGroup" type="text" required="" autocomplete="off">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="form-group col-md-6">
+                                                                    <label>Year From</label>
+                                                                    <input class="form-control" name="YearFrom" id="YearFrom" type="number" required="" autocomplete="off">
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label>Year To</label>
+                                                                    <input class="form-control" name="YearTo" id="YearTo" type="number" required="" autocomplete="off">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="form-group col-md-6">
+                                                                    <label>Passing Year</label>
+                                                                    <input class="form-control" name="PassingYear" id="PassingYear" type="number" required="" autocomplete="off">
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label>Result</label>
+                                                                    <input class="form-control" name="Result" id="Result" type="text" required="" autocomplete="off">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="form-group col-md-6">
+                                                                    <label>Certificate File</label>
+                                                                    <input class="form-control" type="file" name="CertificateFile" id="CertificateFile">
+                                                                </div>
+                                                            </div>
+                                                            <input id="index_var" type="hidden" value="6">
+                                                            <button class="btn btn-secondary" id="EmpEducationSave" type="button">Save</button>
+                                                            <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Cancel</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        @*education_modal_end*@
+
+                                    </div>
+                                </div>
+
+                                <div class="fade tab-pane" id="pills-weekly" role="tabpanel" aria-labelledby="pills-weekly-tab">
+                                    <div class="card mb-0">
+                                        <div class="card-header d-flex align-items-center">
+                                            <h6 class="mb-0">Experience Information</h6>
+                                            <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#experienceModal"><i class="me-2" data-feather="plus-circle"></i>Add Experience</button>
+                                        </div>
+                                        <div class="card-body">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Company Name</th>
+                                                        <th>Designation</th>
+                                                        <th>Form Date</th>
+                                                        <th>To Date</th>
+                                                        <th>Certificate</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="EmpExperienceTBody">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    @*experience_modal_start*@
+
+                                    <div class="modal fade modal-bookmark" id="experienceModal" tabindex="-1" role="dialog" aria-labelledby="experienceModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="experienceModalLabel">Add Experience</h5>
+                                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form class="form-bookmark needs-validation" id="EmpExperienceFrom" novalidate="">
+                                                        <input type="hidden" id="IsAjaxPostExp" value="true" />
+                                                        <input type="hidden" id="EmployeeId" value="@(Model.Id)" />
+
+                                                        <div class="row">
+                                                            <div class="form-group col-md-6">
+                                                                <label>Company</label>
+                                                                <input class="form-control" id="CompanyName" type="text" required="" autocomplete="off">
+                                                            </div>
+                                                            <div class="form-group col-md-6">
+                                                                <label>Designation</label>
+                                                                <input class="form-control" id="Designation" type="text" required="" autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="form-group col-md-6">
+                                                                <label>From Date</label>
+                                                                <input class="datepicker-here form-control digits" id="DateFromStr" type="text" data-language="en">
+                                                            </div>
+                                                            <div class="form-group col-md-6">
+                                                                <label>To Date</label>
+                                                                <input class="datepicker-here form-control digits" id="DateToStr" type="text" data-language="en">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="form-group col-md-6">
+                                                                <label>Responsibility</label>
+                                                                <textarea class="form-control" id="Responsibility" type="text" rows="3"></textarea>
+                                                            </div>
+                                                            <div class="form-group col-md-6">
+                                                                <label>Left Reason</label>
+                                                                <textarea class="form-control" id="LeftReason" type="text" rows="3"></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="form-group col-md-6">
+                                                                <label>Last Drawn Salary</label>
+                                                                <input class="form-control" id="LastDrawnSalary" type="number" autocomplete="off">
+                                                            </div>
+                                                            <div class="form-group col-md-6">
+                                                                <label>Experience File</label>
+                                                                <input class="form-control" type="file" name="ExperienceFile" id="ExperienceFile">
+                                                            </div>
+                                                        </div>
+                                                        <input id="index_var" type="hidden" value="6">
+                                                        <button class="btn btn-secondary" id="EmpExperienceSave" type="button">Save</button>
+                                                        <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Cancel</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @*experience_modal_end*@
+
+                                </div>
+
+                                <div class="fade tab-pane" id="pills-monthly" role="tabpanel" aria-labelledby="pills-monthly-tab">
+                                    <div class="card mb-0">
+                                        <div class="card-header d-flex align-items-center">
+                                            <h6 class="mb-0">Reference Information</h6>
+                                            <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#referenceModal"><i class="me-2" data-feather="plus-circle"></i>Add Reference</button>
+                                        </div>
+                                        <div class="card-body">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Reference</th>
+                                                        <th>Ocupation</th>
+                                                        <th>Mobile</th>
+                                                        <th>Relation</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="EmpReferenceTBody">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    @*reference_modal_start*@
+
+                                    <div class="modal fade modal-bookmark" id="referenceModal" tabindex="-1" role="dialog" aria-labelledby="referenceModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="referenceModalLabel">Add Reference</h5>
+                                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form class="form-bookmark needs-validation" novalidate="">
+                                                        <input type="hidden" id="IsAjaxPostRef1" value="true" />
+                                                        <input type="hidden" id="EmployeeId1" value="@(Model.Id)" />
+                                                        <input type="hidden" id="RefType1" value="1" />
+
+                                                        <div class="row">
+                                                            <div class="form-group col-md-6">
+                                                                <label>Reference By</label>
+                                                                <input class="form-control" id="RefName1" type="text" required="" autocomplete="off">
+                                                            </div>
+                                                            <div class="form-group col-md-6">
+                                                                <label>Relation</label>
+                                                                <input class="form-control" id="Relation1" type="text" required="" autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="form-group col-md-6">
+                                                                <label>Occupation</label>
+                                                                <input class="form-control" id="Occupation1" type="text" required="" autocomplete="off">
+                                                            </div>
+
+                                                            <div class="form-group col-md-6">
+                                                                <label>Mobile</label>
+                                                                <input class="form-control" id="Mobile1" type="text" required="" autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="form-group col-md-6">
+                                                                <label>Phone</label>
+                                                                <input class="form-control" id="Phone1" type="text" autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="form-group col-md-12">
+                                                                <label>Address</label>
+                                                                <textarea class="form-control" id="Address1" type="text" rows="3"></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <button class="btn btn-secondary" id="EmpReferenceSave" type="button">Save</button>
+                                                        <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Cancel</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @*reference_modal_end*@
+
+                                </div>
+
+                                <div class="fade tab-pane" id="pills-nomine" role="tabpanel" aria-labelledby="pills-nomine-tab">
+                                    <div class="card mb-0">
+                                        <div class="card-header d-flex align-items-center">
+                                            <h6 class="mb-0">Nominee Information</h6>
+                                            <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#nomineModal"><i class="me-2" data-feather="plus-circle"></i>Add Nominee</button>
+                                        </div>
+                                        <div class="card-body">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Nominee Name</th>
+                                                        <th>Ocupation</th>
+                                                        <th>Mobile</th>
+                                                        <th>Relation</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="EmpNomineTBody">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    @*nomine_modal_start*@
+
+                                    <div class="modal fade modal-bookmark" id="nomineModal" tabindex="-1" role="dialog" aria-labelledby="nomineModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="referenceModalLabel">Add Nomine</h5>
+                                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form class="form-bookmark needs-validation" novalidate="">
+                                                        <input type="hidden" id="IsAjaxPostRef2" value="true" />
+                                                        <input type="hidden" id="EmployeeId2" value="@(Model.Id)" />
+                                                        <input type="hidden" id="RefType2" value="2" />
+
+                                                        <div class="row">
+                                                            <div class="form-group col-md-6">
+                                                                <label>Nominee Name</label>
+                                                                <input class="form-control" id="RefName2" type="text" required="" autocomplete="off">
+                                                            </div>
+                                                            <div class="form-group col-md-6">
+                                                                <label>Owner Ship</label>
+                                                                <input class="form-control" type="number" id="OwnerShip2" required />
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="form-group col-md-6">
+                                                                <label>Occupation</label>
+                                                                <input class="form-control" id="Occupation2" type="text" required="" autocomplete="off">
+                                                            </div>
+                                                            <div class="form-group col-md-6">
+                                                                <label>Date Of Birth</label>
+                                                                <input class="datepicker-here form-control digits" id="DobStr2" type="text" data-language="en">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="form-group col-md-6">
+                                                                <label>Mobile</label>
+                                                                <input class="form-control" id="Mobile2" type="text" required="" autocomplete="off">
+                                                            </div>
+                                                            <div class="form-group col-md-6">
+                                                                <label>Relation</label>
+                                                                <input class="form-control" id="Relation2" type="text" required="" autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="form-group col-md-6">
+                                                                <label>Phone</label>
+                                                                <input class="form-control" id="Phone2" type="text" autocomplete="off">
+                                                            </div>
+                                                            <div class="form-group col-md-6">
+                                                                <label>Address</label>
+                                                                <textarea class="form-control" id="Address2" type="text" rows="3"></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <button class="btn btn-secondary" id="EmpNomineSave" type="button">Save</button>
+                                                        <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Cancel</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @*nominee_modal_end*@
+
+                                </div>
+
+                                <div class="fade tab-pane" id="pills-emergency" role="tabpanel" aria-labelledby="pills-emergency-tab">
+                                    <div class="card mb-0">
+                                        <div class="card-header d-flex align-items-center">
+                                            <h6 class="mb-0">Emergency Contact Information</h6>
+                                            <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#emergencyModal"><i class="me-2" data-feather="plus-circle"></i>Add Emergency Contact</button>
+                                        </div>
+                                        <div class="card-body">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Contact Name</th>
+                                                        <th>Ocupation</th>
+                                                        <th>Mobile</th>
+                                                        <th>Relation</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="EmpEmergencyTBody">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    @*emergency_modal_start*@
+
+                                    <div class="modal fade modal-bookmark" id="emergencyModal" tabindex="-1" role="dialog" aria-labelledby="emergencyModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="referenceModalLabel">Add Emergency Contact</h5>
+                                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form class="form-bookmark needs-validation" novalidate="">
+                                                        <input type="hidden" id="IsAjaxPostRef3" value="true" />
+                                                        <input type="hidden" id="EmployeeId3" value="@(Model.Id)" />
+                                                        <input type="hidden" id="RefType3" value="3" />
+
+                                                        <div class="row">
+                                                            <div class="form-group col-md-6">
+                                                                <label>Contact Person Name</label>
+                                                                <input class="form-control" id="RefName3" type="text" required="" autocomplete="off">
+                                                            </div>
+                                                            <div class="form-group col-md-6">
+                                                                <label>Relation</label>
+                                                                <input class="form-control" id="Relation3" type="text" required="" autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="form-group col-md-6">
+                                                                <label>Occupation</label>
+                                                                <input class="form-control" id="Occupation3" type="text" required="" autocomplete="off">
+                                                            </div>
+                                                            @*<div class="form-group col-md-6">
+                                    <label>Date Of Birth</label>
+                                    <input class="datepicker-here form-control digits" id="DobStr3" type="text" data-language="en">
+                                    </div>*@
+                                                            <div class="form-group col-md-6">
+                                                                <label>Mobile</label>
+                                                                <input class="form-control" id="Mobile3" type="text" required="" autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="form-group col-md-6">
+                                                                <label>Phone</label>
+                                                                <input class="form-control" id="Phone3" type="text" autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="form-group col-md-12">
+                                                                <label>Address</label>
+                                                                <textarea class="form-control" id="Address3" type="text" rows="3"></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <button class="btn btn-secondary" id="EmpEmergencySave" type="button">Save</button>
+                                                        <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Cancel</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @*emergency_modal_end*@
+
+                                </div>
+
+                                <div class="fade tab-pane" id="pills-assigned" role="tabpanel" aria-labelledby="pills-assigned-tab">
+                                    <div class="card mb-0">
+                                        <div class="card-header d-flex">
+                                            <h6 class="mb-0">Training Information</h6>
+                                            <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#trainingModal"><i class="me-2" data-feather="plus-circle"></i>Add Training</button>
+                                        </div>
+                                        <div class="card-body">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Course</th>
+                                                        <th>Institute</th>
+                                                        <th>Location</th>
+                                                        <th>Start Date</th>
+                                                        <th>End Date</th>
+                                                        <th>Result</th>
+                                                        <th>File</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="EmpTrainingTBody">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    @*training_modal_start*@
+
+                                    <div class="modal fade modal-bookmark" id="trainingModal" tabindex="-1" role="dialog" aria-labelledby="trainingModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="postingModalLabel">Add Training</h5>
+                                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form class="form-bookmark needs-validation" novalidate="">
+                                                        <input type="hidden" id="IsAjaxTrainingPosting" value="true" />
+                                                        <input type="hidden" id="EmployeeId" value="@(Model.Id)" />
+
+                                                        <div class="row">
+                                                            <div class="form-group col-md-6">
+                                                                <label>Course</label>
+                                                                <input class="form-control" id="CourseTitle" type="text" required="" autocomplete="off">
+                                                            </div>
+                                                            <div class="form-group col-md-6">
+                                                                <label>Institute</label>
+                                                                <input class="form-control" id="InstituteName" type="text" required="" autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="form-group col-md-6">
+                                                                <label>Location</label>
+                                                                <input class="form-control" id="Location" type="text" required="" autocomplete="off">
+                                                            </div>
+                                                            <div class="form-group col-md-6">
+                                                                <label>Result</label>
+                                                                <input class="form-control" id="TrainingResult" type="text" required="" autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="form-group col-md-6">
+                                                                <label>Start Date</label>
+                                                                <input class="datepicker-here form-control" id="TrainingDateFromStr" type="text" data-language="en">
+                                                            </div>
+                                                            <div class="form-group col-md-6">
+                                                                <label>End Date</label>
+                                                                <input class="datepicker-here form-control" id="TrainingDateToStr" type="text" data-language="en">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="form-group col-md-6">
+                                                                <label>Training File</label>
+                                                                <input class="form-control" type="file" name="TrainingFile" id="TrainingFile">
+                                                            </div>
+                                                            <div class="form-group col-md-6">
+                                                                <label>Remarks</label>
+                                                                <textarea class="form-control" id="TrainingRemarks" type="text" rows="3"></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <button class="btn btn-secondary" id="EmpTrainingSave" type="button">Save</button>
+                                                        <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Cancel</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @*training_modal_end*@
+
+                                </div>
+
+                                <div class="fade tab-pane" id="pills-tasks" role="tabpanel" aria-labelledby="pills-tasks-tab">
+                                    <div class="card mb-0">
+                                        <div class="card-header d-flex">
+                                            <h6 class="mb-0">Posting Information</h6>
+                                            <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#postingModal"><i class="me-2" data-feather="plus-circle"></i>Add Posting</button>
+                                        </div>
+                                        <div class="card-body">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Department From</th>
+                                                        <th>Designation From</th>
+                                                        <th>Previous Salary</th>
+                                                        <th>Department To</th>
+                                                        <th>Designation To</th>
+                                                        <th>Current Salary</th>
+                                                        <th>Posting Type</th>
+                                                        <th>File</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="EmpPostingTBody">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    @*posting_modal_start*@
+
+                                    <div class="modal fade modal-bookmark" id="postingModal" tabindex="-1" role="dialog" aria-labelledby="postingModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="postingModalLabel">Add Posting</h5>
+                                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form class="form-bookmark needs-validation" novalidate="">
+                                                        <input type="hidden" id="IsAjaxPostPosting" value="true" />
+                                                        <input type="hidden" id="EmployeeId" value="@(Model.Id)" />
+
+                                                        <div class="row">
+                                                            <div class="form-group col-md-6">
+                                                                <label>Present Department</label>
+                                                                <select id="PreDepartmentId" asp-items="Model.DepartmentLookUp" class="dd-type disabled" readonly></select>
+                                                            </div>
+                                                            <div class="form-group col-md-6">
+                                                                <label>Present Designation</label>
+                                                                <select id="PreDesignationId" asp-items="Model.DesignationLookUp" class="dd-type disabled" readonly></select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="form-group col-md-6">
+                                                                <label>Posting Department</label>
+                                                                <select id="PostDepartmentId" asp-items="Model.DepartmentLookUp" class="dd-type"></select>
+                                                            </div>
+                                                            <div class="form-group col-md-6">
+                                                                <label>Posting Designation</label>
+                                                                <select id="PostDesignationId" asp-items="Model.DesignationLookUp" class="dd-type"></select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="form-group col-md-6">
+                                                                <label>Present Net Salary</label>
+                                                                <input class="form-control" id="PreNetSalary" type="number" value="@Model.Salary" required="" autocomplete="off" readonly>
+                                                            </div>
+                                                            <div class="form-group col-md-6">
+                                                                <label>Net Salary</label>
+                                                                <input class="form-control" id="NetSalary" type="number" required="" autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="form-group col-md-6">
+                                                                <label>Start Date</label>
+                                                                <input class="datepicker-here form-control" id="PostDateFromStr" type="text" data-language="en">
+                                                            </div>
+                                                            <div class="form-group col-md-6">
+                                                                <label>Posting Type</label>
+                                                                <select id="PostingType" asp-items="Model.PostingTypeLookUp" class="dd-type"></select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="form-group col-md-6">
+                                                                <label>Posting File</label>
+                                                                <input class="form-control" type="file" name="PostingFile" id="PostingFile">
+                                                            </div>
+                                                            <div class="form-group col-md-6">
+                                                                <label>Remarks</label>
+                                                                <textarea class="form-control" id="PostRemarks" type="text" rows="3"></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <button class="btn btn-secondary" id="EmpPostingSave" type="button">Save</button>
+                                                        <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Cancel</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @*posting_modal_end*@
+                                </div>
+
+                                <div class="fade tab-pane" id="pills-discipline" role="tabpanel" aria-labelledby="pills-discipline-tab">
+                                    <div class="card mb-0">
+                                        <div class="card-header d-flex">
+                                            <h6 class="mb-0">Discipline Actions</h6>
+                                            <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#disciplineModal"><i class="me-2" data-feather="plus-circle"></i>Add Action</button>
+                                        </div>
+                                        <div class="card-body">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Action Type</th>
+                                                        <th>Reason</th>
+                                                        <th>Committee</th>
+                                                        <th>File</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="EmpActionTBody">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    @*discipline_modal_start*@
+
+                                    <div class="modal fade modal-bookmark" id="disciplineModal" tabindex="-1" role="dialog" aria-labelledby="disciplineModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="disciplineModalLabel">Add Discipline Action</h5>
+                                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form class="form-bookmark needs-validation" novalidate="">
+                                                        <input type="hidden" id="IsAjaxPostAction" value="true" />
+                                                        <input type="hidden" id="EmployeeId" value="@(Model.Id)" />
+
+                                                        <div class="row">
+                                                            <div class="form-group col-md-12">
+                                                                <label>Action Type</label>
+                                                                <select id="ActionType" asp-items="Model.ActionTypeLookUp" class="dd-type"></select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="form-group col-md-12">
+                                                                <label>Reason</label>
+                                                                <input class="form-control" type="text" id="ActionReason" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="form-group col-md-12">
+                                                                <label>Description</label>
+                                                                <textarea class="form-control" id="ActionDesc" type="text" rows="3"></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="form-group col-md-6">
+                                                                <label>Committee</label>
+                                                                <input class="form-control" id="Committee" type="text" />
+                                                            </div>
+                                                            <div class="form-group col-md-6">
+                                                                <label>Action File</label>
+                                                                <input class="form-control" type="file" name="ActionFile" id="ActionFile" />
+                                                            </div>
+                                                        </div>
+                                                        <button class="btn btn-secondary" id="EmpActionSave" type="button">Save</button>
+                                                        <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Cancel</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @*discipline_modal_end*@
+                                </div>
+
+                                <div class="fade tab-pane" id="pills-journal" role="tabpanel" aria-labelledby="pills-journal-tab">
+                                    <div class="card mb-0">
+                                        <div class="card-header d-flex p-4 align-items-center">
+                                            <h6 class="mb-0">Journal Information</h6>
+                                            <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#journalModal"><i class="me-2" data-feather="plus-circle"></i>Add Journal</button>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-responsive table-bordered" style="text-align:center;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Name</th>
+                                                            <th>Title</th>
+                                                            <th>Submit Date</th>
+                                                            <th>About</th>
+                                                            <th>Doument</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="JournalTBody">
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                        @*journal_modal_start*@
+
+                                        <div class="modal fade modal-bookmark" id="journalModal" tabindex="-1" role="dialog" aria-labelledby="journalModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="journalModalLabel">Add Journal</h5>
+                                                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form class="form-bookmark needs-validation" id="EmpJournalFrom" novalidate="">
+                                                            <input type="hidden" name="IsAjaxPost" id="IsAjaxPost" value="true" />
+                                                            <input type="hidden" name="EmployeeId" id="EmployeeId" value="@(Model.Id)" />
+
+                                                            <div class="row">
+                                                                <div class="form-group col-md-12">
+                                                                    <label>Name</label>
+                                                                    <input class="form-control" name="JournalName" id="JournalName" type="text" required="" autocomplete="off">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="form-group col-md-12">
+                                                                    <label>Title</label>
+                                                                    <input class="form-control" name="JournalTitle" id="JournalTitle" type="text" required="" autocomplete="off">
+                                                                </div>
+                                                            </div>
+                                                            <div>
+                                                                <div class="form-group col-md-12">
+                                                                    <label>About</label>
+                                                                    <textarea rows="3" class="form-control" id="JournalAbout"></textarea>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="form-group col-md-6">
+                                                                    <label>Document File</label>
+                                                                    <input class="form-control" type="file" name="DocFile" id="DocFile">
+                                                                </div>
+                                                            </div>
+                                                            <input id="index_var" type="hidden" value="6">
+                                                            <button class="btn btn-secondary" id="EmpJournalSave" type="button">Save</button>
+                                                            <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Cancel</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        @*journal_modal_end*@
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/js/ETL/Employee/EmployeeDetails.js"></script>
+    <script>
+        $('select.disabled option:not(:selected)').attr("disabled", "true");
+    </script>
+}

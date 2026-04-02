@@ -1,0 +1,103 @@
+﻿@model Domain.ViewModel.HotelManagement.HotelReport.DailyInHouseGuestVm
+@{
+    ViewData["Title"] = "Statements of Daily In House Guest";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkHt" />
+        <form>
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Daily In House Guest List</h5>
+                    <div class="setting-list">
+                        <input type="button" id="ShowReportBtn" class="btn btn-primary" value="Show Report" />
+                    </div>
+                </div>
+                <div class="card-body table-responsive">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="col-form-label">From Date</label>
+                            <input class="form-control from_dt" asp-for="StrReportDate" placeholder="Report Date" data-language="en" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Daily in House Guest List</h5>
+                <div class="setting-list">
+                    <button class="btn btn-primary" id="ReportPrintBtn">PDF</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <dvi class="table-responsive">
+                    <div style="text-align: center;">
+                        <div style="text-align: center; font-weight: bold; font-size: 16px; line-height: 20px">DAILY IN HOUSE GUEST LIST</div>
+                        <div style="text-align: center; font-weight: bold; font-size: 11px; line-height: 16px">
+                            <div id="ltReportFilter" runat="server" Text=""></div>
+                        </div>
+                    </div>
+                    <div id="ReportContainer"></div>
+                </dvi>
+
+                @*modal_Complimentary*@
+
+                <div class="modal fade" id="cbfAmountModal" tabindex="-1" role="dialog" aria-labelledby="cbfAmountModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Entry Complimentary Breakfast</h5>
+                                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div id="modal-head"></div>
+
+                                <div>
+                                    <form>
+                                        <input type="hidden" id="breakfast_date" value="@(Model.StrReportDate)" />
+
+                                        <div class="mb-2">
+                                            <label class="col-form-label">Complimentary Breakfast Quantity</label>
+                                            <input type="number" class="form-control" id="CbfAmount" />
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button class="btn btn-primary" id="CbfSubmitBtn" type="button">Save</button>
+                                <button class="btn btn-secondary" id="modal_close" type="button" data-bs-dismiss="modal">Close</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                @*modal_end*@
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+ {
+    <script>
+        var fromDate = @Model.StrReportDate;
+
+        $(".from_dt").datepicker({
+            setDate: fromDate,
+            dateFormat: 'dd/mm/yyyy',
+            onSelect: function (d, i) {
+                console.log("event working..!", d);
+            }
+        });
+    </script>
+    @*<script src="~/js/ETL/BookingService/DailyInHouseGuestReport.js"></script>*@
+
+    <script src="~/js/ETL/BookingService/DailyInHouseGuestReport.js?v=@DateTime.UtcNow.Ticks"></script>
+}

@@ -1,0 +1,120 @@
+﻿@model Domain.ViewModel.HotelManagement.RoomDayAudit.RoomDayAuditVm
+@using Domain.Utility.Common
+@{
+    ViewData["Title"] = "Room Audit Generate";
+
+    var isSuperAdmin = User.Claims.Any(x => x.Type == CustomClaimType.Permission &&
+                                                    x.Value == Permissions.SuperAdmin &&
+                                                    x.Issuer == "LOCAL AUTHORITY");
+}
+
+<div class="col-md-12">
+    <div class="row">
+        <div class="col-md-12 default-according py-2">
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Night Audit | Business Date: @(Model.BusinessDate.ToString("dd-MMM-yyyy"))</h5>
+                    <div class="setting-list">
+                        @if (Model.AuditedInfo.IsAllAudited)
+                        {
+                            <a asp-action="NightAuditSummary" asp-controller="NightAudit" class="btn btn-primary">Night Audit Summary</a>
+                        }
+
+                        @if (!Model.AuditedInfo.IsRoomAuditGenerated)
+                        {
+                            <button type="button" id="GanerateRoomAuditBtn" class="btn btn-secondary mx-2">Generate Audit</button>
+                        }
+                        else
+                        {
+                            if (isSuperAdmin)
+                            {
+                                <button type="button" id="GanerateRoomReAuditBtn" class="btn btn-secondary mx-2" title="All Previous Audit Will Be Remove and New Audit Will Generated">Room Re-Audit</button>
+                            }
+                        }
+
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form class="theme-form mega-form">
+                        <input id="BusinessDateStr" type="hidden" value="@(Model.BusinessDate.ToString("dd-MMM-yyyy"))">
+                        <input id="IsRoomAuditGenerated" type="hidden" value="@(Model.AuditedInfo.IsRoomAuditGenerated)">
+                    </form>
+
+                    <div class="row">
+                        <div class="col-md-1"><b>Room Audited</b></div>
+                        <div class="col-md-1">@(Model.AuditedInfo.IsAllRoomCharged ? "Done" : "Not-Audited")</div>
+
+                        <div class="col-md-1"><b>F.O. Payment Audited</b></div>
+                        <div class="col-md-1">@(Model.AuditedInfo.IsFoPaymentAudited ? "Done" : "Not-Audited")</div>
+
+                        <div class="col-md-1"><b>Service Audited</b></div>
+                        <div class="col-md-1">@(Model.AuditedInfo.IsExtraServiceAudited ? "Done" : "Not-Audited")</div>
+
+                        <div class="col-md-1"><b>Food Order Audited</b></div>
+                        <div class="col-md-1">@(Model.AuditedInfo.IsFoodOrderAudited ? "Done" : "Not-Audited")</div>
+
+                        <div class="col-md-1"><b>Res. Payment Audited</b></div>
+                        <div class="col-md-1">@(Model.AuditedInfo.IsRestPaymentAudited ? "Done" : "Not-Audited")</div>
+
+                        <div class="col-md-1"><b>Banquet Hall Audited</b></div>
+                        <div class="col-md-1">@(Model.AuditedInfo.IsBanquetAudited ? "Done" : "Not-Audited")</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* <div id="RoomAuditPartialDiv"></div> *@
+    <ul class="nav nav-tabs" id="auditTabs">
+        <li class="nav-item">
+            <a class="nav-link active" data-bs-toggle="tab" href="#RoomAuditTab">Room Audit</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#PaymentAuditTab">FO Transaction Audit</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#ServiceAuditTab">Service Audit</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#RestaurantAuditTab">Restaurant Sales Audit</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#RestaurantTransectionAuditTab">Res. Transaction Audit</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#HallAuditTab">Hall Audit</a>
+        </li>
+    </ul>
+
+    <div class="tab-content mt-2">
+        <div class="tab-pane fade show active" id="RoomAuditTab">
+            <div id="RoomAuditPartialDiv"></div>
+        </div>
+        <div class="tab-pane fade" id="PaymentAuditTab">
+            <div id="PaymentAuditPartialDiv"></div>
+        </div>
+        <div class="tab-pane fade" id="ServiceAuditTab">
+            <div id="ServiceAuditPartialDiv"></div>
+        </div>
+        <div class="tab-pane fade" id="RestaurantAuditTab">
+            <div id="RestaurantAuditPartialDiv"></div>
+        </div>
+        <div class="tab-pane fade" id="RestaurantTransectionAuditTab">
+            <div id="RestaurantTransectionAuditPartialDiv"></div>
+        </div>
+        <div class="tab-pane fade" id="HallAuditTab">
+            <div id="hallAuditPartialDiv"></div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <script src="~/js/ETL/NightAudit/RoomAuditGenerate.js"></script>
+    <script src="~/js/ETL/NightAudit/PaymentTransection.js"></script>
+    <script src="~/js/ETL/NightAudit/Restarant_order_Audit.js"></script>
+    <script src="~/js/ETL/NightAudit/Rs_Order_Payment_Audit.js"></script>
+    <script src="~/js/ETL/NightAudit/Service_Audit.js"></script>
+    <script src="~/js/ETL/NightAudit/HallAudit.js"></script>
+}

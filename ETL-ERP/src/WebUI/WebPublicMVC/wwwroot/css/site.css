@@ -1,0 +1,92 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+/* Wrapper Settings */
+.wrapper,
+.wrapper-inner {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Rooms List - Basic Flex Setup */
+.widget-rooms-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* Space between items */
+    gap: 20px; /* Gap between items for better spacing */
+}
+
+/* Individual Room Item Styling */
+.rooms-item {
+    display: flex;
+    flex-direction: column; /* Stack content vertically */
+    width: 100%; /* Full width initially for smaller screens */
+    
+    flex: 1 1 300px; /* Flex-grow, shrink, and base width */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Image Container */
+.item-photo img {
+    width: 100%;
+    height: auto; /* Responsive image sizing */
+}
+
+/* Item Description */
+.item-desc {
+    padding: 15px;
+    text-align: center;
+}
+
+/* Features List */
+.desc-features ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* Price Section */
+.item-price {
+    padding: 15px;
+    text-align: center;
+}
+
+/* Responsive Styles */
+@media (min-width: 768px) {
+    .widget-rooms-list {
+        justify-content: flex-start;
+    }
+
+    .rooms-item {
+        flex: 1 1 45%; /* Take 45% width for larger screens */
+    }
+}
+
+@media (min-width: 1024px) {
+    .rooms-item {
+        flex: 1 1 30%; /* Take 30% width for even larger screens */
+    }
+}

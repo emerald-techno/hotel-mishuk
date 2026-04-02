@@ -1,0 +1,24 @@
+select d.CategoryType,d.CategoryId,d.CategoryName,d.ItemId,d.ItemName,d.UnitId,d.UnitName,sum(isnull(d.RcvQty,0)) TotalRcvQty,sum(isnull(d.IssQty,0)) TotalConsumptionQty
+,sum(isnull(d.RcvQty,0)) - sum(isnull(d.IssQty,0)) Stock,d.DepartmentId,d.DepartmentName
+from (
+select ci.CategoryType,ci.Id CategoryId, ci.CategoryName,ii.Id ItemId,ii.ItemName,ui.Id UnitId,ui.UnitName UnitName,td.ItemQty RcvQty,0 IssQty,dp.Id DepartmentId,dp.Name DepartmentName
+from TranDtls td
+inner join ItemInfos ii ON ii.Id = td.ItemId
+inner join CategoryInfos ci on ci.Id = ii.CategoryId
+inner join TranMsts tm ON tm.Id = td.TranMstId
+inner join UnitInfos ui on ui.Id = ii.UnitId
+inner join Departments dp on dp.Id = tm.IssueDeptId
+where tm.IsDeleted = 0 and tm.TranType in ('I') 
+union all
+select ci.CategoryType,ci.Id CategoryId,ci.CategoryName,ii.Id ItemId,ii.ItemName,ui.Id UnitId,ui.UnitName,0 RcvQty,td.ItemQty IssQty,dp.Id DepartmentId,dp.Name DepartmentName
+from TranDtls td
+inner join ItemInfos ii ON ii.Id = td.ItemId
+inner join CategoryInfos ci on ci.Id = ii.CategoryId
+inner join TranMsts tm ON tm.Id = td.TranMstId
+inner join UnitInfos ui on ui.Id = ii.UnitId
+inner join Departments dp on dp.Id = tm.IssueDeptId
+where tm.IsDeleted = 0 and tm.TranType in ('E','C')
+) d 
+--where d.DepartmentId = 3 and d.ItemId = 3
+group by d.CategoryType,d.CategoryId,d.CategoryName,d.ItemId,d.ItemName,d.UnitId,d.UnitName,d.DepartmentId,d.DepartmentName
+

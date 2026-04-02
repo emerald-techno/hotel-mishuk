@@ -1,0 +1,40 @@
+﻿@model Domain.ViewModel.HotelManagement.BedType.HtBedTypeVm
+
+@{
+    ViewData["Title"] = "Bed Type Edit";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkHt" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Edit Bed Type</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="BedType" class="btn btn-primary">Search Bed Type</a>
+                </div>
+            </div>
+            <form asp-action="Edit" class="form theme-form">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Bed type Name</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="TypeName" type="text" placeholder="Enter Bed type name">
+                                    <span asp-validation-for="TypeName" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,90 @@
+﻿@model Domain.ViewModel.Notification.NtfUserSettingVm
+@{
+    ViewData["Title"] = "Notification User Setup";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Notification User Setup</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="NtfUser" class="btn btn-primary">Search User Settings</a>
+                </div>
+            </div>
+            <form asp-action="Create" class="form theme-form">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-6">
+                            <label class="col-form-label">Application User</label>
+                            <select asp-for="UserId" asp-items="Model.UserLookUp" class="form-control dd-type"></select>
+                        </div>
+                        <div class="col-md-4"></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-6">
+                            <label class="col-form-label">Notification Event</label>
+                            <select asp-for="EventId" asp-items="Model.EventLookUp" class="form-control dd-type"></select>
+                        </div>
+                        <div class="col-md-4"></div>
+                    </div>
+
+                    <div class="row mb-2">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-4">
+                            <div class="media">
+                                <label class="col-form-label m-r-10">Is Enable</label>
+                                <div class="media-body icon-state">
+                                    <label class="switch">
+                                        <input type="checkbox" data-val="true" data-val-required="IsEnable" id="IsEnable" name="IsEnable" value="true" data-bs-original-title="" title=""><span class="switch-state"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <span asp-validation-for="IsEnable" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-2">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-4">
+                            <div class="media">
+                                <label class="col-form-label m-r-10">Is Email</label>
+                                <div class="media-body icon-state">
+                                    <label class="switch">
+                                        <input type="checkbox" data-val="true" data-val-required="IsEmail" id="IsEmail" name="IsEmail" value="true" data-bs-original-title="" title=""><span class="switch-state"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <span asp-validation-for="IsEmail" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-2">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-4">
+                            <div class="media">
+                                <label class="col-form-label m-r-10">Is SMS</label>
+                                <div class="media-body icon-state">
+                                    <label class="switch">
+                                        <input type="checkbox" data-val="true" data-val-required="IsSms" id="IsSms" name="IsSms" value="true" data-bs-original-title="" title=""><span class="switch-state"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <span asp-validation-for="IsSms" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

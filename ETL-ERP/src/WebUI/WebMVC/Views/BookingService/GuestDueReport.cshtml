@@ -1,0 +1,83 @@
+﻿@model Domain.ViewModel.HotelManagement.HotelReport.GuestDueReportVm
+@{
+    ViewData["Title"] = "Gues Due Report";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <form>
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Guest Due Report</h5>
+                    <div class="setting-list">
+                        <input type="button" id="ShowReportBtn" class="btn btn-primary" value="Show Report" />
+                    </div>
+                </div>
+                <div class="card-body table-responsive">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="col-form-label">Guest</label>
+                            <select asp-for="GuestId" asp-items="Model.GuestLookUp" class="form-control dd-type"></select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label">Company</label>
+                            <select asp-for="CompanyId" asp-items="Model.CompanyLookUp" class="form-control dd-type"></select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label">From Date</label>
+                            <input class="form-control from_dt" autocompletetype="Disabled" asp-for="StrFromDate" placeholder="Start date" data-language="en" />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label">To Date</label>
+                            <input asp-for="StrToDate" autocompletetype="Disabled" class="form-control to_dt" placeholder="End date" data-language="en" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="col-form-label">Group By</label>
+                            <select asp-for="ReporetGroupBy" asp-items="Model.GroupLookUp" class="form-control dd-type"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Guest Due Report</h5>
+                    <div class="setting-list">
+                        <button class="btn btn-primary" id="ReportPrintBtn">PDF</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <dvi class="table-responsive">
+                        <div style="text-align: center;">
+                            <div style="text-align: center; font-weight: bold; font-size: 16px; line-height: 20px">GUEST DUE REPORT</div>
+                            <div style="text-align: center; font-weight: bold; font-size: 11px; line-height: 16px">
+                                <div id="ltReportFilter" runat="server" Text=""></div>
+                            </div>
+                        </div>
+                        <div id="ReportContainer"></div>
+                    </dvi>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts
+{
+    <script>
+        var fromDate = '@Model.StrFromDate';
+        var toDate = '@Model.StrToDate';
+
+        $(".from_dt").datepicker({
+            setDate: fromDate,
+            dateFormat: 'dd/mm/yyyy'
+        });
+        $(".to_dt").datepicker({
+            setDate: toDate,
+            dateFormat: 'dd/mm/yyyy'
+        });
+    </script>
+    <script src="~/js/ETL/BookingService/GuestDueReport.js"></script>
+}

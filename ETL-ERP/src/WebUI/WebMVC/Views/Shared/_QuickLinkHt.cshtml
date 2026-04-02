@@ -1,0 +1,20 @@
+﻿@* Hotel Management *@
+
+<div class="scroll-bar-wrap">
+    <div class="visible-scroll scroll-demo h-25" style="height:auto">
+        <div class="horz-scroll-content">
+            <div class="row">
+                <div class="col" style="display:flex; gap:5px">
+                    <button style="white-space: nowrap;" onclick="location.href='@Url.Action("Search", "RoomInfo")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Room List</button>
+                    <button style="white-space: nowrap;" onclick="location.href='@Url.Action("Search", "GuestInfo")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Guest List</button>
+                    <button style="white-space: nowrap;" onclick="location.href='@Url.Action("Search", "Complementary")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Complementary List</button>
+                    <button style="white-space: nowrap;" onclick="location.href='@Url.Action("Search", "Service")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Service List</button>
+                    <button style="white-space: nowrap;" onclick="location.href='@Url.Action("Search", "OnlineBooking")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Online Booking</button>
+                    <button style="white-space: nowrap;" onclick="location.href='@Url.Action("Booking", "BookingService")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Booking</button>
+                    <button style="white-space: nowrap;" onclick="location.href='@Url.Action("Search", "BookingService")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Booking List</button>
+                    <button style="white-space: nowrap;" onclick="location.href='@Url.Action("BookingService", "BookingServiceReport")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Booking Repost</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

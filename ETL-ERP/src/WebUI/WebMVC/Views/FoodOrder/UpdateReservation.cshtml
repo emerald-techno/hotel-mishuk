@@ -1,0 +1,253 @@
+﻿
+@model Domain.ViewModel.Restaurant.FoodOrder.FoodOrderVm
+@using Domain.Enums.AppEnums
+@{
+    ViewData["Title"] = "Reservation Update";
+}
+
+@section styles
+{
+    <style>
+        #BillRoomTableTbody tr td {
+            padding: 5px;
+        }
+
+        #BillRoomTableFoot tr {
+            border: 0px;
+        }
+
+            #BillRoomTableFoot tr td {
+                padding: 5px;
+                border: 0px;
+            }
+    </style>
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Reservation Update</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="FoodOrder" class="btn btn-primary">Order List</a>
+                </div>
+            </div>
+            <form asp-action="UpdateReservation" id="RsOrderUpdateForm" class="form theme-form">
+
+                <input type="hidden" asp-for="Id" />
+
+                <input type="hidden" id="resDate" value="@Model.OrderDateStr" />
+
+                <div class="card-body py-3">
+                    <div class="row">
+                        <div class="col-md-4">
+
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label">Type</label>
+                                <div class="col-sm-8">
+                                    @(Model.CustomerTypeName)
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <label class="col-sm-4 col-form-label">Name</label>
+                                <div class="col-sm-8">
+                                    @(Model.CustomerName)
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <label class="col-sm-4 col-form-label">Phone Number</label>
+                                <div class="col-sm-8">
+                                    @(Model.CustomerMobile)
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <label class="col-sm-4 col-form-label">Address</label>
+                                <div class="col-sm-8">
+                                    @(Model.CustomerAddress)
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <label class="col-sm-4 col-form-label">Bill By</label>
+                                <div class="col-sm-8">
+                                    @(Model.ActionByName)
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3"></div>
+
+                        <div class="col-md-5">
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label">Bill No</label>
+                                <div class="col-sm-8">
+                                    @(Model.OrderNo)
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label">Reservation Entry Date</label>
+                                <div class="col-sm-8">
+                                    @Utility.GetDate((DateTime)Model.ReservationDate)
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <label class="col-sm-4 col-form-label">Order Status</label>
+                                <div class="col-sm-8">
+                                    @if (Model.OrderStatus == RsOrderStatusEnum.Served)
+                                    {
+                                        <span class="badge badge-pill badge-success" style="font-size: 0.8rem;">Served</span>
+                                    }
+                                    else if (Model.OrderStatus == RsOrderStatusEnum.Pending)
+                                    {
+                                        <span class="badge badge-pill badge-warning" style="font-size: 0.8rem;">Pending</span>
+                                    }
+                                    else if (Model.OrderStatus == RsOrderStatusEnum.Canceled)
+                                    {
+                                        <span class="badge badge-pill badge-danger" style="font-size: 0.8rem;">Canceled</span>
+                                    }
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <label class="col-sm-4 col-form-label">Payment Status</label>
+                                <div class="col-sm-8">
+                                    @if (Model.PaymentStatus == RsOrderPaymentStatusEnum.FullPayment)
+                                    {
+                                        <span class="badge badge-pill badge-success" style="font-size: 0.8rem;">Full Paid</span>
+                                    }
+                                    else if (Model.PaymentStatus == RsOrderPaymentStatusEnum.PartialPayment)
+                                    {
+                                        <span class="badge badge-pill badge-warning" style="font-size: 0.8rem;">Partial</span>
+                                    }
+                                    else if (Model.PaymentStatus == RsOrderPaymentStatusEnum.Pending)
+                                    {
+                                        <span class="badge badge-pill badge-danger" style="font-size: 0.8rem;">Pending</span>
+                                    }
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label">Reservation Date</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control resDatePick" asp-for="OrderDateStr" type="text" data-language="en">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Food Item *</label>
+                            <select id="ItemId" asp-items="Model.FoodItemLookUp" class="form-control dd-type"></select>
+                            <span id="food-description"></span>
+                            <input type="hidden" id="food-description-input"/>
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <label class="form-label">Quantity</label>
+                            <input class="form-control" type="number" id="Qty">
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <label class="form-label">Unit Price</label>
+                            <input class="form-control" type="number" id="Rate">
+                        </div>
+                        <div class="col-md-2 d-flex align-items-center justify-content-center">
+                            <button type="button" id="AddItemBtn" class="btn btn-primary">Add Item</button>
+                        </div>
+                    </div>
+
+                    <br />
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th style="width: 5%">Sl</th>
+                                        <th style="width: 25%">Food Name</th>
+                                        <th style="width: 10%">Rate</th>
+                                        <th style="width: 10%">Quantity</th>
+                                        <th style="width: 10%">Total</th>
+                                        <th style="width: 10%">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="OrderTableTbody">
+                                </tbody>
+                                <tfoot id="OrderTableFoot">
+
+                                    <tr>
+                                        <td colspan="4" style="text-align: right">Sub Total</td>
+                                        <td class="text-end" style="font-weight: bold">
+                                            <input class="form-control" asp-for="OrderAmount" id="OrderAmount" readonly />
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4" style="text-align: right">VAT</td>
+                                        <td class="text-end" style="font-weight: bold">
+                                            <input class="form-control" asp-for="VAT" id="VAT" readonly />
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4" style="text-align: right">Service Charge</td>
+                                        <td class="text-end" style="font-weight: bold">
+                                            <input class="form-control" asp-for="ServiceCharge" id="ServiceCharge" />
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4" style="text-align: right">Discount</td>
+                                        <td class="text-end" style="font-weight: bold">
+                                            <input class="form-control" asp-for="Discount" id="Discount" />
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4" style="text-align: right">Bill Net Total</td>
+                                        <td class="text-end" style="font-weight: bold">
+                                            <input class="form-control" asp-for="NetAmount" id="NetAmount" readonly />
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4" style="text-align: right">Paid Amount</td>
+                                        <td class="text-end" style="font-weight: bold">
+                                            <input class="form-control" asp-for="PaidAmount" id="PaidAmount" readonly />
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4" style="text-align: right">Due Amount</td>
+                                        <td class="text-end" style="font-weight: bold">
+                                            <input class="form-control" id="DueAmount" readonly />
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="button" id="UpdateBtn">Update</button>
+                        <button class="btn btn-danger" type="button">Cancel</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section scripts
+    {
+
+    <script>
+        const resDate = $("#resDate").val();
+
+        $(".resDatePick").datepicker({
+            setDate: resDate,
+            dateFormat: 'dd/mm/yyyy',
+        });
+    </script>
+    @*<script src="~/js/ETL/FoodOrder/FoodOrderUpdate.js"></script>*@
+    <script src="~/js/ETL/FoodOrder/FoodOrderUpdate.js?v=@DateTime.UtcNow.Ticks"></script>
+}

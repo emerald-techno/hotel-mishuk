@@ -1,0 +1,148 @@
+﻿@model Domain.ViewModel.Inventory.Transaction.TransactionVm
+@using Domain.Utility.Common;
+
+@{
+    ViewData["Title"] = "Issue Item Details";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkInventory" />
+
+        <div class="card">
+            <div class="card-header card-header-custom-parent">
+                <div class="card-title" style="font-size: 22px;"><i class="ik ik-eye"></i>Issue Information</div>
+            </div>
+            <div class="card-body card-body-custom ">
+                <div class="row">
+                    <div class="col-md-6">
+
+                        <div class="row">
+                            <label asp-for="TranBy" class="col-md-4 col-form-label">
+                                Issue By <span class="required">: </span>
+                            </label>
+                            <div class="col-md-8 col-form-label">
+                                @Html.DisplayTextFor(m => m.TranBy)
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <label asp-for="TranNo" class="col-md-4 col-form-label">
+                                Issue No <span class="required">: </span>
+                            </label>
+                            <div class="col-md-8 col-form-label">
+                                @Html.DisplayTextFor(m => m.TranNo)
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <label asp-for="TranDateStr" class="col-md-4 col-form-label">
+                                Issue Date<span class="required">: </span>
+                            </label>
+                            <div class="col-md-8 col-form-label">
+                                @(((DateTime) Model.TranDate).ToString("dd-MM-yyyy"))
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <label class="col-md-4 col-form-label">
+                                Requsition No <span class="required">: </span>
+                            </label>
+                            <div class="col-md-8 col-form-label">
+                                @Html.DisplayTextFor(m => m.ReqNo)
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <label class="col-md-4 col-form-label">
+                                Requsition Date<span class="required">: </span>
+                            </label>
+                            <div class="col-md-8 col-form-label">
+                                @(((DateTime)Model?.ReqDate).ToString("dd-MM-yyyy"))
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="row">
+                            <label asp-for="IssueDeptName" class="col-md-4 col-form-label">
+                                Department Name <span class="required">: </span>
+                            </label>
+                            <div class="col-md-8 col-form-label">
+                                @Html.DisplayTextFor(m => m.IssueDeptName)
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label asp-for="IssueEmpName" class="col-md-4 col-form-label">
+                                Issue Employee Name <span class="required">: </span>
+                            </label>
+                            <div class="col-md-8 col-form-label">
+                                @Html.DisplayTextFor(m => m.IssueEmpName)
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label asp-for="Remarks" class="col-md-4 col-form-label">
+                                Remarks<span class="required">: </span>
+                            </label>
+                            <div class="col-md-8 col-form-label">
+                                @Html.DisplayTextFor(m => m.Remarks)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br />
+                <hr />
+                <br />
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-bordered" style="text-align: center">
+                            <thead>
+                                <tr>
+                                    <th style="background-color: #73879c; color: white">Sl.</th>
+                                    <th style="background-color: #73879c; color: white">Item</th>
+                                    <th style="background-color: #73879c; color: white">Unit</th>
+                                    <th style="background-color: #73879c; color: white">Quantity</th>
+                                    <th style="background-color: #73879c; color: white">Price</th>
+                                    <th style="background-color: #73879c; color: white">Stock</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    int sl = 1;
+                                    foreach (var item in Model.TranDtls)
+                                    {
+                                        <tr>
+                                            <td>@(sl++)</td>
+                                            <td>@(item?.ItemName ?? "N/ A")</td>
+                                            <td>@(item?.ItemUnitName ?? "N/ A")</td>
+                                            <td>@(item?.ItemQty.ToString("F2") ?? "0")</td>
+                                            <td>@(item?.UnitPrice?.ToString("F2") ?? "0")</td>
+                                            <td>@(item?.Stock.ToString("F2") ?? "0")</td>
+                                        </tr>
+
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-lg-12" align="right">
+                        @Html.ActionLink("Create", "Create", "Issue", null, new { @class = "btn btn-primary btn-size" })
+                        @Html.ActionLink("Search", "Search", "Issue", null, new { @class = "btn btn-info btn-size" })
+                        <a class="btn btn-outline-info" asp-controller="Issue" target="_blank" asp-action="IssuePrint" asp-route-id="@Model.Id" type="submit">Print</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,132 @@
+﻿@model Domain.ViewModel.HotelManagement.RoomInfo.HtRoomInfoSearchVm
+@{
+    ViewData["Title"] = "Room Search";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <form>
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Room List Advance Search</h5>
+                    <div class="setting-list">
+                        <input class="btn btn-primary" type="button" id="RoomSearchBtn" value="Search" />
+                        <a asp-action="Create" asp-controller="RoomInfo" class="btn btn-primary">New Room</a>
+                    </div>
+                </div>
+                <div class="card-body table-responsive">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="col-form-label">Room Category</label>
+                                    <select asp-for="RoomCategoryId" asp-items="Model.RoomCategoryLookUp" class="dd-type"></select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="col-form-label">Availability</label>
+                                    <select asp-for="HouseKeeperStatus" asp-items="Model.AvailabilityStatusLookUp" class="dd-type"></select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="col-form-label">Cleaning Status</label>
+                                    <select asp-for="CleaningStatus" asp-items="Model.CleanStatusLookUp" class="dd-type"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Room List</h5>
+                    <div class="setting-list">
+                        <a href="#" id="printBtn" class="btn btn-primary">PDF Print</a>
+                    </div>
+                </div>
+                <div class="card-body">
+
+                    <div class="table table-responsive">
+                        <table id="RoomViewSearchTable" class="display" style="width:100%; text-align: left">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th style="width: 5%">Sl</th>
+                                    <th>Room No</th>
+                                    <th>Category</th>
+                                    <th>Availability</th>
+                                    <th>Status</th>
+                                    <th>HouseKeeper Name</th>
+                                    <th>HouseKeeper Status</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+
+                @*availability_modal_start*@
+
+                <div class="modal fade" id="availabilityModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="mySmallModalLabel">Change Room Availability</h5>
+                                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <input type="hidden" id="SelectedRoomId_One"/>
+                                <select id="RoomAvailability" asp-items="Model.AvailabilityStatusLookUp" class="dd-type"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @*availability_modal_end*@
+
+                @*clean_modal_start*@
+
+                <div class="modal fade" id="statusModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="mySmallModalLabel">Clean Room Status</h5>
+                                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <input type="hidden" id="SelectedRoomId_Two" />
+                                <select id="RoomStatus" asp-items="Model.CleanStatusLookUp" class="dd-type"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @*clean_modal_end*@
+
+                @*assign_modal_start*@
+
+                <div class="modal fade" id="assignModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="mySmallModalLabel">Assign Keeper</h5>
+                                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <input type="hidden" id="SelectedRoomId_HK" />
+                                <select id="AssignId" asp-items="Model.HouseKeeperLookUp" class="dd-type"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @*assign_modal_end*@
+
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/js/ETL/RoomAssign/RoomViewSearch.js"></script>
+}

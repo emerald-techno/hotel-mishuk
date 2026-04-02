@@ -1,0 +1,748 @@
+﻿@model Domain.ViewModel.Website.RoomDetailsPageVm
+@{
+    var catgoryName = $@"{Model.RoomCategory.CategoryName}";
+
+    ViewData["Title"] = $@"{catgoryName}";
+}
+<style>
+    .thumb-link.active img {
+        border: 2px solid #ff5a5f; /* Highlight color */
+    }
+
+    .thumb-link img {
+        height: 7vh;
+    }
+
+    .room-detail_book .room-detail_total {
+        padding: 20px 30px 45px 30px;
+    }
+
+    .room-detail_img .room_img-item img {
+        height: 80vh;
+    }
+
+    .amount {
+        font-size: 20px;
+        font-weight: bold;
+        margin-right: 8px;
+    }
+
+    .offer-price {
+        font-size: 32px;
+        color: black;
+    }
+
+    .original-price {
+        text-decoration: line-through;
+        color: #999;
+        font-size: 18px;
+    }
+
+</style>
+<!-- SUB BANNER -->
+<section class="section-sub-banner bg-9">
+    <div class="awe-overlay"></div>
+    <div class="sub-banner">
+        <div class="container">
+            <div class="text text-center">
+                <h2>@Model.RoomCategory.CategoryName</h2>
+                <p>Immerse yourself in luxury with our meticulously designed rooms, where every detail caters to your comfort and relaxation.</p>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+<!-- END / SUB BANNER -->
+<!-- ROOM DETAIL -->
+<section class="section-room-detail bg-white">
+    <div class="container">
+
+        <!-- DETAIL -->
+        <div class="room-detail">
+            <div class="row">
+                <div class="col-lg-9">
+                    <!-- LARGER IMAGE -->
+                    <div class="room-detail_img">
+                        <div class="room_img-item">
+                            <img id="largeImage" src="@Url.Content(Model.RoomCategory.PhotoUrl)" alt="">
+                            <h6 style="position:relative">@Model.RoomCategory.OtherInfo</h6>
+                        </div>
+                    </div>
+                    <!-- END / LARGER IMAGE -->
+                    <!-- THUMBNAIL IMAGE -->
+                    <div class="room-detail_thumbs">
+                        <a href="#" class="thumb-link"><img src="@Model.RoomCategory.PhotoUrl" alt=""></a>
+                        @if (Model.RoomCategory.Id == 10)
+                        {
+                            <a href="#" class="thumb-link"><img src="~/theme/images/RoomCategory/HotelNewPicture/Regular Couple/WhatsApp Image 2025-06-21 at 5.33.54 PM (4).jpeg" alt=""></a>
+                            <a href="#" class="thumb-link"><img src="~/theme/images/RoomCategory/HotelNewPicture/Regular Couple/WhatsApp Image 2025-06-21 at 5.33.54 PM (2).jpeg" alt=""></a>
+                            <a href="#" class="thumb-link"><img src="~/theme/images/RoomCategory/HotelNewPicture/Regular Couple/WhatsApp Image 2025-06-21 at 5.34.58 PM (7).jpeg" alt=""></a>
+                        }
+                        @if (Model.RoomCategory.Id == 13)
+                        {
+                            <a href="#" class="thumb-link"><img src="~/theme/images/RoomCategory/HotelNewPicture/Regular Four/WhatsApp Image 2025-06-21 at 5.42.47 PM (2).jpeg" alt=""></a>
+                            <a href="#" class="thumb-link"><img src="~/theme/images/RoomCategory/HotelNewPicture/Regular Four/WhatsApp Image 2025-06-21 at 5.42.48 PM (1).jpeg" alt=""></a>
+                            <a href="#" class="thumb-link"><img src="~/theme/images/RoomCategory/HotelNewPicture/Regular Four/WhatsApp Image 2025-06-21 at 5.42.46 PM.jpeg" alt=""></a>
+                            <a href="#" class="thumb-link"><img src="~/theme/images/RoomCategory/HotelNewPicture/Regular Four/WhatsApp Image 2025-06-21 at 5.42.47 PM.jpeg" alt=""></a>
+                        }
+                        @if (Model.RoomCategory.Id == 11)
+                        {
+                            <a href="#" class="thumb-link"><img src="~/theme/images/RoomCategory/HotelNewPicture/Regular Couple/WhatsApp Image 2025-06-21 at 5.33.54 PM (4).jpeg" alt=""></a>
+                            <a href="#" class="thumb-link"><img src="~/theme/images/RoomCategory/HotelNewPicture/Regular Couple/WhatsApp Image 2025-06-21 at 5.33.54 PM (2).jpeg" alt=""></a>
+                            <a href="#" class="thumb-link"><img src="~/theme/images/RoomCategory/HotelNewPicture/Regular Couple/WhatsApp Image 2025-06-21 at 5.34.58 PM (7).jpeg" alt=""></a>
+                        }
+                        @if (Model.RoomCategory.Id == 15)
+                        {
+                            <a href="#" class="thumb-link"><img src="~/theme/images/RoomCategory/HotelNewPicture/Super Deluxe Couple/WhatsApp Image 2025-06-21 at 5.19.59 PM.jpeg" alt=""></a>
+                            <a href="#" class="thumb-link"><img src="~/theme/images/RoomCategory/HotelNewPicture/Super Deluxe Couple/WhatsApp Image 2025-06-21 at 5.20.01 PM (1).jpeg" alt=""></a>
+                        }
+                        @if (Model.RoomCategory.Id == 16)
+                        {
+                            <a href="#" class="thumb-link"><img src="~/theme/images/RoomCategory/HotelNewPicture/AC Triple/WhatsApp Image 2025-06-21 at 5.26.06 PM.jpeg" alt=""></a>
+                            <a href="#" class="thumb-link"><img src="~/theme/images/RoomCategory/HotelNewPicture/AC Triple/WhatsApp Image 2025-06-21 at 5.26.07 PM (6).jpeg" alt=""></a>
+                            <a href="#" class="thumb-link"><img src="~/theme/images/RoomCategory/HotelNewPicture/AC Triple//WhatsApp Image 2025-06-21 at 5.26.05 PM.jpeg" alt=""></a>
+                        }
+                        @if (Model.RoomCategory.Id == 17)
+                        {
+                            <a href="#" class="thumb-link"><img src="~/theme/images/RoomCategory/HotelNewPicture/AC Four/WhatsApp Image 2025-06-21 at 5.17.38 PM.jpeg" alt=""></a>
+                            <a href="#" class="thumb-link"><img src="~/theme/images/RoomCategory/HotelNewPicture/AC Four/WhatsApp Image 2025-06-21 at 5.17.38 PM (6).jpeg" alt=""></a>
+                        }
+                        @if (Model.RoomCategory.Id == 18)
+                        {
+                            <a href="#" class="thumb-link"><img src="~/theme/images/RoomCategory/HotelNewPicture/Super Deluxe Couple/WhatsApp Image 2024-08-27 at 11.34.21 AM (1).jpeg" alt=""></a>
+                            <a href="#" class="thumb-link"><img src="~/theme/images/RoomCategory/HotelNewPicture/Super Deluxe Couple/WhatsApp Image 2025-06-21 at 5.20.01 PM (1).jpeg" alt=""></a>
+                            <a href="#" class="thumb-link"><img src="~/theme/images/RoomCategory/HotelNewPicture/Super Deluxe Couple/WhatsApp Image 2025-06-21 at 5.20.01 PM (8).jpeg" alt=""></a>
+                            <a href="#" class="thumb-link"><img src="~/theme/images/RoomCategory/HotelNewPicture/Super Deluxe Couple/WhatsApp Image 2025-06-21 at 5.20.01 PM (11).jpeg" alt=""></a>
+                        }
+                        @if (Model.RoomCategory.Id == 19)
+                        {
+                            <a href="#" class="thumb-link"><img src="~/theme/images/RoomCategory/HotelNewPicture/Super Deluxe Couple/WhatsApp Image 2024-08-27 at 11.34.21 AM (1).jpeg" alt=""></a>
+                            <a href="#" class="thumb-link"><img src="~/theme/images/RoomCategory/HotelNewPicture/Super Deluxe Couple/WhatsApp Image 2025-06-21 at 5.20.01 PM (1).jpeg" alt=""></a>
+                            <a href="#" class="thumb-link"><img src="~/theme/images/RoomCategory/HotelNewPicture/Super Deluxe Couple/WhatsApp Image 2025-06-21 at 5.20.01 PM (8).jpeg" alt=""></a>
+                            <a href="#" class="thumb-link"><img src="~/theme/images/RoomCategory/HotelNewPicture/Super Deluxe Couple/WhatsApp Image 2025-06-21 at 5.20.01 PM (11).jpeg" alt=""></a>
+                        }
+                        @if (Model.RoomCategory.Id == 20)
+                        {
+                            <a href="#" class="thumb-link"><img src="~/theme/images/RoomCategory/HotelNewPicture/Royal Suite/WhatsApp Image 2025-06-21 at 5.31.15 PM (1).jpeg" alt=""></a>
+                            <a href="#" class="thumb-link"><img src="~/theme/images/RoomCategory/HotelNewPicture/Royal Suite/WhatsApp Image 2025-06-21 at 5.31.15 PM.jpeg" alt=""></a>
+                            <a href="#" class="thumb-link"><img src="~/theme/images/RoomCategory/HotelNewPicture/Royal Suite/WhatsApp Image 2025-06-21 at 5.31.14 PM (1).jpeg" alt=""></a>
+                            <a href="#" class="thumb-link"><img src="~/theme/images/RoomCategory/HotelNewPicture/Royal Suite/WhatsApp Image 2025-06-21 at 5.31.15 PM (5).jpeg" alt=""></a>
+                        }
+                        @if (Model.RoomCategory.Id == 26)
+                        {
+                            <a href="#" class="thumb-link"><img src="~/theme/images/RoomCategory/HotelNewPicture/Executive Suite/WhatsApp Image 2024-08-26 at 3.22.41 PM.jpeg" alt=""></a>
+                            <a href="#" class="thumb-link"><img src="~/theme/images/RoomCategory/HotelNewPicture/Executive Suite/WhatsApp Image 2024-08-26 at 3.22.42 PM (1).jpeg" alt=""></a>
+                            <a href="#" class="thumb-link"><img src="~/theme/images/RoomCategory/HotelNewPicture/Executive Suite/WhatsApp Image 2024-08-26 at 3.22.45 PM.jpeg" alt=""></a>
+                        }
+                    </div>
+                    <!-- END / THUMBNAIL IMAGE -->
+
+                </div>
+
+                <div class="col-lg-3">
+                    <!-- FORM BOOK -->
+                    <div class="room-detail_book">
+                        <div class="room-detail_total">
+                            <img src="~/theme/images/icon-logo.png" alt="" class="icon-logo">
+                            <h6>STARTING ROOM FROM</h6>
+                            <p class="price">
+                                @if (Model.RoomCategory.OfferRate != null && Model.RoomCategory.OfferRate > 0)
+                                {
+                                    <span class="amount offer-price">৳ @Model.RoomCategory.OfferRate <small>/day</small></span>
+                                    <br />
+                                    <span class="amount original-price">৳ @Model.RoomCategory.Rent <small>/day</small></span>
+                                }
+                                else
+                                {
+                                    <span class="amount offer-price">৳ @Model.RoomCategory.Rent <small>/day</small></span>
+                                }
+                            </p>
+                        </div>
+
+                        <div class="room-detail_form">
+                            <label>Arrive</label>
+                            <input id="StrFromDate" type="text" class="awe-calendar from" placeholder="Arrive Date">
+                            <label>Depature</label>
+                            <input id="StrToDate" type="text" class="awe-calendar to" placeholder="Departure Date">
+                            @*  <select id="roomCount" class="awe-select">
+                            <label>No. of Room</label>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                            <option>6</option>
+                            </select> *@
+
+
+                            <a id="Bookingbtn" class="awe-btn awe-btn-13" data-id="@Model.RoomCategory.Id">Check Availability</a>
+                        </div>
+                    </div>
+                    <!-- END / FORM BOOK -->
+                </div>
+            </div>
+        </div>
+        <!-- END / DETAIL -->
+        <!-- TAB -->
+        <div class="room-detail_tab">
+
+            <div class="row">
+                <div class="col-md-3">
+                    <ul class="room-detail_tab-header">
+                        <li class="active"><a href="#overview" data-toggle="tab">OVERVIEW</a></li>
+                        @* 
+                        <li><a href="#amenities" data-toggle="tab">amenities</a></li>
+                            <li><a href="#package" data-toggle="tab">PACKAGE</a></li>
+                        <li><a href="#rates" data-toggle="tab">RATES</a></li>
+                        <li><a href="#calendar" data-toggle="tab">Calendar</a></li> *@
+                    </ul>
+                </div>
+
+                <div class="col-md-9">
+                    <div class="room-detail_tab-content tab-content">
+
+                        <!-- OVERVIEW -->
+                        <div class="tab-pane fade" id="overview">
+
+                            <div class="room-detail_overview">
+                                <h5 class='text-uppercase'>
+                                    @Model.RoomCategory.Remarks
+                                </h5>
+                                <p>
+                                    Welcome to <strong>Hotel Mishuk</strong>, ideally located at the heart of Laboni Sea Beach.
+                                    Experience a perfect blend of modern comfort and coastal charm with our deluxe accommodations,
+                                    superb amenities, warm hospitality, and dedicated service — all designed to make your stay
+                                    relaxing and memorable by the Bay of Bengal.
+                                </p>
+
+                                <div class="row">
+                                    <div class="col-xs-6 col-md-4">
+                                        <h6>@Model.RoomCategory.CategoryName</h6>
+                                        <ul>
+                                            <li>Max: @Model.RoomCategory.Capacity Person(s)</li>
+                                            <li>Price: @Model.RoomCategory.Rent</li>
+                                            <li>Balcony: @(Model.RoomCategory.IsBalcony ? "Yes" : "No")</li>
+                                            <li>AC: @(Model.RoomCategory.IsAc ? "Yes" : "No")</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-xs-6 col-md-4">
+                                        <h6>SERVICE ROOM</h6>
+                                        <ul>
+                                            <li>Modern rooms with TV, AC, and fridge</li>
+                                            <li>Oversized work desk</li>
+                                            <li>Iron/ironing board upon request</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <!-- END / OVERVIEW -->
+                        <!-- AMENITIES -->
+                        <div class="tab-pane fade active in" id="amenities">
+                            <div class="room-detail_amenities">
+                                <p>
+                                    Welcome to <strong>Hotel Mishuk</strong>, ideally located at the heart of Laboni Sea Beach.
+                                    Experience a perfect blend of modern comfort and coastal charm with our deluxe accommodations,
+                                    superb amenities, warm hospitality, and dedicated service — all designed to make your stay
+                                    relaxing and memorable by the Bay of Bengal.
+                                </p>
+
+                                <div class="row">
+                                    <div class="col-xs-6 col-lg-4">
+                                        <h6>Room Features</h6>
+                                        <ul>
+                                            <li>TV</li>
+                                            <li>AC</li>
+                                            <li>Fridge</li>
+                                            <li>Balcony</li>
+                                            <li>Working Desk</li>
+                                            <li>Sofa</li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="col-xs-6 col-lg-4">
+                                        <h6>Complimentary Items</h6>
+                                        <ul>
+                                            <li>Complementary Soap</li>
+                                            <li>Complementary Toothpaste</li>
+                                            <li>Complementary Brush</li>
+                                            <li>Complementary Water</li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="col-xs-6 col-lg-4">
+                                        <h6>Services</h6>
+                                        <ul>
+                                            <li>24-hour Housekeeping</li>
+                                            <li>Laundry</li>
+                                            <li>Restaurant</li>
+                                            <li>Hall Facility</li>
+                                            <li>24-hour Security</li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="col-xs-6 col-lg-4">
+                                        <h6>Facilities</h6>
+                                        <ul>
+                                            <li>Big Parking Zone</li>
+                                            <li>Live BBQ</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- END / AMENITIES -->
+                        <!-- PACKAGE -->
+                        <div class="tab-pane fade" id="package">
+
+                            <div class="room-detail_package">
+
+                                <!-- ITEM package -->
+                                <div class="room-package_item">
+
+                                    <div class="text">
+                                        <h4><a href="#">package standar</a></h4>
+                                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled</p>
+
+                                        <div class="room-package_price">
+                                            <p class="price">
+                                                <span class="amout">৳0000</span> / Package
+                                            </p>
+                                            <a href="#" class="awe-btn awe-btn-default">Book package</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- END / ITEM package -->
+                                <!-- ITEM package -->
+                                <div class="room-package_item">
+
+                                    <div class="text">
+                                        <h4><a href="#">package standar</a></h4>
+                                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled</p>
+
+                                        <div class="room-package_price">
+                                            <p class="price">
+                                                <span class="amout">৳0000</span> / Package
+                                            </p>
+                                            <a href="#" class="awe-btn awe-btn-default">Book package</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- END / ITEM package -->
+                                <!-- ITEM package -->
+                                <div class="room-package_item">
+
+                                    <div class="text">
+                                        <h4><a href="#">package standar</a></h4>
+                                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled</p>
+
+                                        <div class="room-package_price">
+                                            <p class="price">
+                                                <span class="amout">৳0000</span> / Package
+                                            </p>
+                                            <a href="#" class="awe-btn awe-btn-default">Book package</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- END / ITEM package -->
+                            </div>
+
+                        </div>
+                        <!-- END / PACKAGE -->
+                        <!-- RATES -->
+                        <div class="tab-pane fade" id="rates">
+
+                            <div class="room-detail_rates">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Rate Period</th>
+                                            <th>Nightly</th>
+                                            <th>Weekend Night</th>
+                                            <th>Weekly</th>
+                                            <th>Monthly</th>
+                                            <th>Event</th>
+                                        </tr>
+                                    </thead>
+                                    <tr>
+                                        <td>
+                                            <h6>Spring/Summer Season</h6>
+                                            <ul>
+                                                <li>Jun 1 - Aug 31</li>
+                                                <li>3 night minimum stay</li>
+                                            </ul>
+                                        </td>
+                                        <td>
+                                            <p class="price"><span class="amout">৳0000</span></p>
+                                        </td>
+                                        <td>
+                                            <p class="price"><span class="amout">৳0000</span></p>
+                                        </td>
+                                        <td>
+                                            <p class="price"><span class="amout">৳0000</span></p>
+                                        </td>
+                                        <td>
+                                            <p class="price"><span class="amout">৳0000</span></p>
+                                        </td>
+                                        <td>
+                                            <p class="price"><span class="amout">৳0000</span></p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <h6>Summer/Fall Season</h6>
+                                            <ul>
+                                                <li>Jun 1 - Aug 31</li>
+                                                <li>3 night minimum stay</li>
+                                            </ul>
+                                        </td>
+                                        <td>
+                                            <p class="price"><span class="amout">৳0000</span></p>
+                                        </td>
+                                        <td>
+                                            <p class="price"><span class="amout">৳0000</span></p>
+                                        </td>
+                                        <td>
+                                            <p class="price"><span class="amout">৳0000</span></p>
+                                        </td>
+                                        <td>
+                                            <p class="price"><span class="amout">৳0000</span></p>
+                                        </td>
+                                        <td>
+                                            <p class="price"><span class="amout">৳0000</span></p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <h6>Christmas Season</h6>
+                                            <ul>
+                                                <li>Jun 1 - Aug 31</li>
+                                                <li>3 night minimum stay</li>
+                                            </ul>
+                                        </td>
+                                        <td>
+                                            <p class="price"><span class="amout">৳0000</span></p>
+                                        </td>
+                                        <td>
+                                            <p class="price"><span class="amout">৳0000</span></p>
+                                        </td>
+                                        <td>
+                                            <p class="price"><span class="amout">৳0000</span></p>
+                                        </td>
+                                        <td>
+                                            <p class="price"><span class="amout">৳0000</span></p>
+                                        </td>
+                                        <td>
+                                            <p class="price"><span class="amout">৳0000</span></p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                        </div>
+                        <!-- END / RATES -->
+                        <!-- CALENDAR -->
+                        <div class="tab-pane fade" id="calendar">
+
+                            <div class="room-detail_calendar-wrap row">
+
+                                <div class="col-sm-6">
+                                    <!-- CALENDAR ITEM -->
+                                    <div class="calendar_custom">
+
+                                        <div class="calendar_title">
+                                            <span class="calendar_month">JUNE</span>
+                                            <span class="calendar_year">2023</span>
+
+                                            <a href="#" class="calendar_prev calendar_corner"><i class="lotus-icon-left-arrow"></i></a>
+                                        </div>
+
+                                        <table class="calendar_tabel">
+
+                                            <thead>
+                                                <tr>
+                                                    <th>Su</th>
+                                                    <th>Mo</th>
+                                                    <th>Tu</th>
+                                                    <th>We</th>
+                                                    <th>Th</th>
+                                                    <th>Fr</th>
+                                                    <th>Sa</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tr>
+                                                <td></td>
+                                                <td class="apb-calendar_current-date">
+                                                    <a href="#"><small>1</small></a>
+                                                </td>
+                                                <td><a href="#"><small>2</small></a></td>
+                                                <td><a href="#"><small>3</small></a></td>
+                                                <td><a href="#"><small>4</small></a></td>
+                                                <td><a href="#"><small>5</small></a></td>
+                                                <td><a href="#"><small>6</small></a></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><a href="#"><small>7</small></a></td>
+                                                <td><a href="#"><small>8</small></a></td>
+                                                <td><a href="#"><small>9</small></a></td>
+                                                <td><a href="#"><small>10</small></a></td>
+                                                <td class="apb-calendar_current-select"><a href="#"><small>11</small></a></td>
+                                                <td class="apb-calendar_current-select"><a href="#"><small>12</small></a></td>
+                                                <td><a href="#"><small>13</small></a></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><a href="#"><small>14</small></a></td>
+                                                <td><a href="#"><small>15</small></a></td>
+                                                <td class="not-available"><a href="#"><small>16</small></a></td>
+                                                <td class="not-available"><a href="#"><small>17</small></a></td>
+                                                <td><a href="#"><small>18</small></a></td>
+                                                <td><a href="#"><small>19</small></a></td>
+                                                <td><a href="#"><small>20</small></a></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><a href="#"><small>21</small></a></td>
+                                                <td><a href="#"><small>22</small></a></td>
+                                                <td><a href="#"><small>23</small></a></td>
+                                                <td><a href="#"><small>24</small></a></td>
+                                                <td><a href="#"><small>25</small></a></td>
+                                                <td><a href="#"><small>26</small></a></td>
+                                                <td><a href="#"><small>27</small></a></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><a href="#"><small>28</small></a></td>
+                                                <td><a href="#"><small>29</small></a></td>
+                                                <td><a href="#"><small>30</small></a></td>
+                                                <td><a href="#"><small>31</small></a></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+
+                                        </table>
+
+                                    </div>
+                                    <!-- END CALENDAR ITEM -->
+                                </div>
+
+                                <div class="col-sm-6">
+
+                                    <!-- CALENDAR ITEM -->
+                                    <div class="calendar_custom">
+
+                                        <div class="calendar_title">
+                                            <span class="calendar_month">JUNE</span>
+                                            <span class="calendar_year">2023</span>
+
+                                            <a href="#" class="calendar_next calendar_corner"><i class="lotus-icon-right-arrow"></i></a>
+                                        </div>
+
+                                        <table class="calendar_tabel">
+
+                                            <thead>
+                                                <tr>
+                                                    <th>Su</th>
+                                                    <th>Mo</th>
+                                                    <th>Tu</th>
+                                                    <th>We</th>
+                                                    <th>Th</th>
+                                                    <th>Fr</th>
+                                                    <th>Sa</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tr>
+                                                <td></td>
+                                                <td class="apb-calendar_current-date">
+                                                    <a href="#"><small>1</small></a>
+                                                </td>
+                                                <td><a href="#"><small>2</small></a></td>
+                                                <td><a href="#"><small>3</small></a></td>
+                                                <td><a href="#"><small>4</small></a></td>
+                                                <td><a href="#"><small>5</small></a></td>
+                                                <td><a href="#"><small>6</small></a></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><a href="#"><small>7</small></a></td>
+                                                <td><a href="#"><small>8</small></a></td>
+                                                <td><a href="#"><small>9</small></a></td>
+                                                <td><a href="#"><small>10</small></a></td>
+                                                <td class="apb-calendar_current-select"><a href="#"><small>11</small></a></td>
+                                                <td class="apb-calendar_current-select"><a href="#"><small>12</small></a></td>
+                                                <td><a href="#"><small>13</small></a></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><a href="#"><small>14</small></a></td>
+                                                <td><a href="#"><small>15</small></a></td>
+                                                <td class="not-available"><a href="#"><small>16</small></a></td>
+                                                <td class="not-available"><a href="#"><small>17</small></a></td>
+                                                <td><a href="#"><small>18</small></a></td>
+                                                <td><a href="#"><small>19</small></a></td>
+                                                <td><a href="#"><small>20</small></a></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><a href="#"><small>21</small></a></td>
+                                                <td><a href="#"><small>22</small></a></td>
+                                                <td><a href="#"><small>23</small></a></td>
+                                                <td><a href="#"><small>24</small></a></td>
+                                                <td><a href="#"><small>25</small></a></td>
+                                                <td><a href="#"><small>26</small></a></td>
+                                                <td><a href="#"><small>27</small></a></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><a href="#"><small>28</small></a></td>
+                                                <td><a href="#"><small>29</small></a></td>
+                                                <td><a href="#"><small>30</small></a></td>
+                                                <td><a href="#"><small>31</small></a></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+
+                                        </table>
+
+                                    </div>
+                                    <!-- END CALENDAR ITEM -->
+                                </div>
+
+                                <div class="calendar_status text-center col-sm-12">
+                                    <span>Available</span>
+                                    <span class="not-available">Not Available</span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- END / CALENDAR -->
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <!-- END / TAB -->
+        <!-- COMPARE ACCOMMODATION -->
+        @*  <div class="room-detail_compare">
+        <h2 class="room-compare_title">COMPARE ACCOMMODATION</h2>
+
+        <div class="room-compare_content">
+
+        <div class="row">
+        <!-- ITEM -->
+        <div class="col-sm-6 col-md-4 col-lg-3">
+        <div class="room-compare_item">
+        <div class="img">
+        <a href="#"><img src="~/theme/images/room/detail/compare/img-1.jpg" alt=""></a>
+        </div>
+
+        <div class="text">
+        <h2><a href="">LUxury room</a></h2>
+
+        <ul>
+        <li><i class="lotus-icon-person"></i> Max: 2 Person(s)</li>
+        <li><i class="lotus-icon-bed"></i> Bed: King-size or twin beds</li>
+        <li><i class="lotus-icon-view"></i> View: Ocen</li>
+        </ul>
+
+        <a href="#" class="awe-btn awe-btn-default">VIEW DETAIL</a>
+
+        </div>
+
+        </div>
+        </div>
+        <!-- END / ITEM -->
+        <!-- ITEM -->
+        <div class="col-sm-6 col-md-4 col-lg-3">
+        <div class="room-compare_item">
+        <div class="img">
+        <a href="#"><img src="~/theme/images/room/detail/compare/img-2.jpg" alt=""></a>
+        </div>
+
+        <div class="text">
+        <h2><a href="">Family Room</a></h2>
+
+        <ul>
+        <li><i class="lotus-icon-person"></i> Max: 2 Person(s)</li>
+        <li><i class="lotus-icon-bed"></i> Bed: King-size or twin beds</li>
+        <li><i class="lotus-icon-view"></i> View: Ocen</li>
+        </ul>
+
+        <a href="#" class="awe-btn awe-btn-default">VIEW DETAIL</a>
+
+        </div>
+
+        </div>
+        </div>
+        <!-- END / ITEM -->
+        <!-- ITEM -->
+        <div class="col-sm-6 col-md-4 col-lg-3">
+        <div class="room-compare_item">
+        <div class="img">
+        <a href="#"><img src="~/theme/images/room/detail/compare/img-3.jpg" alt=""></a>
+        </div>
+
+        <div class="text">
+        <h2><a href="">standard Room</a></h2>
+
+        <ul>
+        <li><i class="lotus-icon-person"></i> Max: 2 Person(s)</li>
+        <li><i class="lotus-icon-bed"></i> Bed: King-size or twin beds</li>
+        <li><i class="lotus-icon-view"></i> View: Ocen</li>
+        </ul>
+
+        <a href="#" class="awe-btn awe-btn-default">VIEW DETAIL</a>
+
+        </div>
+
+        </div>
+        </div>
+        <!-- END / ITEM -->
+        <!-- ITEM -->
+        <div class="col-sm-6 col-md-4 col-lg-3">
+        <div class="room-compare_item">
+        <div class="img">
+        <a href="#"><img src="~/theme/images/room/detail/compare/img-4.jpg" alt=""></a>
+        </div>
+
+        <div class="text">
+        <h2><a href="">couple Room</a></h2>
+
+        <ul>
+        <li><i class="lotus-icon-person"></i> Max: 2 Person(s)</li>
+        <li><i class="lotus-icon-bed"></i> Bed: King-size or twin beds</li>
+        <li><i class="lotus-icon-view"></i> View: Ocen</li>
+        </ul>
+
+        <a href="#" class="awe-btn awe-btn-default">VIEW DETAIL</a>
+
+        </div>
+
+        </div>
+        </div>
+        <!-- END / ITEM -->
+        </div>
+
+        </div>
+        </div> *@
+        <!-- END / COMPARE ACCOMMODATION -->
+
+    </div>
+</section>
+<!-- END / SHOP DETAIL -->
+@section scripts {
+    <script src="~/js/ETL/RoomDetails/RoomDetails.js"></script>
+
+
+}

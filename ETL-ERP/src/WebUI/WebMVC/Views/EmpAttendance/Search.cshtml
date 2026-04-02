@@ -1,0 +1,39 @@
+﻿@model Domain.ViewModel.Attendance.EmpAttendence.EmpAttendanceSearchVm
+@{
+    ViewData["Title"] = "Employee Attendance Search";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkHr" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h4>Employee Attendance</h4>
+                <div class="setting-list">
+                    <a asp-action="Create" asp-controller="EmpAttendance" class="btn btn-primary">Add Employee Attendance</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="EmpAttendanceSearchTable" class="display" style="width:100%; text-align: left">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%">Serial</th>
+                                <th>Employee Name</th>
+                                <th>Attendance Date</th>
+                                <th>Attendance Time</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/ETL/EmpAttendance/EmpAttendanceSearch.js"></script>
+}

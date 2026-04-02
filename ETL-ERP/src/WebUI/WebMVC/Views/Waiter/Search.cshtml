@@ -1,0 +1,45 @@
+﻿@model Domain.ViewModel.Restaurant.Waiter.WaiterSearchVm
+@{
+    ViewData["Title"] = "Waiter List";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <form>
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Waiter List</h5>
+                    <div class="setting-list">
+                        <a asp-action="Create" asp-controller="Waiter" class="btn btn-primary">New Waiter</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table table-responsive">
+                        <table id="WaiterSearchTable" class="display" style="width:100%; text-align: left">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th style="width: 5%">Serial</th>
+                                    <th>Name</th>
+                                    <th>Code</th>
+                                    <th>Mobile</th>
+                                    <th>Email</th>
+                                    <th>Salary</th>
+                                    <th>Birth Date</th>
+                                    <th>Join Date</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/ETL/Waiter/WaiterSearch.js"></script>
+}

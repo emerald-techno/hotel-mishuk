@@ -1,0 +1,49 @@
+DECLARE @StartDate DATE = '2024-11-01';
+DECLARE @EndDate DATE = '2024-11-30';
+
+WITH DateRange AS (
+    SELECT @StartDate AS ReportDate
+    UNION ALL
+    SELECT DATEADD(DAY, 1, ReportDate)
+    FROM DateRange
+    WHERE DATEADD(DAY, 1, ReportDate) <= @EndDate
+),
+ExpandedRoomBookings AS (
+    SELECT 
+        RoomId,
+        CAST(Dates.ReportDate AS DATE) BookingDate
+    FROM HtBookingRooms br
+	inner join HtBookingServices bs on bs.Id = br.BookingId
+    CROSS APPLY (
+        SELECT DATEADD(DAY, N, br.ActualCheckInTime) AS ReportDate
+        FROM (VALUES (0), (1), (2), (3), (4), (5), (6), (7), (8), (9)) X(N) -- Simulates a sequence of days
+        WHERE DATEADD(DAY, N, br.ActualCheckInTime) <= isnull(CAST(br.ActualCheckOutTime AS DATE), CAST(br.CheckOutTime AS DATE))
+		or cast(br.ActualCheckInTime as date) = cast(br.ActualCheckOutTime as date)
+    ) Dates
+    WHERE CAST(br.ActualCheckInTime AS DATE) <= @EndDate AND isnull(CAST(br.ActualCheckOutTime AS DATE), CAST(br.CheckOutTime AS DATE))  >= @StartDate
+),
+RoomSales AS (
+    SELECT
+        BookingDate,
+        COUNT(DISTINCT RoomID) AS TotalSalesRooms
+    FROM ExpandedRoomBookings
+    GROUP BY BookingDate
+)
+SELECT
+    D.ReportDate,
+    COUNT(R.Id) AS TotalRooms,
+    ISNULL(S.TotalSalesRooms, 0) AS TotalSalesRooms,
+    ROUND(ISNULL(S.TotalSalesRooms, 0) * 100.0 / COUNT(R.Id), 2) AS SalesPercentage,p.PaidAmount
+FROM DateRange D
+CROSS JOIN HtRoomInfos R
+LEFT JOIN RoomSales S ON D.ReportDate = S.BookingDate
+left join (
+select cast(bp.PaidDate as date) PaidDate,sum(bp.PaidAmount) PaidAmount
+from HtBookingPayments bp
+inner join HtBookingServices bs on bs.Id = bp.BookingId
+where bs.BookingType = 'R'
+group by  cast(bp.PaidDate as date)
+) p on p.PaidDate = d.ReportDate
+GROUP BY D.ReportDate, S.TotalSalesRooms,P.PaidAmount
+ORDER BY D.ReportDate 
+OPTION (MAXRECURSION 0); 

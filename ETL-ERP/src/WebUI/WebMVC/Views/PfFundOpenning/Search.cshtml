@@ -1,0 +1,43 @@
+﻿@model Domain.ViewModel.Pf.PfFundOpenning.PfFundOpenningSearchVm
+@{
+    ViewData["Title"] = "PF Search";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkPf" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>PF Opening</h5>
+                <div class="setting-list">
+                    <a asp-action="Create" asp-controller="PfFundOpenning" class="btn btn-primary">Add PF Opening</a>
+                </div>
+            </div>
+            <div class="card-body table-responsive">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="PfFundSearchTable" class="display" style="width:100%; text-align: left">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th style="width: 5%">Sl</th>
+                                    <th>Employee</th>
+                                    <th>Pf Start Date</th>
+                                    <th>Employee Con.(%)</th>
+                                    <th>Company Con.(%)</th>
+                                    <th>Interest</th>
+                                    @*<th>Action</th>*@
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/js//ETL/PfFundOpenning/PfFundOpenningSearch.js"></script>
+}

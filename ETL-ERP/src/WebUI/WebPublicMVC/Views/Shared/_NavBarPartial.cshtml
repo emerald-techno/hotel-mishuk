@@ -1,0 +1,45 @@
+﻿<header id="header">
+     <div class="header_top" style="background-color: rgba(139, 139, 139, 0.6);">
+        <div class="container">
+            <div class="header_left float-left">
+                @*<span><i class="lotus-icon-cloud"></i> 25 °C</span>*@
+                <span><i class="lotus-icon-location"></i> Hotel Motel Zone, Sea Beach, Cox's Bazar, Bangladesh</span>
+                <span><i class="lotus-icon-phone"></i> 01715-946471 </span>
+            </div>
+        </div>
+    </div> 
+    <div class="header_content" id="header_content">
+
+        <div class="container">
+            <div class="header_logo">
+                <a asp-action="Index"><img src="~/theme/images/logo-header.png" alt=""></a>
+            </div>
+            <nav class="header_menu">
+                <ul class="menu">
+                    <li><a asp-controller="Home" asp-action="Index"><i data-feather="target"></i>Home</a></li>
+                    <li><a asp-controller="Home" asp-action="Room"><i data-feather="target"></i>Room</a></li>
+                    @* <li><a asp-controller="Home" asp-action="SpecialOffer"><i data-feather="target"></i>Special Offer</a></li> *@
+                    <li><a asp-controller="Home" asp-action="Restaurant"><i data-feather="target"></i>Restaurant</a></li>
+                    <li><a asp-controller="Home" asp-action="Reservation"><i data-feather="target"></i>Reservation</a></li>
+                    @* <li><a asp-controller="Home" asp-action="Event"><i data-feather="target"></i>Event</a></li> 
+                    <li><a asp-controller="Home" asp-action="Attraction"><i data-feather="target"></i>Attraction</a></li>*@
+                    <li><a asp-controller="Home" asp-action="Gallery"><i data-feather="target"></i>Gallery</a></li>
+                    <li><a asp-controller="Home" asp-action="Contact"><i data-feather="target"></i>Contact Us</a></li>
+                    <li><a asp-controller="Home" asp-action="About"><i data-feather="target"></i>About</a></li>
+                </ul>
+            </nav>
+            <span class="menu-bars">
+                <span></span>
+            </span>
+        </div>
+    </div>
+</header>
+
+@section scripts {
+    <script>
+        $(".nav li a").on("click", function () {
+            $(".nav li a").removeClass("active");
+            $(this).addClass("active");
+        });
+    </script>
+}

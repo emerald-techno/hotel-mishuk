@@ -1,0 +1,127 @@
+﻿
+@{
+    ViewData["Title"] = "Contact";
+}
+@section Styles {
+    <style>
+        .map-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .section-map { background-color: #f8f9fa;}
+        .map-container {
+            position: relative;
+            border-radius: 16px;
+            height: 500px;
+            margin-bottom: 30px;
+            padding-bottom: 45.25%;
+        }
+        .divider {
+            width: 80px;
+            height: 3px;
+        }
+        .divider span {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        .section-header { padding-top: 30px; }
+        .contact-us p {font-size:20px;}
+        .contact .text ul li {font-size:20px;}
+    </style>
+}
+<!-- SUB BANNER -->
+<section class="section-sub-banner bg-9">
+    <div class="sub-banner">
+        <div class="container">
+            <div class="text text-center">
+                <h2>CONTACT WITH US</h2>
+                <p>For all your inquiries and needs, feel free to reach us, we're here to assist you.</p>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+<!-- END / SUB BANNER -->
+<!-- CONTACT -->
+<section class="section-contact">
+    <div class="container">
+        <div class="contact">
+            <div class="row" style="display:flex;justify-content:center;">
+
+                <div class="col-md-12 col-lg-12">
+
+                    <div class="text contact-us">
+                        <h2>Contact</h2>
+                        <p>Contacting us is simple and efficient. Whether you have questions, need assistance, or want to make a reservation, our dedicated team is ready to help. Reach out through [Contact Information], and let us make your experience with us seamless and memorable. Your satisfaction is our priority, and we're here to ensure your stay is everything you desire and more.</p>
+                        <ul>
+                            <li><i class="icon lotus-icon-location"></i> 225 Cox's Bazar, Bangladesh</li>
+                            <li><i class="icon lotus-icon-phone"></i>01715-946471</li>
+                            <li><i class="icon fa fa-envelope-o"></i> <a href="mailto:hotelmishuk@gmail.com">hotelmishuk@gmail.com</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                @* <div class="col-md-6 col-lg-6 col-lg-offset-1">
+                    <div class="contact-form">
+                        <form id="send-contact-form" action="send_mail_contact.php" method="post">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <input type="text" class="field-text" name="name" placeholder="Name">
+                                </div>
+                                <div class="col-sm-6">
+                                    <input type="text" class="field-text" name="email" placeholder="Email">
+                                </div>
+                                <div class="col-sm-12">
+                                    <input type="text" class="field-text" name="subject" placeholder="Subject">
+                                </div>
+                                <div class="col-sm-12">
+                                    <textarea cols="30" rows="10" name="message" class="field-textarea" placeholder="Write what do you want"></textarea>
+                                </div>
+                                <div class="col-sm-6">
+                                    <button type="submit" class="awe-btn awe-btn-13">SEND</button>
+                                </div>
+                            </div>
+                            <div id="contact-content"></div>
+                        </form>
+                    </div>
+                </div> *@
+
+            </div>
+        </div>
+    </div>
+</section>
+<!-- END / CONTACT -->
+<!-- MAP -->
+@* <section class="section-map">
+    <h1 class="element-invisible">Map</h1>
+    <div class="contact-map">
+        <div id="map" data-locations="21.420212, 91.979335" data-center="21.420212, 91.979335"></div>
+    </div>
+</section> *@
+<!-- END / MAP -->
+<!-- FIND US ON MAP -->
+<section class="section-map py-5">
+    <div class="container">
+        <div class="section-header text-center mb-5">
+            <h2 class="heading display-5 fw-bold mb-3">Find Us on Map</h2>
+
+            <p class="lead text-muted mt-3">Visit us at our prime location in Laboni Sea Beach, Cox's Bazar</p>
+        </div>
+
+        <div class="map-container shadow-lg rounded-4 overflow-hidden">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3714.01110309561!2d91.97166291179401!3d21.4288085738343!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30adc86f456c7937%3A0x8d8f99c9afe6d769!2sHotel%20Mishuk!5e0!3m2!1sen!2sbd!4v1755146489586!5m2!1sen!2sbd"
+                    width="100%"
+                    height="450"
+                    style="border:0;"
+                    allowfullscreen=""
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,45 @@
+﻿@model Domain.ViewModel.HotelManagement.RoomFacilityCategory.HtRoomFacilityCategorySearchVm
+@{
+    ViewData["Title"] = "Room Facility Category Search";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkHt" />
+        <form>
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Room Facility Category List</h5>
+                    <div class="setting-list">
+                        <input class="btn btn-primary" type="button" id="RoomFacilityCategorySearchBtn" value="Search" />
+                        <a asp-action="Create" asp-controller="RoomFacilityCategory" class="btn btn-primary">New Room Facility Category</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Room Facility Category List</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table table-responsive">
+                        <table id="RoomFacilityCategorySearchTable" class="display" style="width:100%; text-align: left">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th style="width: 5%">Sl</th>
+                                    <th>Category Name</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/ETL/RoomFacilityCategory/RoomFacilityCategorySearch.js"></script>
+}

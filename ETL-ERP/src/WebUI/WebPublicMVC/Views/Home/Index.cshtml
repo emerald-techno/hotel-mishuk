@@ -1,0 +1,397 @@
+﻿@model Domain.ViewModel.Website.RoomPageVm
+@{
+    ViewData["Title"] = "Luxury Stay in Cox’s Bazar";
+}
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/Index.css" />
+}
+
+<!-- BANNER SLIDER -->
+<section class="section-slider">
+    <h1 class="element-invisible">Slider</h1>
+    <div id="slider-revolution">
+        <ul>
+            <li data-transition="fade">
+                <img src="theme/images/Mishuk_Front.jpeg" data-bgposition="left center" data-duration="14000" data-bgpositionend="right center" alt="Hotel Mishuk,Luxerious Stay in Cox's Bazar">
+
+                <div class="tp-caption sft fadeout slider-caption-sub slider-caption-1" data-x="center" data-y="100" data-speed="700" data-start="1500" data-easing="easeOutBack">
+                    @* <img src="~/theme/images/slider/hom1-slide1.png" alt="icons"> *@
+                </div>
+
+                <div class="tp-caption sft fadeout slider-caption-sub slider-caption-1" data-x="center" data-y="240" data-speed="700" data-start="1500" data-easing="easeOutBack">
+                    WELCOME TO
+                </div>
+
+                <h2 class="tp-caption sfb fadeout slider-caption slider-caption-sub-1" data-x="center" data-y="280" data-speed="700" data-easing="easeOutBack" data-start="2000">Hotel Mishuk</h2>
+
+                <a asp-controller="Home" asp-action="Room" class="tp-caption sfb fadeout awe-btn awe-btn-12 awe-btn-slider" data-x="center" data-y="380" data-easing="easeOutBack" data-speed="700" data-start="2200">VIEW NOW</a>
+            </li>
+
+            <li data-transition="fade">
+                <img src="~/theme/images/slider/img-1.jpg" data-bgposition="left center" data-duration="14000" data-bgpositionend="right center" alt="Hotel Mishuk,Luxerious Stay in Cox's Bazar">
+                
+                <div class="tp-caption sft fadeout" data-x="center" data-y="195" data-speed="700" data-start="1300" data-easing="easeOutBack">
+                    <img src="~/theme/images/icon-slider-1.png" alt="Hotel Mishuk,Luxerious Stay in Cox's Bazar">
+                </div>
+
+                <div class="tp-caption sft fadeout slider-caption-sub slider-caption-sub-3" data-x="center" data-y="220" data-speed="700" data-start="1500" data-easing="easeOutBack">
+                    EXCEPTIONAL HOSPITALITY
+                </div>
+
+                <div class="tp-caption sfb fadeout slider-caption slider-caption-3" data-x="center" data-y="260" data-speed="700" data-easing="easeOutBack" data-start="2000">
+                    MEMORABLE STAYS
+                </div>
+
+                <div class="tp-caption sfb fadeout slider-caption-sub slider-caption-sub-3" data-x="center" data-y="365" data-easing="easeOutBack" data-speed="700" data-start="2200">TAILORED FOR YOUR COMFORT</div>
+
+                <div class="tp-caption sfb fadeout slider-caption-sub slider-caption-sub-3" data-x="center" data-y="395" data-easing="easeOutBack" data-speed="700" data-start="2400"></div>
+            </li>
+        </ul>
+    </div>
+</section>
+<!-- END / BANNER SLIDER -->
+<!-- CHECK AVAILABILITY -->
+<section class="section-check-availability">
+    <div class="container">
+        <div class="check-availability">
+            <div class="row">
+                <div class="col-lg-3">
+                    <h2>CHECK AVAILABILITY</h2>
+                </div>
+                <div class="col-lg-9">
+                    <form id="ajax-form-search-room">
+                        <div class="availability-form">
+                            <input type="text" name="arrive" id="StrFromDate" class="awe-calendar from" placeholder="Arrival Date" autocomplete="off">
+                            <input type="text" name="departure" id="StrToDate" class="awe-calendar to" placeholder="Departure Date" autocomplete="off">
+                            <div class="vailability-submit">
+                                <button class="awe-btn awe-btn-13" id="AvaillibilityBtn">FIND AVAILABLE ROOM</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- END / CHECK AVAILABILITY -->
+<!-- ACCOMD ODATIONS -->
+<section class="section-accomd awe-parallax bg-14">
+    <div class="container" style="background-color: rgb(246,246,246,0.5);">
+        <div class="accomd-modations">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="accomd-modations-header">
+                        <h2 class="heading">ROOMS & RATES</h2>
+                        <img src="~/theme/images/icon-accmod.png" alt="icon">
+                        <p style="font-size:16px;">Our Rooms are great for individuals, couples, friends and executives. An ideal room for guests for an excellent stay at reasonable price.</p>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="accomd-modations-content owl-single">
+
+                        <div class="row">
+
+                            <!-- ITEM -->
+                            @foreach (var room in Model.RoomCategories)
+                            {
+                                <div class="col-xs-4">
+                                    <div class="accomd-modations-room">
+                                        <div class="category_img">
+                                            <a asp-controller="Home" asp-action="RoomDetails" asp-route-id="@room.Id">
+                                                @if (!string.IsNullOrEmpty(room.PhotoUrl))
+                                                {
+                                                    <img src="@room.PhotoUrl" alt="Hotel Mishuk,Luxerious Stay in Cox's Bazar">
+                                                }
+                                                else
+                                                {
+                                                    <img src="~/img/No_Image_Available.jpg" alt="Hotel Mishuk,Luxerious Stay in Cox's Bazar">
+                                                }
+                                            </a>
+                                        </div>
+                                        <div class="text">
+                                            <h2><a href="#">@room.CategoryName</a></h2>
+                                            @if (room.OfferRate > 0)
+                                            {
+                                                <p class="price">
+                                                    <span class="actual-amout" style="text-decoration: line-through;">@room.TotalRent</span>
+                                                    <span class="offer-amout">@(room.OfferRate)</span>/days
+                                                </p>
+                                            }
+                                            else
+                                            {
+                                                <p class="price">
+                                                    <span class="actual-amout"></span>
+                                                    <span class="offer-amout">@(room.TotalRent)</span>/days
+                                                </p>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+
+                            }
+                            <!-- END / ITEM -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+<!-- END / ACCOMD ODATIONS -->
+<!-- ABOUT -->
+<section class="section-home-about bg-white">
+    <div class="container">
+        <div class="home-about">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="img">
+                        <img src="~/theme/images/hotel_Mishuk_Indoor_Thumb_3.jpg" alt="Hotel Mishuk,Luxerious Stay in Cox's Bazar">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="text">
+                        <h2 class="heading">ABOUT US</h2>
+                        <span class="box-border"></span>
+                        <p>Hotel Mishuk is a three star standard hotel located in the very heart of Bangladeshi tourism-Cox’s Bazar.This hotel has an easy and convenient access to all the tourist and attractive spots of Cox’s Bazar.The hotel is located within 500 meters from the Bay of Bengal, and has an amazing hillside and seaside view. The hotel is adorned with its 97 internationally furnished and equipped rooms, including 1 suites. Hotel Mishuk is serving the guests with an essence and touch of international standard within the most competitive price range. Hotel Mishuk is the best name for any kind of your trips-whether it’s a Business Trip, or a simple and relaxing family tour!</p>
+                        <a asp-controller="Home" asp-action="About" class="awe-btn awe-btn-default">READ MORE</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- END / ABOUT -->
+<!-- OUR BEST -->
+<section class="section-our-best bg-white">
+    <div class="container">
+
+        <div class="our-best">
+            <div class="row">
+
+                <div class="col-md-6 col-md-push-6">
+                    <div class="img">
+                        <img src="~/theme/images/hotel_Mishuk_Restaurent_thumb_1.jpg" alt="Hotel Mishuk,Luxerious Stay in Cox's Bazar">
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-md-pull-6 ">
+                    <div class="text">
+                        <h2 class="heading">Our Best</h2>
+                        <p>One of Cox’s Bazar Island's best-loved hotels, Hotel Mishuk is recognized as one of Avalon's leading hotels with gracious island hospitality, thoughtful amenities and distinctive .</p>
+                        <ul>
+                            <li><img src="~/theme/images/home/ourbest/icon-3.png" alt="icon">Spacious & Comfortable Rooms</li>
+                            <li><img src="~/theme/images/home/ourbest/icon-2.png" alt="icon">Mini Refrigerator </li>
+                            <li><img src="~/theme/images/home/ourbest/icon-4.png" alt="icon">Balcony</li>
+                            <li><img src="~/theme/images/home/ourbest/icon-5.png" alt="icon">Complimentary Services</li>
+                            <li><img src="~/theme/images/home/ourbest/icon-1.png" alt="icon">Daily Breakfast Service</li>
+                            <li><img src="~/theme/images/home/ourbest/icon-6.png" alt="icon">Prime Location at Laboni Sea Beach</li>
+                        </ul>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+<!-- END / OUR BEST -->
+<!-- VIDEO -->
+<section class="section-video bg-23 mt100">
+    <a class="btn-play" href="#modal-video-1"></a>
+    <div id="modal-video-1" class="modal-video" data-video="https://www.youtube.com/embed/ZtRWO5a2VyE" data-query-string="ecver=1&autoplay=1&showinfo=0&controls=0&modestbranding=1">
+        <iframe width="100%" height="600" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+</section>
+<!-- END / VIDEO -->
+<!-- GALLERY -->
+<section class="section_page-gallery">
+    <div class="container">
+        <div class="gallery gallery-3">
+            <h1 class="element-invisible">Gallery</h1>
+            <!-- FILTER -->
+            <div class="gallery-cat text-center">
+                <ul class="list-inline">
+                    <li class="active"><a href="#" data-filter="*">All</a></li>
+                    <li><a href="#" data-filter=".ground">HOTEL &amp; GROUND</a></li>
+                    <li><a href="#" data-filter=".suite">ROOM/SUITE </a></li>
+                    <li><a href="#" data-filter=".bathroom">BATHROOM</a></li>
+                    <li><a href="#" data-filter=".dining">DINING</a></li>
+                </ul>
+            </div>
+            <!-- END / FILTER -->
+            <!-- GALLERY CONTENT -->
+            <div class="gallery-content">
+                <div class="row">
+                    <div class="gallery-isotope col-4">
+                        <!-- ITEM -->
+                        <div class="item-isotope ground">
+                            <div class="gallery_item">
+                                <a href="~/theme/images/RoomCategory/HotelNewPicture/Hotel_Mishuk_Around_Side/large-7V55wXlpHgLobby (2).jpg" class="mfp-image" lazy>
+                                    <img class="img" src="~/theme/images/RoomCategory/HotelNewPicture/Hotel_Mishuk_Around_Side/Mishuk_Lobby.jpg" loading="lazy" alt="Hotel Mishuk,Luxerious Stay in Cox's Bazar">
+                                </a>
+                                @*  <h6 class="text">Lorem Ipsum is simply dummy text of the printing</h6> *@
+                            </div>
+                        </div>
+                        <!-- END / ITEM -->
+                        <!-- ITEM -->
+                        <div class="item-isotope ground">
+                            <div class="gallery_item">
+                                <a href="~/theme/images/RoomCategory/HotelNewPicture/Hotel_Mishuk_Around_Side/Lobby1.jpeg" class="mfp-image" lazy>
+                                    <img class="img" src="~/theme/images/RoomCategory/HotelNewPicture/Hotel_Mishuk_Around_Side/Lobby1.jpeg" loading="lazy" alt="Hotel Mishuk,Luxerious Stay in Cox's Bazar">
+                                </a>
+                                @*  <h6 class="text">Lorem Ipsum is simply dummy text of the printing</h6> *@
+                            </div>
+                        </div>
+                        <!-- END / ITEM -->
+                        <!-- ITEM -->
+                        <div class="item-isotope ground">
+                            <div class="gallery_item">
+                                <a href="~/theme/images/RoomCategory/HotelNewPicture/Hotel_Mishuk_Around_Side/Lobby2.jpeg" class="mfp-image" lazy>
+                                    <img class="img" src="~/theme/images/RoomCategory/HotelNewPicture/Hotel_Mishuk_Around_Side/Lobby2.jpeg" loading="lazy" alt="Hotel Mishuk,Luxerious Stay in Cox's Bazar">
+                                </a>
+                                @*  <h6 class="text">Lorem Ipsum is simply dummy text of the printing</h6> *@
+                            </div>
+                        </div>
+                        <!-- END / ITEM -->
+                        <!-- ITEM -->
+                        <div class="item-isotope suite">
+                            <div class="gallery_item">
+                                <a href="~/theme/images/RoomCategory/HotelNewPicture/Hotel_Mishuk_Around_Side/Balcony1.jpeg" class="mfp-image" lazy>
+                                    <img class="img" src="~/theme/images/RoomCategory/HotelNewPicture/Hotel_Mishuk_Around_Side/Balcony1.jpeg" loading="lazy" alt="Hotel Mishuk,Luxerious Stay in Cox's Bazar">
+                                </a>
+                                @*  <h6 class="text">Lorem Ipsum is simply dummy text of the printing</h6> *@
+                            </div>
+                        </div>
+                        <!-- END / ITEM -->
+                        <!-- ITEM SIZE -->
+                        <div class="item-size"></div>
+                        <!-- END / ITEM SIZE -->
+                        <!-- ITEM -->
+                        <div class="item-isotope suite">
+                            <div class="gallery_item">
+                                <a href="~/theme/images/RoomCategory/HotelNewPicture/AC Four/WhatsApp Image 2025-06-21 at 5.17.38 PM.jpeg" class="mfp-image">
+                                    <img class="img" src="~/theme/images/RoomCategory/HotelNewPicture/AC Four/Mishuk_4_bed.jpg" loading="lazy" alt="Hotel Mishuk,Luxerious Stay in Cox's Bazar">
+                                </a>
+                                @*  <h6 class="text">Lorem Ipsum is simply dummy text of the printing</h6> *@
+                            </div>
+                        </div>
+                        <!-- END / ITEM -->
+                        <!-- ITEM -->
+                        <div class="item-isotope suite">
+                            <div class="gallery_item">
+                                <a href="~/theme/images/RoomCategory/HotelNewPicture/AC Four (With Drowing)/WhatsApp Image 2025-06-21 at 5.23.24 PM (1).jpeg" class="mfp-image">
+                                    <img class="img" src="~/theme/images/RoomCategory/HotelNewPicture/AC Four (With Drowing)/Mishuk_AC_4_bed.jpg" loading="lazy" alt="Hotel Mishuk,Luxerious Stay in Cox's Bazar">
+                                </a>
+                                @*  <h6 class="text">Lorem Ipsum is simply dummy text of the printing</h6> *@
+                            </div>
+                        </div>
+                        <!-- END / ITEM -->
+                        <!-- ITEM -->
+                        <div class="item-isotope bathroom">
+                            <div class="gallery_item">
+                                <a href="~/theme/images/RoomCategory/HotelNewPicture//Executive Suite/WashRoom1.jpeg" class="mfp-image">
+                                    <img class="img" src="~/theme/images/RoomCategory/HotelNewPicture/Hotel_Mishuk_Around_Side/WashRoom1.jpeg" loading="lazy" alt="Hotel Mishuk,Luxerious Stay in Cox's Bazar">
+                                </a>
+                                @*  <h6 class="text">Lorem Ipsum is simply dummy text of the printing</h6> *@
+                            </div>
+                        </div>
+                        <!-- END / ITEM -->
+                        <!-- ITEM -->
+                        <div class="item-isotope suite">
+                            <div class="gallery_item">
+                                <a href="~/theme/images/RoomCategory/HotelNewPicture/AC Four (With Drowing)/WhatsApp Image 2025-06-21 at 5.23.24 PM.jpeg" class="mfp-image">
+                                    <img class="img" src="~/theme/images/RoomCategory/HotelNewPicture/AC Four (With Drowing)/Mishuk_AC_4_bed1.jpg" loading="lazy" alt="Hotel Mishuk,Luxerious Stay in Cox's Bazar">
+                                </a>
+                                @*  <h6 class="text">Lorem Ipsum is simply dummy text of the printing</h6> *@
+                            </div>
+                        </div>
+                        <!-- END / ITEM -->
+                        <!-- ITEM -->
+                        <div class="item-isotope ground">
+                            <div class="gallery_item">
+                                <a href="~/theme/images/RoomCategory/HotelNewPicture//Hotel_Mishuk_Around_Side/large-yLPofJbdUv2023-05-28 16.17.30.jpg" class="mfp-image">
+                                    <img class="img" src="~/theme/images/RoomCategory/HotelNewPicture/Hotel_Mishuk_Around_Side/Mishuk_Lobby1.jpg" loading="lazy" alt="Hotel Mishuk,Luxerious Stay in Cox's Bazar">
+                                </a>
+                                @*  <h6 class="text">Lorem Ipsum is simply dummy text of the printing</h6> *@
+                            </div>
+                        </div>
+                        <!-- END / ITEM -->
+                        <!-- ITEM -->
+                        <div class="item-isotope bathroom">
+                            <div class="gallery_item">
+                                <a href="~/theme/images/RoomCategory/HotelNewPicture/AC Four (With Drowing)/WhatsApp Image 2025-06-21 at 5.23.27 PM (4).jpeg" class="mfp-image">
+                                    <img class="img" src="~/theme/images/RoomCategory/HotelNewPicture/AC Four (With Drowing)/Mishuk_WashRoom1.jpg" loading="lazy" alt="Hotel Mishuk,Luxerious Stay in Cox's Bazar">
+                                </a>
+                                @*  <h6 class="text">Lorem Ipsum is simply dummy text of the printing</h6> *@
+                            </div>
+                        </div>
+                        <!-- END / ITEM -->
+                        <!-- ITEM -->
+                        <div class="item-isotope ground">
+                            <div class="gallery_item">
+                                <a href="~/theme/images/RoomCategory/HotelNewPicture//Hotel_Mishuk_Around_Side/WhatsApp Image 2024-01-18 at 5.40.41 PM.jpeg" class="mfp-image">
+                                    <img class="img" src="~/theme/images/RoomCategory/HotelNewPicture/Hotel_Mishuk_Around_Side/Mishuk_OutSide.jpg" loading="lazy" alt="Hotel Mishuk,Luxerious Stay in Cox's Bazar">
+                                </a>
+                                @*  <h6 class="text">Lorem Ipsum is simply dummy text of the printing</h6> *@
+                            </div>
+                        </div>
+                        <!-- END / ITEM -->
+                        <!-- ITEM -->
+                        <div class="item-isotope suite">
+                            <div class="gallery_item">
+                                <a href="~/theme/images/RoomCategory/HotelNewPicture/Executive Suite/WhatsApp Image 2024-08-26 at 3.22.45 PM.jpeg" class="mfp-image">
+                                    <img class="img" src="~/theme/images/RoomCategory/HotelNewPicture/Executive Suite/Mishuk_Baranda.jpg" loading="lazy" alt="Hotel Mishuk,Luxerious Stay in Cox's Bazar">
+                                </a>
+                                @*  <h6 class="text">Lorem Ipsum is simply dummy text of the printing</h6> *@
+                            </div>
+                        </div>
+                        <!-- END / ITEM -->
+                        
+                        <!-- ITEM -->
+                        <div class="item-isotope suite">
+                            <div class="gallery_item">
+                                <a href="~/theme/images/RoomCategory//HotelNewPicture/Hotel_Mishuk_Around_Side/Mishuk_Interrior.jpg" class="mfp-image">
+                                    <img class="img" src="~/theme/images/RoomCategory/HotelNewPicture/Hotel_Mishuk_Around_Side/Mishuk_Interrior.jpg" loading="lazy" alt="Hotel Mishuk,Luxerious Stay in Cox's Bazar">
+                                </a>
+                                @*  <h6 class="text">Lorem Ipsum is simply dummy text of the printing</h6> *@
+                            </div>
+                        </div>
+                        <!-- END / ITEM -->
+                        
+                        <!-- ITEM -->
+                        <div class="item-isotope ground">
+                            <div class="gallery_item">
+                                <a href="~/theme/images/RoomCategory/HotelNewPicture/Hotel_Mishuk_Around_Side/large-6FHY7Sp9zgMishuk.jpg" class="mfp-image">
+                                    <img class="img" src="~/theme/images/RoomCategory/HotelNewPicture/Hotel_Mishuk_Around_Side/Mishuk_Front_1.jpg" loading="lazy" alt="Hotel Mishuk,Luxerious Stay in Cox's Bazar">
+                                </a>
+                                @*  <h6 class="text">Lorem Ipsum is simply dummy text of the printing</h6> *@
+                            </div>
+                        </div>
+                        <!-- END / ITEM -->
+                        <!-- ITEM -->
+                        <div class="item-isotope ground">
+                            <div class="gallery_item">
+                                <a href="~/theme/images/RoomCategory/HotelNewPicture//Hotel_Mishuk_Around_Side/Mishuk_Front.jpg" class="mfp-image">
+                                    <img class="img" src="~/theme/images/RoomCategory/HotelNewPicture/Hotel_Mishuk_Around_Side/Mishuk_Front.jpg" loading="lazy" alt="Hotel Mishuk,Luxerious Stay in Cox's Bazar">
+                                </a>
+                                @*  <h6 class="text">Lorem Ipsum is simply dummy text of the printing</h6> *@
+                            </div>
+                        </div>
+                        <!-- END / ITEM -->
+                    </div>
+                </div>
+
+            </div>
+            <!-- GALLERY CONTENT -->
+
+        </div>
+    </div>
+</section>
+<!-- END / GALLERY -->
+@section Scripts
+{
+    <script src="~/js/ETL/Home/Home.js"></script>
+}

@@ -1,0 +1,42 @@
+﻿@model Domain.ViewModel.Report.EmployeePfSummaryReportVm
+@{
+    ViewData["Title"] = "Povident Fund List";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkPf" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h4>Employee Wise Provident Fund List</h4>
+            </div>
+            <div class="setting-list">
+                <a asp-action="EmployeePFListReportPrint" asp-controller="PfFundMst" class="btn btn-primary" target="_blank">PDF Print</a>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="EmployeePfSummarySearchTable" class="display" style="width:100%; text-align: left">
+                        <thead class="bg-primary">
+                            <tr>
+                                <th style="width: 5%">Sl</th>
+                                <th style="width: 15%">Employee</th>
+                                <th style="width: 15%">Designation</th>
+                                <th style="width: 15%">Department</th>
+                                <th style="width: 10%">Employe Total Con</th>
+                                <th style="width: 10%">Company Total Con</th>
+                                <th style="width: 10%">Interest</th>
+                                <th style="width: 10%">Total Pf Amount</th>
+                                <th style="width: 10%">Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/js/ETL/Report/EmpSummaryReport.js"></script>
+}

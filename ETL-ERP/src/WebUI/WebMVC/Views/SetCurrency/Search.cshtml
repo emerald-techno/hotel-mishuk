@@ -1,0 +1,40 @@
+﻿@model Domain.ViewModel.Admin.SetCurrency.SetCurrencySearchVm
+@{
+    ViewData["Title"] = "Currency Search";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkAccounts" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h4>Currency</h4>
+                <div class="setting-list">
+                    <a asp-action="Create" asp-controller="SetCurrency" class="btn btn-primary">Add Currency</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="SetCurrencySearchTable" class="display" style="width:100%; text-align: left">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%">Serial</th>
+                                <th>Currency Name</th>
+                                <th>Symbol</th>
+                                <th>Country Symbol</th>
+                                <th>Exchange Rate</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/js/ETL/SetCurrency/SetCurrencySearch.js"></script>
+}

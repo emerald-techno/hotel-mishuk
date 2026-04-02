@@ -1,0 +1,87 @@
+﻿@model Domain.ViewModel.HotelManagement.HotelReport.CategoryWiseRoomAvailableReportVm
+@{
+    ViewData["Title"] = "Hotel Forecast Room Position";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <form>
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>
+                        Hotel Forecast Room Position
+                    </h5>
+                    <div class="setting-list">
+                        <input type="button" id="ShowReportBtn" class="btn btn-primary" value="Show Report" />
+                    </div>
+                </div>
+                <div class="card-body table-responsive">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label class="col-form-label">From Date</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <input class="form-control from_dt" asp-for="StartDateStr" placeholder="Enter start date" data-language="en" />
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="col-form-label">To Date</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <input class="form-control to_dt" asp-for="EndDateStr" placeholder="Enter end date" data-language="en" />
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>
+                        Hotel Forecast Room Position
+                    </h5>
+                    <div class="setting-list">
+                        <button class="btn btn-primary" id="ReportPrintBtn">PDF</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <div style="text-align: center;">
+                            <div style="text-align: center; font-weight: bold; font-size: 16px; line-height: 20px">
+                                Hotel Forecast Room Position
+                            </div>
+                            <div style="text-align: center; font-weight: bold; font-size: 11px; line-height: 16px">
+                                <div id="ltReportFilter" runat="server" Text=""></div>
+                            </div>
+                        </div>
+                        <div id="ReportContainer"></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        var fromDate = @Model.StartDateStr;
+        var toDate = @Model.EndDateStr;
+
+        $(".from_dt").datepicker({
+            setDate: fromDate,
+            dateFormat: 'dd/mm/yyyy',
+        });
+        $(".to_dt").datepicker({
+            setDate: toDate,
+            dateFormat: 'dd/mm/yyyy',
+        });
+
+    </script>
+    <script src="~/js/ETL/BookingService/CategoryWiseRoomAvailableReport.js"></script>
+}

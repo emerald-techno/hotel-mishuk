@@ -1,0 +1,86 @@
+﻿@model Domain.ViewModel.Leave.EmpLeaveApplication.EmpLeaveReportVm
+@{
+    ViewData["Title"] = "Leave Report";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <form>
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Employee Leave Report</h5>
+                    <div class="setting-list">
+                        <button class="btn btn-primary" type="button" id="LeaveReportBtn">Show Report</button>
+                    </div>
+                </div>
+                <div class="card-body table-responsive">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label">From Date</label>
+                                        <input class="form-control datepicker-here" asp-for="FormDateStr" placeholder="Enter start date" data-language="en" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label">To Date</label>
+                                        <input class="form-control datepicker-here" asp-for="ToDateStr" placeholder="Enter end date" data-language="en" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Department</label>
+                                        <select asp-for="EmpDepatmentId" asp-items="Model.DepatmentLookup" class="dd-type"></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" id="LeaveReportSec">
+                <div class="card-header p-4">
+                    <h5>Employee Leave Report</h5>
+                    <div class="setting-list" id="printBtnSection">
+                        <button class="btn btn-primary" type="button" id="reportPdf">PDF</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="LeaveReportTable" class="table table-bordered" style="width:100%; text-align: center">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th style="width: 5%">Sl</th>
+                                    <th>Employee</th>
+                                    <th>Department</th>
+                                    <th>Designation</th>
+                                    <th>Join Date</th>
+                                    <th>Casual Leave</th>
+                                    <th>Medical Leave</th>
+                                    <th>Maternity Leave</th>
+                                    <th>Earn Leave</th>
+                                    <th>Leave Without Pay</th>
+                                    <th>Study Leave</th>
+                                    <th>Total Leave</th>
+                                </tr>
+                            </thead>
+                            <tbody id="LeaveReportTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/js/ETL/EmpLeaveApp/EmpLeaveReport.js"></script>
+}

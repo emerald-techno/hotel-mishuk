@@ -1,0 +1,41 @@
+﻿@model Domain.ViewModel.Role.RoleSearchVm
+
+@{
+    var currentUser = User.Identity;
+    ViewData["Title"] = "Role Search";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4>Role List</h4>
+                <div class="setting-list">
+                    @if (currentUser.HasPermission(Permissions.SuperAdmin, Permissions.UserRoles.CreateOrEdit))
+                    {
+                        <a asp-action="AddOrEdit" asp-controller="Role" class="btn btn-primary">Add Role</a>
+                    }
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="RoleSearchTable" class="display" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%">Serial</th>
+                                <th>Role Name</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/ETL/Role/RoleSearch.js"></script>
+}

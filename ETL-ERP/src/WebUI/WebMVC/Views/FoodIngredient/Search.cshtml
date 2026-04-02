@@ -1,0 +1,39 @@
+﻿@model Domain.ViewModel.Restaurant.FoodIngredient.FoodIngredientSearchVM
+@{
+    ViewData["Title"] = "Food Ingredient List";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <form>
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Food Category List</h5>
+                    <div class="setting-list">
+                        <a asp-action="Create" asp-controller="FoodIngredient" class="btn btn-primary">New Ingredient</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table table-responsive">
+                        <table id="FoodIngredientSearchTable" class="display" style="width:100%; text-align: left">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th style="width: 5%">Serial</th>
+                                    <th>Item</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Amount</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts
+{
+    <script src="~/js/ETL/FoodIngredient/FoodIngredient.js"></script>
+}

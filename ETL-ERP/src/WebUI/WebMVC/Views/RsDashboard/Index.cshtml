@@ -1,0 +1,87 @@
+﻿@{
+    ViewData["Title"] = "Restaurant Dashboard";
+}
+
+<div class="container-fluid general-widget">
+    <div class="row">
+        <div class="col-sm-6 col-xl-3 col-lg-6">
+            <div class="card o-hidden border-0">
+                <div class="bg-primary b-r-4 card-body">
+                    <div class="media static-top-widget">
+                        <div class="align-self-center text-center"><i data-feather="coffee"></i></div>
+                        <div class="media-body">
+                            <span class="m-0">Total Menu</span>
+                            <h4 class="mb-0 counter">247</h4><i class="icon-bg" data-feather="coffee"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3 col-lg-6">
+            <div class="card o-hidden border-0">
+                <div class="bg-secondary b-r-4 card-body">
+                    <div class="media static-top-widget">
+                        <div class="align-self-center text-center"><i data-feather="dollar-sign"></i></div>
+                        <div class="media-body">
+                            <span class="m-0">Total Revenue</span>
+                            <h4 class="mb-0 counter">155055</h4><i class="icon-bg" data-feather="dollar-sign"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3 col-lg-6">
+            <div class="card o-hidden border-0">
+                <div class="bg-primary b-r-4 card-body">
+                    <div class="media static-top-widget">
+                        <div class="align-self-center text-center"><i data-feather="clipboard"></i></div>
+                        <div class="media-body">
+                            <span class="m-0">Total Order</span>
+                            <h4 class="mb-0 counter">5000</h4><i class="icon-bg" data-feather="clipboard"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3 col-lg-6">
+            <div class="card o-hidden border-0">
+                <div class="bg-primary b-r-4 card-body">
+                    <div class="media static-top-widget">
+                        <div class="align-self-center text-center"><i data-feather="users"></i></div>
+                        <div class="media-body">
+                            <span class="m-0">Total Client</span>
+                            <h4 class="mb-0 counter">12000</h4><i class="icon-bg" data-feather="users"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-7 box-col-6">
+            <div class="card">
+                <div class="card-header pb-0">
+                    <h5>Revenue</h5>
+                </div>
+                <div class="card-body">
+                    <div id="area-spaline"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-xl-5 box-col-6">
+            <div class="card">
+                <div class="card-header pb-0">
+                    <h5>Order Summary</h5>
+                </div>
+                <div class="card-body apex-chart">
+                    <div id="donutchart"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/theme/assets/js/chart/apex-chart/apex-chart.js"></script>
+    <script src="~/theme/assets/js/chart/apex-chart/stock-prices.js"></script>
+    <script src="~/theme/assets/js/chart/apex-chart/chart-custom.js"></script>
+}

@@ -1,0 +1,152 @@
+﻿@model Domain.ViewModel.Restaurant.FoodOrder.FoodOrderVm
+@using Domain.Enums.AppEnums
+@{
+    ViewData["Title"] = "Refund Advance";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Refund Reservation Advance Amount</h5>
+            </div>
+            <form asp-action="RefundReservation" id="RefundForm" class="form theme-form">
+                <div class="card-body py-3">
+
+                    <div class="row mb-3">
+                        <div class="col-md-6 mb-3">
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label">Order No</label>
+                                <div class="col-sm-8">
+                                    @(Model.OrderNo)
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label">Order Date</label>
+                                <div class="col-sm-8">
+                                    @Utility.GetDate(Model.OrderDate)
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label">Reservation Date</label>
+                                <div class="col-sm-8">
+                                    @Utility.GetDate((DateTime)Model.ReservationDate)
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <label class="col-sm-4 col-form-label">Reservation Status</label>
+                                <div class="col-sm-8">
+                                    @if (Model.OrderStatus == RsOrderStatusEnum.Served)
+                                    {
+                                        <span class="badge badge-pill badge-success" style="font-size: 0.8rem;">Served</span>
+                                    }
+                                    else if (Model.OrderStatus == RsOrderStatusEnum.Pending)
+                                    {
+                                        <span class="badge badge-pill badge-warning" style="font-size: 0.8rem;">Pending</span>
+                                    }
+                                    else if (Model.OrderStatus == RsOrderStatusEnum.Canceled)
+                                    {
+                                        <span class="badge badge-pill badge-danger" style="font-size: 0.8rem;">Canceled</span>
+                                    }
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <label class="col-sm-4 col-form-label">Payment Status</label>
+                                <div class="col-sm-8">
+                                    @if (Model.PaymentStatus == RsOrderPaymentStatusEnum.FullPayment)
+                                    {
+                                        <span class="badge badge-pill badge-success" style="font-size: 0.8rem;">Full Paid</span>
+                                    }
+                                    else if (Model.PaymentStatus == RsOrderPaymentStatusEnum.PartialPayment)
+                                    {
+                                        <span class="badge badge-pill badge-warning" style="font-size: 0.8rem;">Partial</span>
+                                    }
+                                    else if (Model.PaymentStatus == RsOrderPaymentStatusEnum.Pending)
+                                    {
+                                        <span class="badge badge-pill badge-danger" style="font-size: 0.8rem;">Pending</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label">Type</label>
+                                <div class="col-sm-8">
+                                    @(Model.CustomerTypeName)
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <label class="col-sm-4 col-form-label">Name</label>
+                                <div class="col-sm-8">
+                                    @(Model.CustomerName)
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <label class="col-sm-4 col-form-label">Phone Number</label>
+                                <div class="col-sm-8">
+                                    @(Model.CustomerMobile)
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <label class="col-sm-4 col-form-label">Address</label>
+                                <div class="col-sm-8">
+                                    @(Model.CustomerAddress)
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <label class="col-sm-4 col-form-label">Bill By</label>
+                                <div class="col-sm-8">
+                                    @(Model.ActionByName)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input type="hidden" name="OrderId" id="OrderId" value="@(Model.Id)" />
+
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td><b>Advance Amount</b></td>
+                                        <td><input class="form-control" id="AdvanceAmount" value="@(Model.PaidAmount)" readonly /></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Already Refunded Amount</b></td>
+                                        <td><input class="form-control" id="AlreadyRefundAmount" value="@(Model.AlreadyRefundAmount)" readonly /></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Refunded Due</b></td>
+                                        <td><input class="form-control" id="RefundDue" value="@(Model.PaidAmount - Model.AlreadyRefundAmount)" readonly /></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Refunded Amount</b></td>
+                                        <td><input class="form-control" name="PaidAmount" id="RefundAmount" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Pay Mode</b></td>
+                                        <td><select id="PayMode" name="PayMode" asp-items="Model.PayModeLookUp" class="dd-type"></select></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="button" id="RefundSubmitBtn">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/ETL/FoodOrder/RefundReservation.js"></script>
+}

@@ -1,0 +1,9 @@
+select bs.id BookingId,bs.BookingNo,convert(date,bs.BookingDate)BookingDate,g.Id GuestId,g.FirstName +' '+g.LastName GuestName,ci.id CompanyId,ci.Name CompanyName,convert(Date,bs.CheckInTime) EstCheckInTime
+,convert(date,bs.CheckOutTime) EstCheckOutTime,ar.RefundAmount,convert(date,ar.RefundDate) RefundDate,ar.RefundMode,ar.Description,ar.TransactionNo
+from HtAdvanceRefunds ar
+inner join HtBookingServices bs on bs.Id = ar.BookingId
+left join (select max(GuestId)GuestId,BookingId from HtBookingGuests where IsMain = 1 group by BookingId ) bg on bg.BookingId = bs.Id
+left join HtGuestInfos g on g.Id= bg.GuestId
+left join ClientCompanies ci on ci.Id = g.CompanyId
+where ar.RefundAmount > 0
+order by convert(date,ar.RefundDate) desc 

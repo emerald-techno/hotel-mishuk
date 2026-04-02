@@ -1,0 +1,28 @@
+DECLARE @RPT_DATE date
+SET @RPT_DATE = '25/May/2024'
+select bs.Id BookingId,bs.BookingNo,bs.BookingDate,br.ActualCheckInTime,br.ActualCheckOutTime,br.CheckInTime,br.CheckOutTime,br.TotalGuest,br.ComplementaryId
+,ri.Id RoomId,ri.RoomNo,rc.Id CategoryId,rc.CategoryName,gi.Id GuestId,gi.FirstName + ' '+isnull(gi.LastName,'') GuestName,bs.BookingStatus
+,case when bs.BookingStatus = 1 then 'Booked' when bs.BookingStatus = 2 then 'CheckIn' when bs.BookingStatus = 3 then 'CheckOut' when bs.BookingStatus = 4 then 'NoShow'
+when bs.BookingStatus = 9 then 'Canceled' else convert(varchar,bs.BookingStatus) end BookingStatusText,bs.BookingType
+from HtBookingServices bs
+inner join HtBookingRooms br on br.BookingId = bs.Id
+inner join HtBookingGuests bg on bg.BookingId = bs.Id --and bg.IsMain = 'true'
+inner join HtGuestInfos gi on gi.Id = bg.GuestId
+inner join HtRoomInfos ri on ri.Id = br.RoomId
+inner join HtRoomCategories rc on rc.Id = ri.RoomCategoryId
+where br.ActualCheckInTime is not null 
+and convert(date,br.ActualCheckInTime) <= @RPT_DATE and (br.ActualCheckOutTime is null  or convert(date,ActualCheckOutTime) > @RPT_DATE)
+
+
+DECLARE @RPT_DATE date
+SET @RPT_DATE = '22/May/2024'
+select isnull(sum(case when br.BookingDayStatus = 1 then 1 else 0 end),0) HalfDayUse
+,isnull(sum(case when br.BookingDayStatus = 2 and convert(date,br.ActualCheckInTime) = convert(date,br.ActualCheckOutTime) then 1 else 0 end),0) DayUse
+,isnull(sum(case when br.BookingDayStatus = 2 and convert(date,br.ActualCheckInTime) != convert(date,br.ActualCheckOutTime) then 1 else 0 end),0) FullDayUse
+from HtBookingServices bs
+inner join HtBookingRooms br on br.BookingId = bs.Id
+inner join HtBookingGuests bg on bg.BookingId = bs.Id --and bg.IsMain = 'true'
+inner join HtGuestInfos gi on gi.Id = bg.GuestId
+inner join HtRoomInfos ri on ri.Id = br.RoomId
+inner join HtRoomCategories rc on rc.Id = ri.RoomCategoryId
+where br.BookingDayStatus in (1,2) and convert(date,br.ActualCheckOutTime) = @RPT_DATE

@@ -1,0 +1,156 @@
+﻿@model Domain.ViewModel.Accounting.AccTranMst.QuickVoucherVm
+@{
+    ViewData["Title"] = "Voucher Entry";
+    Layout = "_Layout";
+}
+
+<link href="~/css/QuickVoucher.css" rel="stylesheet" />
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="scrollable-div" id="scrollableDiv">
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Staff Kitchen Accounts :  Vouchers</h5>
+                    <div class="setting-list">
+                        <button class="btn btn-primary" id="QuickLedgerPrintBtn">PDF</button>
+                        <a asp-action="VoucherSearch" asp-controller="AccTranMst" class="btn btn-primary">Search Voucher List</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <dvi class="table-responsive">
+                        <div style="text-align: center;">
+                            <div style="text-align: center; font-weight: bold; font-size: 11px; line-height: 16px">
+                                <div id="ltReportFilter" runat="server" Text=""></div>
+                            </div>
+                        </div>
+                        <div id="LedgerReportContainer"></div>
+                    </dvi>
+
+                    @*modal_Complimentary*@
+
+                    <div class="modal fade" id="quickUpdateModal" tabindex="-1" role="dialog" aria-labelledby="quickUpdateModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Update Voucher</h5>
+                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div id="modal-head"></div>
+
+                                    <div>
+                                        <form>
+                                            <input type="hidden" id="UpdateVcId" />
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="mb-2">
+                                                        <label class="col-form-label">Voucher No</label>
+                                                        <input type="text" class="form-control" id="UpdateVoucherNo" readonly />
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <label class="col-form-label">Account Head</label>
+                                                        <select id="UpdateLedgerId" asp-items="Model.LedgerLookup" class="form-control dd-type"></select>
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <label class="col-form-label">Amount</label>
+                                                        <input type="number" class="form-control" id="UpdateAmount" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="mb-2">
+                                                        <label class="col-form-label">Voucher Date</label>
+                                                        <input class="update-date form-control" id="UpdateVcDate" type="text" data-language="en">
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <label class="col-form-label">Dr/Cr</label>
+                                                        <select id="UpdateDrCr" asp-items="Model.DrCrLookup" class="form-control dd-type"></select>
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <label class="col-form-label">Narration</label>
+                                                        <textarea id="UpdateNarration" rows="2" class="form-control"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button class="btn btn-primary" id="UpdateSubmitBtnKitchen" type="button">Update</button>
+                                    <button class="btn btn-secondary" id="modal_close" type="button" data-bs-dismiss="modal">Close</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    @*modal_end*@
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <form asp-controller="AccTranMst" asp-action="QuickVoucherEntryForKitchen" class="theme-form mega-form">
+
+                <input type="hidden" asp-for="CurrentFincYearId">
+                <input type="hidden" asp-for="MishukLedgerId">
+
+                <div class="card-body">
+                    <div class="row">
+                        <table class="table table-bordered" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th style="width:10%">Vc No.</th>
+                                    <th style="width:10%">Voucher Date</th>
+                                    <th style="width:30%">Account Head</th>
+                                    <th style="width:10%">Dr/Cr</th>
+                                    <th style="width:20%">Narration</th>
+                                    <th style="width:15%">Amount</th>
+                                    <th style="width:5%">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input class="form-control" asp-for="VcNo" type="text" readonly></td>
+                                    <td><input class="datepickerVcDate form-control" asp-for="VcDateStr" type="text" data-language="en"></td>
+                                    <td><select asp-for="LedgerId" asp-items="Model.LedgerLookup" class="form-control dd-type"></select></td>
+                                    <td><select asp-for="DrCr" asp-items="Model.DrCrLookup" class="form-control dd-type"></select></td>
+                                    <td>
+                                        <textarea asp-for="Narration" rows="1" class="form-control"></textarea>
+                                    </td>
+                                    <td>
+                                        <input class="form-control" asp-for="Amount" />
+                                    </td>
+                                    <td>
+                                        <button type="submit" class="btn btn-outline-primary">Save</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        var currentDate = @Model.VcDateStr;
+
+        $(".datepickerVcDate").datepicker({
+            setDate: currentDate,
+            dateFormat: 'dd/mm/yyyy',
+            position: 'top left',
+            onSelect: function (d, i) {
+                console.log("event working..!", d);
+                getReportByDate(d);
+            }
+        });
+    </script>
+
+    <script src="~/js/ETL/AccTranMst/QuickVoucher.js"></script>
+}

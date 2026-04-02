@@ -1,0 +1,41 @@
+﻿@model Domain.ViewModel.Pf.PfFund.PfFundMstSearchVm
+@{
+    ViewData["Title"] = "Provident Fund List";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkPf" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h4>Provident Fund List Monthly</h4>
+                <div class="setting-list">
+                    <a asp-action="Report" asp-controller="PfFundMst" class="btn btn-primary">Pf Report Setup</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <table id="PfSearchTable" class="display" style="width:100%; text-align: left">
+                    <thead>
+                        <tr>
+                            <th style="width: 5%">Sl</th>
+                            <th style="width: 15%">Form Date</th>
+                            <th style="width: 15%">To Date</th>
+                            <th style="width: 15%">Pf Month</th>
+                            <th style="width: 10%">Employe Con</th>
+                            <th style="width: 10%">Company Con</th>
+                            <th style="width: 10%">Interest</th>
+                            <th style="width: 10%">Pf Amount</th>
+                            <th style="width: 10%">Action</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/ETL/PfFund/PfFundSearch.js"></script>
+}

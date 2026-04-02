@@ -1,0 +1,19 @@
+﻿@* Payroll *@
+
+<div class="scroll-bar-wrap">
+    <div class="visible-scroll scroll-demo h-25" style="border:none">
+        <div class="horz-scroll-content">
+            <div class="col-sm-12 m-2">
+                <button onclick="location.href='@Url.Action("Search", "SetSalaryGrade")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Salary Grade</button>
+                <button onclick="location.href='@Url.Action("SearchPartial", "PrSalaryPart")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Salary Parts</button>
+                <button onclick="location.href='@Url.Action("Search", "PrEmpSalaryPart")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Employee Salary Parts</button>
+                <button onclick="location.href='@Url.Action("Report", "MonthlyAttSheet")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Generate Attendance</button>
+                <button onclick="location.href='@Url.Action("Search", "PrArrearMst")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Arrear</button>
+                <button onclick="location.href='@Url.Action("Search", "EmpLoanMst")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Employee Loan</button>
+                <button onclick="location.href='@Url.Action("Search", "PrGuestSalaryMst")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Guest Salary</button>
+                <button onclick="location.href='@Url.Action("Search", "PrSalaryMst")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Employee Payroll</button>
+                <button onclick="location.href='@Url.Action("Search", "MonthlyAttSheet")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Attendance Report</button>
+            </div>
+        </div>
+    </div>
+</div>

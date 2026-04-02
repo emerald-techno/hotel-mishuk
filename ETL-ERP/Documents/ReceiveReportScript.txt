@@ -1,0 +1,12 @@
+select tm.Id TranId,tm.TranDate,tm.TranNo,si.id SupplierId,si.SupplierName,si.SupplierCode,om.id OrderId,om.OrderNo,om.OrderDate,om.OrderType,ci.Id CategoryId,ci.CategoryName,ci.CategoryCode
+,ii.Id ItemId,ii.ItemCode,ii.ItemName,td.ItemQty,td.UnitPrice
+from TranDtls td
+inner join UnitInfos ui on ui.Id = td.ItemUnitId
+inner join ItemInfos ii on ii.Id = td.ItemId
+inner join CategoryInfos ci on ci.Id = ii.CategoryId
+inner join TranMsts tm on tm.Id = td.TranMstId
+left join SupplierInfos si on si.Id = tm.SupplierId
+left join OrderMsts om on om.Id = tm.OrderId
+where tm.TranType = 'R' and td.IsDeleted = 0 and tm.IsDeleted = 0
+order by tm.TranDate
+

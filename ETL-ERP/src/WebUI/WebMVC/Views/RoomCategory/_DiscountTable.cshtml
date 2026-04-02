@@ -1,0 +1,275 @@
+﻿@using Domain.Entities.HotelManagement
+@model List<Domain.ViewModel.HotelManagement.RoomCategory.HtRoomCategoryDiscountSetUpVm>
+@section Styles {
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --primary-light: #eef2ff;
+            --secondary-color: #3f37c9;
+            --success-color: #4cc9f0;
+            --text-dark: #2b2d42;
+            --text-light: #8d99ae;
+            --border-color: #e9ecef;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --shadow-hover: 0 10px 15px rgba(0, 0, 0, 0.07);
+        }
+
+        .container {
+            max-width: 100% !important
+        }
+
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-dark);
+            padding: 20px;
+        }
+
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+            .card:hover {
+                box-shadow: var(--shadow-hover);
+            }
+
+        .card-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1.5rem;
+            border-bottom: none;
+        }
+
+            .card-header h3 {
+                margin: 0;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 0 0 12px 12px;
+        }
+
+        .table {
+            margin: 0;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+            .table thead th {
+                background-color: var(--primary-light);
+                color: var(--primary-color);
+                font-weight: 600;
+                border-bottom: 2px solid var(--border-color);
+                padding: 1rem 0.75rem;
+                position: sticky;
+                top: 0;
+                z-index: 10;
+            }
+
+            .table tbody td {
+                padding: 1rem 0.75rem;
+                vertical-align: middle;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            .table tbody tr {
+                transition: all 0.2s ease;
+            }
+
+                .table tbody tr:hover {
+                    background-color: rgba(67, 97, 238, 0.03);
+                }
+
+        .form-control, .form-select {
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 0.75rem;
+            transition: all 0.2s ease;
+        }
+
+            .form-control:focus, .form-select:focus {
+                border-color: var(--primary-color);
+                box-shadow: 0 0 0 0.2rem rgba(67, 97, 238, 0.25);
+            }
+
+            .form-control[readonly] {
+                background-color: #f8f9fa;
+                color: var(--text-light);
+            }
+
+        .new-offer {
+            font-weight: 600;
+            color: var(--primary-color);
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+
+        .btn-primary-custom {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            border-radius: 6px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            color: white;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .btn-primary-custom:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+                color: white;
+            }
+
+        .discount-badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .discount-percent {
+            background-color: #e8f5e8;
+            color: #2e7d32;
+        }
+
+        .discount-fixed {
+            background-color: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-light);
+        }
+
+            .empty-state i {
+                font-size: 3rem;
+                margin-bottom: 1rem;
+                color: #dee2e6;
+            }
+
+        @@media (max-width: 768px) {
+            .table thead {
+                display: none;
+            }
+
+            .table tbody tr {
+                display: block;
+                margin-bottom: 1rem;
+                border: 1px solid var(--border-color);
+                border-radius: 8px;
+                padding: 1rem;
+            }
+
+            .table tbody td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.5rem 0;
+                border-bottom: 1px solid #f1f1f1;
+            }
+
+                .table tbody td:before {
+                    content: attr(data-label);
+                    font-weight: 600;
+                    color: var(--primary-color);
+                    margin-right: 1rem;
+                }
+
+                .table tbody td:last-child {
+                    border-bottom: none;
+                }
+        }
+    </style>
+}
+
+<div class="card">
+   
+    <div class="card-body p-0">
+        <div class="table-container">
+            <form id="discountSubmitForm" method="post">
+                <table class="table table-bordered table-responsive">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Rack Rate</th>
+                            <th>Discount Type</th>
+                            <th>Discount</th>
+                            <th>Discounted Rent</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Count > 0)
+                        {
+                            foreach (var (item, i) in Model.GetItemWithIndex())
+                            {
+                                <tr>
+                                    <td>
+                                        <input type="hidden" name="DiscountSetupList[@i].RoomCategoryId" value="@item.RoomCategoryId" />
+                                        <input type="hidden" id="rack-rate_@(i)" value="@(item.ActualAmount)" />
+                                        @item.RoomCategory
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" name="DiscountSetupList[@i].FromDate" value="@item.FromDateStr" readonly />
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" name="DiscountSetupList[@i].ToDate" value="@item.ToDateStr" readonly />
+                                    </td>
+                                    <td>@item.ActualAmount</td>
+                                    <td>
+                                        <select class="form-select discount-type"
+                                                data-index="@(i)"
+                                                name="DiscountSetupList[@i].DiscountType"
+                                                id="discount_type_@i"
+                                                asp-for="@(item.DiscountType)"
+                                                asp-items="Html.GetEnumSelectList<DiscountTypeEnum>()">
+                                        </select>
+                                    </td>
+
+                                    <td>
+                                        <input type="number" name="DiscountSetupList[@i].DiscountAmount" class="form-control discount-amount" data-index="@(i)" id="discount_amount_@i" value="@(item.DiscountAmount)" />
+                                    </td>
+
+                                    <td>
+                                        <input type="text"
+                                               class="form-control new-offer"
+                                               data-index="@i"
+                                               value="@item.NewOfferRate"
+                                               id="offer_rate_@i"
+                                               name="DiscountSetupList[@i].NewOfferRate"
+                                               readonly />
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+
+                </table>
+                <br />
+                <input type="button" id="discountMapSubmitBtn" class="btn btn-outline-primary" value="Submit" />
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+
+    <script src="~/js/ETL/DiscountSetup/DiscountSetup.js"></script>
+}
+

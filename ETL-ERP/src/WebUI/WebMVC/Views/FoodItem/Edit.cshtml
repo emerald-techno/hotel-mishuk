@@ -1,0 +1,110 @@
+﻿@model Domain.ViewModel.Restaurant.FoodItem.FoodItemVm
+@{
+    ViewData["Title"] = "Food Item Setup";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Food Item Setup</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="FoodItem" class="btn btn-primary">Search Food Item</a>
+                </div>
+            </div>
+            <form asp-action="Edit" class="form theme-form" data-parsley-validate enctype="multipart/form-data">
+                @Html.HiddenFor(c => c.Id)
+                @Html.HiddenFor(c => c.PhotoUrl)
+                @Html.HiddenFor(c => c.ActionById)
+                @Html.HiddenFor(c => c.ActionDate)
+                @Html.Hidden("InitItemName", Model.ItemName)
+                @Html.Hidden("InitCode", Model.ItemCode)
+                <div class="card-body">
+                    <div class="row m-1">
+                        <div class="col-md-4">
+                            <label class="col-form-label">Food Category *</label>
+                            <select asp-for="CategoryId" asp-items="Model.FoodCategoryLookUp" class="dd-type"></select>
+                            <span asp-validation-for="CategoryId" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label">Item Name *</label>
+                            <input class="form-control" asp-for="ItemName" type="text" readonly>
+                            <span asp-validation-for="ItemName" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label">Item Code *</label>
+                            <input class="form-control" asp-for="ItemCode" type="text">
+                            <span asp-validation-for="ItemCode" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row m-1">
+                        <div class="col-md-2">
+                            <label class="col-form-label">Rate</label>
+                            <input class="form-control" asp-for="Rate" type="text">
+                            <span asp-validation-for="Rate" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="col-form-label">Offer Rate</label>
+                            <input class="form-control" asp-for="OfferRate" type="number">
+                            <span asp-validation-for="OfferRate" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="col-form-label">VAT (%)</label>
+                            <input class="form-control" asp-for="VAT" type="text">
+                            <span asp-validation-for="VAT" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="col-form-label">Net Rate</label>
+                            <input class="form-control" asp-for="NetRate" type="number">
+                            <span asp-validation-for="NetRate" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label">Photo File</label>
+                            <input asp-for="PhotoFile" class="form-control" type="file" name="PhotoFile">
+                        </div>
+                    </div>
+                    <div class="row m-1">
+                        <div class="col-md-4">
+                            <label class="col-form-label">Remarks</label>
+                            <textarea asp-for="Remarks" class="form-control" rows="3"></textarea>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label">Description</label>
+                            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="media" style="margin-top:35px;">
+                                <label class="col-form-label m-r-10">Active Status</label>
+                                <div class="media-body icon-state">
+                                    <label class="switch">
+                                        <input type="checkbox" asp-for="IsActive"><span class="switch-state"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="media" style="margin-top:35px;">
+                                <label class="col-form-label m-r-10">Is It Set Menu</label>
+                                <div class="media-body icon-state">
+                                    <label class="switch">
+                                        <input type="checkbox" asp-for="IsSetMenuItem"><span class="switch-state"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

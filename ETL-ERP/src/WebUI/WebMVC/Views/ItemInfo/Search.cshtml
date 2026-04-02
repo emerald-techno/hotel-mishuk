@@ -1,0 +1,72 @@
+﻿@model Domain.ViewModel.Inventory.ItemInfo.ItemInfoSearchVm
+@{
+    ViewData["Title"] = "Item Info Search";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkInventory" />
+        <form>
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Item Info</h5>
+                    <div class="setting-list">
+                        <input class="btn btn-primary" type="button" id="ItemInfoSearchBtn" value="Search" />
+                        <a asp-action="Create" asp-controller="ItemInfo" class="btn btn-primary">New Item</a>
+                    </div>
+                </div>
+                <div class="card-body table-responsive">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="col-form-label">Item Category</label>
+                                    <select asp-for="CategoryId" asp-items="Model.CategoryLookUp" class="dd-type"></select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="col-form-label">Item Unit</label>
+                                    <select asp-for="UnitId" asp-items="Model.UnitLookUp" class="dd-type"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Item List</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table table-responsive">
+                        <table id="ItemInfoSearchTable" class="display" style="width:100%; text-align: left">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th style="width: 5%">Serial</th>
+                                    <th>Name</th>
+                                    <th>Code</th>
+                                    <th>Category Name</th>
+                                    <th>Unit Name</th>
+                                    <th>Reorder Quantity</th>
+                                    <th>Max Quantity</th>
+                                    <th>Minimum Quantity</th>
+                                    <th>Alternative Quantity</th>
+                                    <th>Lead Day</th>
+                                    <th>Remarks</th>
+                                    <th>Image</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/ETL/ItemInfo/ItemInfoSearch.js"></script>
+}

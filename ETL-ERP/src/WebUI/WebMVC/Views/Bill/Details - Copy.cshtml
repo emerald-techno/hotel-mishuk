@@ -1,0 +1,262 @@
+﻿
+@model Domain.ViewModel.HotelManagement.Billing.BillingVm
+@using Domain.Enums.AppEnums
+@using Domain.Utility.Common
+@{
+    ViewBag.Title = "Bill";
+}
+
+@section styles
+{
+    <style>
+        #BillRoomTableTbody tr td {
+            padding: 5px;
+        }
+
+        #BillRoomTableFoot tr {
+            border: 0px;
+        }
+
+            #BillRoomTableFoot tr td {
+                padding: 5px;
+                border: 0px;
+            }
+    </style>
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Booking Service Bill</h5>
+                <div class="setting-list">
+                    <a class="btn btn-outline-primary" asp-controller="Bill" target="_blank" asp-action="BillPrint" asp-route-id="@Model.Id" type="submit">Print Bill</a>
+                    <a asp-action="Search" asp-controller="Bill" class="btn btn-primary">Bill List</a>
+                </div>
+            </div>
+            <div class="card-body py-3">
+
+                <div class="row">
+                    <div class="col-md-4">
+
+                        <h4><u>Bill To :-</u></h4>
+
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label">Name</label>
+                            <div class="col-sm-8">
+                                @(Model.BookingGuestName)
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <label class="col-sm-4 col-form-label">Phone Number</label>
+                            <div class="col-sm-8">
+                                @(Model.BookingGuestMobile)
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <label class="col-sm-4 col-form-label">Address</label>
+                            <div class="col-sm-8">
+                                @(Model.BookingGuestAddress)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3"></div>
+
+                    <div class="col-md-5">
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label">Bill No</label>
+                            <div class="col-sm-8">
+                                @(Model.BillNumber)
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label">Bill Date</label>
+                            <div class="col-sm-8">
+                                @Utility.GetDate(Model.BillDate)
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label">Booking No</label>
+                            <div class="col-sm-8">
+                                @(Model.BookingNo)
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <label class="col-sm-4 col-form-label">Booking Date</label>
+                            <div class="col-sm-8">
+                                @Utility.GetDate(Model.BookingDate)
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <label class="col-sm-4 col-form-label">Bill Status</label>
+                            <div class="col-sm-8">
+                                @if (Model.BillStatus == BillStatusEnum.FullPaid)
+                                {
+                                    <span class="badge badge-pill badge-success" style="font-size: 0.8rem;">Fully Paid</span>
+                                }
+                                else if (Model.BillStatus == BillStatusEnum.PartialPaid)
+                                {
+                                    <span class="badge badge-pill badge-warning" style="font-size: 0.8rem;">Partialy Paid</span>
+                                }
+                                else if (Model.BillStatus == BillStatusEnum.Fresh)
+                                {
+                                    <span class="badge badge-pill badge-secondary" style="font-size: 0.8rem;">New</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <br />
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr class="text-center">
+                                    <th style="width: 5%">Sl</th>
+                                    <th style="width: 10%">Room</th>
+                                    <th style="width: 15%">Service Name</th>
+                                    <th style="width: 15%">Check In</th>
+                                    <th style="width: 15%">Check Out</th>
+                                    <th style="width: 10%">No. Of Days</th>
+                                    <th style="width: 15%">Price/Day</th>
+                                    <th style="width: 15%">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="BillRoomTableTbody">
+                                @if (Model.BillingDetails.Count > 0)
+                                {
+                                    foreach (var (dtl, i) in Model.BillingDetails.GetItemWithIndex())
+                                    {
+
+                                        if (dtl.ServiceCode == HtServiceCode.FoodService)
+                                        {
+                                            <tr>
+                                                <td class="text-center">@(i+1)</td>
+                                                <td class="text-center"><b>@(dtl.BookingRoomNo)</b></td>
+                                                <td>@(dtl.ServiceName)</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td class="text-center"></td>
+                                                <td></td>
+                                                <td class="text-end">@(dtl.NetAmount)</td>
+                                            </tr>
+                                        }
+                                        else
+                                        {
+                                            <tr>
+                                                <td class="text-center">@(i+1)</td>
+                                                <td class="text-center"><b>@(dtl.BookingRoomNo)</b></td>
+                                                <td>@(dtl.ServiceName)</td>
+                                                <td>@(Utility.ConvertDateTimeToStr((DateTime)dtl.BookingRoomCheckInTime))</td>
+                                                <td>@(Utility.ConvertDateTimeToStr((DateTime)dtl.BookingRoomCheckOutTime))</td>
+                                                <td class="text-center">@(dtl.Days)</td>
+                                                <td>
+                                                    <b>Rent:</b> @(dtl.Rate) <br />
+                                                    <b>Service Charge:</b> @(dtl.BookingRoomServiceCharge) <br />
+                                                </td>
+                                                <td class="text-end">@(dtl.NetAmount)</td>
+                                            </tr>
+                                        }
+                                    }
+                                }
+                            </tbody>
+                            <tfoot id="BillRoomTableFoot">
+
+                                <tr>
+                                    <td colspan="6" rowspan="7">
+                                        @if (Model.BillStatus != BillStatusEnum.FullPaid && Model.BillStatus != BillStatusEnum.Refund)
+                                        {
+                                            <form asp-action="PayBill" asp-controller="Bill" method="post" id="PayBillForm">
+                                                <input type="hidden" name="BillId" id="BillId" value="@Model.Id">
+                                                <div class="row">
+                                                    <label class="col-sm-2 col-form-label">Pay Mode</label>
+                                                    <div class="col-sm-4">
+                                                        <select name="PayMode" id="PayMode" asp-items="Model.PayModeLookUp" class="dd-type"></select>
+                                                    </div>
+
+                                                    <label class="col-sm-2 col-form-label">Pay Amount</label>
+                                                    <div class="col-sm-4">
+                                                        <input type="text" class="form-control" name="PaidAmount" id="PaidAmount">
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-1">
+                                                    <label class="col-sm-2 col-form-label">Transaction No</label>
+                                                    <div class="col-sm-4">
+                                                        <input type="text" class="form-control" name="TransactionNo" id="TransactionNo">
+                                                    </div>
+
+                                                    <label class="col-sm-2 col-form-label">Account Number</label>
+                                                    <div class="col-sm-4">
+                                                        <input type="text" class="form-control" name="AccountNo" id="AccountNo">
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        }
+                                    </td>
+                                    <td style="text-align: right">Sub Total</td>
+                                    <td class="text-end" style="font-weight: bold">
+                                        @Model.TotalAmount
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right">VAT</td>
+                                    <td class="text-end" style="font-weight: bold">
+                                        @Model.Vat
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right">Tax</td>
+                                    <td class="text-end" style="font-weight: bold">
+                                        @Model.Tax
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right">Discount</td>
+                                    <td class="text-end" style="font-weight: bold">
+                                        @Model.Discount
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right">Bill Net Total</td>
+                                    <td class="text-end" style="font-weight: bold">
+                                        @Model.NetAmount
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right">Paid Amount</td>
+                                    <td class="text-end" style="font-weight: bold">
+                                        @Model.PaidAmount
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right">Due Amount</td>
+                                    <td class="text-end" style="font-weight: bold">
+                                        @(Model.NetAmount - Model.PaidAmount)
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            @if (Model.BillStatus != BillStatusEnum.FullPaid && Model.BillStatus != BillStatusEnum.Refund)
+            {
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="button" id="PayBillBtn">Pay Bill</button>
+                        <button class="btn btn-danger" type="button">Cancel</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="~/js/ETL/Bill/Details.js"></script>
+}

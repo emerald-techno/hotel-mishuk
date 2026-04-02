@@ -1,0 +1,91 @@
+﻿@model Domain.ViewModel.Hr.Employees.EmployeeSearchVm
+@{
+    ViewData["Title"] = "Employee Search";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkHr" />
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="d-flex flex-row justify-content-between py-3">
+                        <h4>Employees</h4>
+                        <div>
+                            <a asp-action="Create" asp-controller="Employee" class="btn btn-secondary">New Employee</a>
+                            <button class="btn btn-primary collapsed" data-bs-toggle="collapse" data-bs-target="#EmployeeAdvanceSearch" aria-expanded="true" aria-controls="EmployeeAdvanceSearch">Advance Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <form>
+                    <div class="row collapse" id="EmployeeAdvanceSearch" aria-labelledby="headingOne" data-bs-parent="#accordion">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Code</label>
+                                        <input asp-for="Code" type="text" class="form-control" placeholder="Enter Code">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Designation</label>
+                                        <select asp-for="DesignationId" asp-items="Model.DesignationLookUp" class="dd-type"></select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Department</label>
+                                        <select asp-for="DepartmentId" asp-items="Model.DepartmentLookUp" class="dd-type"></select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="d-flex flex-row justify-content-end">
+                                    <input class="btn btn-primary flex-column float-lg-right" type="button" id="EmployeeSearchBtn" value="Search" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>Employees</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table id="EmployeeSearchTable" class="display" style="width:100%; text-align: left">
+                                            <thead class="bg-primary">
+                                                <tr>
+                                                    <th style="width: 5%">Sl</th>
+                                                    <th>Photo</th>
+                                                    <th>Name</th>
+                                                    <th>Designation</th>
+                                                    <th>Department</th>
+                                                    <th>Joining Date</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/js/ETL/Employee/EmployeeSearch.js"></script>
+}

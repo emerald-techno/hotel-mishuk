@@ -1,0 +1,66 @@
+﻿@model Domain.ViewModel.Admin.Designation.DesignationVm
+
+@{
+    ViewData["Title"] = "Designation Create";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Create Designation</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="Designation" class="btn btn-primary">Search Designation</a>
+                </div>
+            </div>
+            <form asp-action="Create" class="form theme-form">
+
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Designation Name *</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="Name" type="text" placeholder="Enter designation name">
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Designation Code *</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="Code" type="text" placeholder="Enter designation code">
+                                    <span asp-validation-for="Code" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Remarks</label>
+                                <div class="col-sm-9">
+                                    <textarea class="form-control" rows="4" asp-for="Remarks"></textarea>
+                                </div>
+                            </div>
+
+
+                            <div class="mb-3 row" style="display:none">
+                                <label class="col-sm-3 col-form-label">Mark As Teacher *</label>
+                                <div class="col-sm-9">
+                                    <div class="form-group">
+                                        <input asp-for="IsTeacher" type="checkbox" />
+                                    </div>
+                                    <span asp-validation-for="IsTeacher" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,32 @@
+﻿/* Default Style */
+.scrollable-div {
+    height: 70vh; /* Default height */
+    overflow-y: auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+}
+
+/* Media Query for screens <= 1366px */
+@media (max-width: 1366px) {
+    .scrollable-div {
+        height: 55vh; /* Smaller height */
+        padding: 5px;
+    }
+
+    .container-fluid {
+        padding: 0px !important;
+    }
+
+    .row > * {
+        padding-right: 0px !important;
+    }
+
+    #voucher-entry {
+        font-size: 12px !important;
+    }
+
+    #voucher-entry-table td{
+        padding: 3px !important;
+    }
+}

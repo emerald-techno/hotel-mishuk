@@ -1,0 +1,21 @@
+﻿@* Inventory *@
+
+<div class="scroll-bar-wrap">
+    <div class="visible-scroll scroll-demo h-25" style="border:none">
+        <div class="horz-scroll-content">
+            <div class="col-sm-12 m-2">
+                <button onclick="location.href='@Url.Action("Search", "SupplierInfo")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Supplier</button>
+                <button onclick="location.href='@Url.Action("Search", "UnitInfo")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Unit</button>
+                <button onclick="location.href='@Url.Action("Search", "CategoryInfo")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Category</button>
+                <button onclick="location.href='@Url.Action("Search", "ItemInfo")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Item</button>
+                <button onclick="location.href='@Url.Action("Search", "RequsitionInfo")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Requsition</button>
+                <button onclick="location.href='@Url.Action("Search", "Order")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Order List</button>
+                <button onclick="location.href='@Url.Action("Search", "Receive")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Receive Order</button>
+                <button onclick="location.href='@Url.Action("Search", "Issue")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Issued Item</button>
+                <button onclick="location.href='@Url.Action("ApprovalSearch", "RequsitionInfo")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Requsition Info</button>
+                <button onclick="location.href='@Url.Action("ApprovalSearch", "Order")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Order Info</button>
+                <button onclick="location.href='@Url.Action("StockReport", "InventoryReport")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Stock Report</button>
+            </div>
+        </div>
+    </div>
+</div>

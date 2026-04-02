@@ -1,0 +1,112 @@
+﻿@model Domain.ViewModel.Inventory.Transaction.TransactionVm
+@{
+    ViewData["Title"] = "Issue Item Create";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkInventory" />
+        <form asp-action="Create" id="CreateIssueForm" data-parsley-validate class="form-horizontal form-label-left">
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Issue Item</h5>
+                    <div class="setting-list">
+                        <a asp-action="Search" asp-controller="Issue" class="btn btn-primary">Issue List</a>
+                    </div>
+                </div>
+
+                <div class="card-body py-3">
+
+                    <input type="hidden" asp-for="TranType" />
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Issue No</label>
+                            <input class="form-control" asp-for="TranNo" readonly>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Issue Date *</label>
+                            <input class="datepicker-issue-date form-control" asp-for="TranDateStr" type="text" data-language="en">
+                            <span asp-validation-for="TranDateStr" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Issue Department *</label>
+                            <select asp-for="IssueDeptId" asp-items="Model.IssueDptLookUp" class="dd-type"></select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Issue To</label>
+                            <select asp-for="IssueEmpId" asp-items="Model.IssueEmpLookUp" class="dd-type"></select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Requisition *</label>
+                            <select asp-for="ReqMstId" asp-items="Model.ReqLookUp" class="dd-type"></select>
+                            <span class="text-danger" id="receiveStatusValidator"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Upload File</label>
+                            <input type="file" asp-for="TranFileUrl" class="form-control ">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Remarks" class="form-label">Remarks</label>
+                            <textarea type="text" asp-for="Remarks" class="form-control" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="row mt-5">
+
+                        <table class="table table-bordered" style="text-align: center">
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%">#</th>
+                                    <th style="width: 25%">Item</th>
+                                    <th style="width: 20%">Unit</th>
+                                    <th style="width: 10%">Approve Quantity</th>
+                                    <th style="width: 10%">Already Issue Quantity</th>
+                                    <th style="width: 10%">Issue Quantity</th>
+                                    <th style="width: 15%">Stock</th>
+                                    <th style="width: 5%">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="IssueItemTableTbody">
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button type="button" id="CreateIssueSubmitBtn" class="btn btn-primary">Save</button>
+                        <a asp-controller="Issue" asp-action="Search" class="btn btn-warning">Search</a>
+                        <button class="btn btn-danger" type="reset">Clear</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+        var currentDate = @Model.TranDateStr;
+
+        $(".datepicker-issue-date").datepicker({
+            setDate: currentDate,
+            dateFormat: 'dd/mm/yyyy',
+            autoClose: true
+        });
+    </script>
+    <script src="~/js/ETL/Transaction/CreateIssue.js"></script>
+}

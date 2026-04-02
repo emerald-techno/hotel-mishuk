@@ -1,0 +1,44 @@
+﻿@model Domain.ViewModel.Attendance.DutyShift.DutyShiftSearchVm
+@{
+    ViewData["Title"] = "Duty Shift Search";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkHr" />
+        <form>
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Duty Shift List</h5>
+                    <div class="setting-list">
+                        <a asp-action="Create" asp-controller="DutyShift" class="btn btn-primary">New Duty Shift</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table table-responsive">
+                        <table id="DutyShiftSearchTable" class="display" style="width:100%; text-align: left">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th style="width: 5%">Sl</th>
+                                    <th>Shift Name</th>
+                                    <th>Shift Code</th>
+                                    <th>Shift Type</th>
+                                    <th>Start Time</th>
+                                    <th>End Time</th>
+                                    <th>Pay Type</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/ETL/DutyShift/DutyShiftSearch.js"></script>
+}

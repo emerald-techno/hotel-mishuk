@@ -1,0 +1,72 @@
+﻿@model Domain.ViewModel.Accounting.AccGroup.AccGroupVm
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkAccounts" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Edit Account Group</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="AccGroup" class="btn btn-primary">Search Account Group</a>
+                </div>
+            </div>
+            <form asp-action="Edit" asp-controller="AccGroup" class="form theme-form">
+                @Html.HiddenFor(c => c.Id)
+                @Html.Hidden("InitName", Model.Name)
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Account Group Name *</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" asp-for="Name" placeholder="Enter Account Group Name" />
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Group Code *</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="GroupCode" type="text" readonly />
+                                    <span asp-validation-for="GroupCode" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Group Short Code *</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="GroupShortCode" type="text" readonly />
+                                    <span asp-validation-for="GroupShortCode" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Remarks</label>
+                                <div class="col-sm-9">
+                                    <textarea class="form-control" rows="4" asp-for="Remarks" readonly></textarea>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Update</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function(){
+            $(".form-control").attr("autocomplete", "off");
+        });
+
+    </script>
+}

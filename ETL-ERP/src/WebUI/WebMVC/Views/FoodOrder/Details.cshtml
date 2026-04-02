@@ -1,0 +1,799 @@
+﻿@model Domain.ViewModel.Restaurant.FoodOrder.FoodOrderVm
+@using Domain.Entities.Identity
+@using Domain.Enums.AppEnums
+@using Domain.Utility.Common
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "Food Order Details";
+    var isSuperAdmin = User.Claims.Any(c => c.Type == "Permission" && c.Value == "Permissions.SuperAdmin");
+    var user = await UserManager.GetUserAsync(User);
+    // Console.WriteLine(user.FullName);
+
+    var isAudited = Model.IsFoodOrderAudited;
+}
+
+@section styles
+{
+    <style>
+        #BillRoomTableTbody tr td {
+            padding: 5px;
+        }
+
+        #BillRoomTableFoot tr {
+            border: 0px;
+        }
+
+            #BillRoomTableFoot tr td {
+                padding: 5px;
+                border: 0px;
+            }
+    </style>
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="m-2">
+            <a asp-controller="FoodOrder" asp-action="MakeOrder" target="_blank" class="btn btn-pill btn-primary btn-sm">POS VIEW</a>
+        </div>
+
+        <div class="card">
+            <div class="card-header p-4">
+
+                @if (Model.OrderType == RsOrderTypeEnum.Reservation)
+                {
+                    <h5>Reservation Details</h5>
+                }
+                else
+                {
+                    <h5>Foor Order Details</h5>
+                }
+                <div class="setting-list">
+                    @if (isAudited)
+                    {
+                        <span><i class="icofont icofont-checked" title="Audited" style="color: darkcyan;font-size: 18px;"></i></span>
+                    }
+
+                    @if (user.FullName == UserCode.Development && !isAudited)
+                    {
+                        <a class="order_delete_btn btn btn-outline-danger " asp-for="" data-id="@Model.Id" href="#" title='Delete Full Order'>Delete Order</a>
+                    }
+                    @if (Model.OrderType == RsOrderTypeEnum.Reservation)
+                    {
+                        <a class="btn btn-outline-primary" asp-controller="FoodOrder" target="_blank" asp-action="ReservationBillPrint" asp-route-id="@Model.Id" type="submit">Print Reservation Bill</a>
+                        <a asp-action="ReservationSearch" asp-controller="FoodOrder" class="btn btn-primary">Reservation List</a>
+
+                        @if (!isAudited)
+                        {
+                            <a class="btn btn-outline-warning kot-print" asp-controller="FoodOrder" target="_blank" asp-action="OrderKotPrint" asp-route-id="@Model.Id" type="submit">Generate & Print KOT</a>
+                        }
+
+                    }
+                    else
+                    {
+                        <a asp-action="Search" asp-controller="FoodOrder" class="btn btn-primary">Order List</a>
+
+                        @if (!isAudited)
+                        {
+                            @if (Model.PaymentStatus != RsOrderPaymentStatusEnum.FullPayment)
+                            {
+                                <a class="btn btn-secondary" href="#" data-bs-toggle="modal" data-bs-target="#discountUpdateModal"> Update Discount </a>
+
+                                if (Model.CustomerTypeCode == RsCustomerTypeCode.WalkIn || Model.CustomerTypeCode == RsCustomerTypeCode.Hotel)
+                                {
+                                    <a class="btn btn-outline-info" href="#" data-bs-toggle="modal" data-bs-target="#roomAssignModal">Room Assign</a>
+                                }
+                            }
+
+                            @if (user.FullName == UserCode.Development)
+                            {
+                                <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#foodAddModal"> Add Food </a>
+                            }
+                            else if (Model.OrderDate.Date == DateTime.Today.Date)
+                            {
+                                <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#foodAddModal"> Add Food </a>
+                            }
+                            <a class="btn btn-outline-warning kot-print" asp-controller="FoodOrder" target="_blank" asp-action="OrderKotPrint" asp-route-id="@Model.Id" type="submit">Generate & Print KOT</a>
+
+                        }
+
+                        <a class="btn btn-outline-primary" asp-controller="FoodOrder" target="_blank" asp-action="OrderBillPrint" asp-route-id="@Model.Id" type="submit">Print Order Bill</a>
+
+
+                    }
+                </div>
+            </div>
+            <div class="card-body py-3">
+
+                <div class="row">
+                    <div class="col-md-4">
+
+                        <h4><u>Bill To :-</u></h4>
+
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label">Type</label>
+                            <div class="col-sm-8">
+                                <input type="hidden" asp-for="CustomerTypeId" />
+
+                                @(Model.CustomerTypeName)
+
+                                @if (Model.PaymentStatus != RsOrderPaymentStatusEnum.FullPayment && !isAudited)
+                                {
+                                    if (Model.CustomerTypeCode != RsCustomerTypeCode.Hotel)
+                                    {
+                                        <span><a href="#" data-bs-toggle="modal" data-bs-target="#cTypeUpdateModal"><i class="fa fa-pencil"></i></a> </span>
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <label class="col-sm-4 col-form-label">Name</label>
+                            <div class="col-sm-8">
+                                @(Model.CustomerName)
+
+                                @if (Model.PaymentStatus != RsOrderPaymentStatusEnum.FullPayment && !isAudited)
+                                {
+                                    if (Model.CustomerTypeCode != RsCustomerTypeCode.Hotel)
+                                    {
+                                        <span><a href="#" data-bs-toggle="modal" data-bs-target="#cNameUpdateModal"><i class="fa fa-pencil"></i></a> </span>
+                                    }
+                                }
+
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <label class="col-sm-4 col-form-label">Phone Number</label>
+                            <div class="col-sm-8">
+                                @(Model.CustomerMobile)
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <label class="col-sm-4 col-form-label">Address</label>
+                            <div class="col-sm-8">
+                                @(Model.CustomerAddress)
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <label class="col-sm-4 col-form-label">Waiter</label>
+                            <div class="col-sm-8">
+                                @(Model.WaiterName)-(@Model.WaiterCode)
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <label class="col-sm-4 col-form-label">Bill By</label>
+                            <div class="col-sm-8">
+                                @(Model.ActionByName)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3"></div>
+
+                    <div class="col-md-5">
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label">Order No</label>
+                            <div class="col-sm-8">
+                                <input type="hidden" id="order-no" value="@(Model.OrderNo)" />
+                                @(Model.OrderNo)
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label">@(Model.OrderType == RsOrderTypeEnum.Order ? "Order Date" : "Reservation Date") </label>
+                            <div class="col-sm-8">
+                                @Utility.GetDate(Model.OrderDate)
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label">Table</label>
+                            <div class="col-sm-8">
+                                <input type="hidden" id="table-no" value="@(Model.TableNo)" />
+                                @(Model.TableNo)
+                            </div>
+                        </div>
+
+                        @{
+                            var bookingLink = Model.BookingId > 0 ? $@"<a href='../../BookingService/Details/{Model.BookingId}' target='_blank'>{Model.BookingNo}</a>" : "";
+                        }
+
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label">Room No</label>
+                            <div class="col-sm-8">
+                                @Html.Raw(!string.IsNullOrEmpty(Model.RoomNo) ? $"{Model.RoomNo} {(Model.IsRoomService ? "- Room Service -" : "- Table Service -")} {bookingLink}" : "")
+
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <label class="col-sm-4 col-form-label">Order Status</label>
+                            <div class="col-sm-8">
+                                @if (Model.OrderStatus == RsOrderStatusEnum.Served)
+                                {
+                                    <span class="badge badge-pill badge-success" style="font-size: 0.8rem;">Served</span>
+                                }
+                                else if (Model.OrderStatus == RsOrderStatusEnum.Pending)
+                                {
+                                    <span class="badge badge-pill badge-warning" style="font-size: 0.8rem;">Pending</span>
+                                }
+                                else if (Model.OrderStatus == RsOrderStatusEnum.Canceled)
+                                {
+                                    <span class="badge badge-pill badge-danger" style="font-size: 0.8rem;">Canceled</span>
+                                }
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <label class="col-sm-4 col-form-label">Payment Status</label>
+                            <div class="col-sm-8">
+                                @if (Model.PaymentStatus == RsOrderPaymentStatusEnum.FullPayment)
+                                {
+                                    <span class="badge badge-pill badge-success" style="font-size: 0.8rem;">Full Paid</span>
+                                }
+                                else if (Model.PaymentStatus == RsOrderPaymentStatusEnum.PartialPayment)
+                                {
+                                    <span class="badge badge-pill badge-warning" style="font-size: 0.8rem;">Partial</span>
+                                }
+                                else if (Model.PaymentStatus == RsOrderPaymentStatusEnum.Pending)
+                                {
+                                    <span class="badge badge-pill badge-danger" style="font-size: 0.8rem;">Pending</span>
+                                }
+                                else if (Model.PaymentStatus == RsOrderPaymentStatusEnum.Refund)
+                                {
+                                    <span class="badge badge-pill badge-secondary" style="font-size: 0.8rem;">Refunded</span>
+                                }
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <label class="col-sm-4 col-form-label">Remarks</label>
+                            <div class="col-sm-8">
+                                @(Model.OrderDesc)
+                            </div>
+                        </div>
+
+                        @if (Model.OrderType == RsOrderTypeEnum.Reservation)
+                        {
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label">Reservation Entry Date</label>
+                                <div class="col-sm-8">
+                                    @Utility.GetDate((DateTime)Model.ReservationDate)
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+
+
+                <br />
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr class="text-center">
+                                    <th style="width: 5%">Sl</th>
+                                    <th style="width: 65%">Food Name</th>
+                                    <th style="width: 10%">Rate</th>
+                                    <th style="width: 10%">Quantity</th>
+                                    <th style="width: 10%">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="BillRoomTableTbody">
+                                @if (Model.RsFoodOrderItems.Count > 0)
+                                {
+                                    var kotList = Model.RsFoodOrderItems.Select(o => o.KotNo).Distinct();
+                                    var sl = 1;
+                                    foreach (var kot in kotList)
+                                    {
+
+                                        var kotData = Model.RsFoodOrderItems.Where(o => o.KotNo == kot).ToList();
+                                        <tr>
+                                            <td colspan="5" style="font-weight:bold;text-align:center;">
+                                                KOT : @kot
+
+                                                <a class="btn btn-sm btn-outline-warning" asp-controller="FoodOrder" target="_blank" asp-action="SingleKotPrint" asp-route-id="@Model.Id" asp-route-kotNo="@(kot)" type="submit" style="padding:2px 5px;"><i class="fa fa-list"></i></a>
+                                            </td>
+                                        </tr>
+                                        foreach (var (dtl, i) in kotData.GetItemWithIndex())
+                                        {
+                                            var kotNo = !string.IsNullOrEmpty(kot) ? $"(KOT - {dtl.KotNo}/{dtl.ActionDate?.ToString("dd.MM.yy")})" : "";
+                                            <tr>
+                                                <td class="text-center">
+                                                    @if (!dtl.IsServed && !isAudited)
+                                                    {
+                                                        <a class="item_serve_btn text-secondary" data-id="@(dtl.Id)" style="font-size:24px;" href="#" title='Served'><i class="icofont icofont-dining-table"></i></a>
+                                                    }
+                                                    @sl
+                                                </td>
+                                                <td class="text-start">
+                                                    @if (Model.PaymentStatus != RsOrderPaymentStatusEnum.FullPayment && !isAudited)
+                                                    {
+                                                        <a class="item_delete_btn text-danger" data-id="@(dtl.Id)" style="font-size:18px;" href="#" title='Remove'><i class="fa fa-times"></i></a>
+                                                    }
+                                                    <b>@(dtl.FoodName) </b>
+                                                    <br />
+                                                    <small>@(dtl.FoodDescription)</small>
+                                                </td>
+                                                <td class="text-center">@(dtl.Rate)</td>
+                                                <td class="text-center">@(dtl.Quantity)</td>
+                                                <td class="text-end">@(dtl.TotalAmount)</td>
+                                            </tr>
+
+                                            sl++;
+                                        }
+
+                                    }
+                                    @* foreach (var (dtl, i) in Model.RsFoodOrderItems.GetItemWithIndex())
+                                {
+                                var kotNo = !string.IsNullOrEmpty(dtl.KotNo) ? $"(KOT - {dtl.KotNo}/{dtl.ActionDate?.ToString("dd.MM.yy")})" : "";
+
+                                <tr>
+                                <td class="text-center">@(i+1)</td>
+                                <td class="text-start">
+                                <b>@(dtl.FoodName) </b> @(kotNo)
+                                @if (string.IsNullOrEmpty(dtl.KotNo))
+                                {
+                                <a class="item_delete_btn text-danger" data-id="@(dtl.Id)" style="font-size:18px;" href="#" title='Remove'><i class="fa fa-times"></i></a>
+                                }
+                                <br />
+                                <small>@(dtl.FoodDescription)</small>
+                                </td>
+                                <td class="text-center">@(dtl.Rate)</td>
+                                <td class="text-center">@(dtl.Quantity)</td>
+                                <td class="text-end">@(dtl.TotalAmount)</td>
+                                </tr>
+                                } *@
+                                }
+                            </tbody>
+                            <tfoot id="BillRoomTableFoot">
+
+                                <tr>
+                                    <td colspan="3" rowspan="8">
+                                        @if (Model.PaymentStatus != RsOrderPaymentStatusEnum.FullPayment && Model.PaymentStatus != RsOrderPaymentStatusEnum.Refund)
+                                        {
+                                            <form asp-action="PayOrder" asp-controller="FoodOrder" method="post" id="PayBillForm">
+                                                <input type="hidden" name="OrderId" id="OrderId" value="@Model.Id">
+                                                <div class="row">
+                                                    <label class="col-sm-2 col-form-label">Pay Date</label>
+                                                    <div class="col-sm-4">
+                                                        <input class="datepicker-paid-date form-control" asp-for="PaidDateStr" type="text" data-language="en">
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-1">
+                                                    <label class="col-sm-2 col-form-label">Pay Mode</label>
+                                                    <div class="col-sm-4">
+                                                        <select name="PayMode" id="PayMode" asp-items="Model.PayModeLookUp" class="dd-type"></select>
+                                                    </div>
+
+                                                    <label class="col-sm-2 col-form-label">Pay Amount</label>
+                                                    <div class="col-sm-4">
+                                                        <input type="text" class="form-control" name="PaidAmount" id="PaidAmount">
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-1">
+                                                    <label class="col-sm-2 col-form-label">Transaction No</label>
+                                                    <div class="col-sm-4">
+                                                        <input type="text" class="form-control" name="TransactionNo" id="TransactionNo">
+                                                    </div>
+
+                                                    <label class="col-sm-2 col-form-label">Account Number</label>
+                                                    <div class="col-sm-4">
+                                                        <input type="text" class="form-control" name="AccountNo" id="AccountNo">
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        }
+                                    </td>
+                                    <td style="text-align: right">Sub Total</td>
+                                    <td id="OrderAmount" class="text-end" style="font-weight: bold">
+                                        @Model.OrderAmount
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right">VAT</td>
+                                    <td id="VAT" class="text-end" style="font-weight: bold">
+                                        @Model.VAT
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right">Service Charge</td>
+                                    <td class="text-end" id="ServiceCharge" style="font-weight: bold">
+                                        @Model.ServiceCharge
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right">Discount</td>
+                                    <td id="Discount" class="text-end" style="font-weight: bold">
+                                        @Model.Discount
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right">Bill Net Total</td>
+                                    <td class="text-end" id="NetAmount" style="font-weight: bold">
+                                        @Model.NetAmount
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right">Paid Amount</td>
+                                    <td class="text-end" style="font-weight: bold">
+                                        @Model.PaidAmount
+                                    </td>
+                                </tr>
+                                @if (Model.OrderType == RsOrderTypeEnum.Reservation && Model.OrderStatus == RsOrderStatusEnum.Canceled)
+                                {
+                                    <tr>
+                                        <td style="text-align: right">Refund Amount</td>
+                                        <td class="text-end" style="font-weight: bold">
+                                            @(Model.AlreadyRefundAmount)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: right">Refund Due Amount</td>
+                                        <td class="text-end" style="font-weight: bold">
+                                            @(Model.PaidAmount - Model.AlreadyRefundAmount)
+                                        </td>
+                                    </tr>
+                                }
+                                else if (Model.OrderType == RsOrderTypeEnum.Reservation && Model.OrderStatus != RsOrderStatusEnum.Canceled)
+                                {
+                                    <tr>
+                                        <td style="text-align: right">Due Amount</td>
+                                        <td class="text-end" style="font-weight: bold">
+                                            @(Model.NetAmount - Model.PaidAmount)
+                                        </td>
+                                    </tr>
+                                    <tr></tr>
+                                }
+                                else if (Model.OrderType == RsOrderTypeEnum.Order)
+                                {
+                                    <tr>
+                                        <td style="text-align: right">Due Amount</td>
+                                        <td class="text-end" style="font-weight: bold">
+                                            @(Model.NetAmount - Model.PaidAmount)
+                                        </td>
+                                    </tr>
+                                    <tr></tr>
+                                }
+
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            @if (Model.PaymentStatus != RsOrderPaymentStatusEnum.FullPayment && Model.PaymentStatus != RsOrderPaymentStatusEnum.Refund)
+            {
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="button" id="PayBillBtn">Pay Bill</button>
+                        <button class="btn btn-danger" type="button">Cancel</button>
+                    </div>
+                </div>
+            }
+            <br />
+            @* Payment-details  Table *@
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-header bg-primary text-white text-center">
+                            <h5 class="mb-0">Payment History</h5>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover align-middle">
+                                    <thead class="text-center">
+                                        <tr>
+                                            <th style="width: 15%">Payment Date</th>
+                                            <th style="width: 10%">Pay Method</th>
+                                            <th style="width: 35%">Remarks</th>
+                                            <th style="width: 20%">Paid Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model.OrderPayments.Count > 0)
+                                        {
+                                            foreach (var item in Model.OrderPayments)
+                                            {
+                                                <tr>
+                                                    <td class="text-center">
+                                                        @(Utility.ConvertDateToStr(item.PaidDate))
+                                                        @if (user.FullName == UserCode.Development && !isAudited)
+                                                        {
+                                                            <a class="payment_delete_btn text-danger" data-id="@(item.Id)" style="font-size:18px;" href="#" title='Remove'><i class="fa fa-times"></i></a>
+                                                        }
+                                                    </td>
+
+                                                    <td class="text-center">@item.PayMode</td>
+                                                    <td>@item.Remarks</td>
+                                                    <td class="text-end fw-bold text-success">
+                                                        @item.PaidAmount.ToString("N2")
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <tr>
+                                                <td class="text-center text-danger" colspan="4"><h5>No Payment Records Found</h5></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                    @if (Model.OrderPayments.Count > 0)
+                                    {
+                                        <tfoot class="table-light">
+                                            <tr>
+                                                <td class="text-end fw-bold" colspan="3">Total Paid</td>
+                                                <td class="text-end fw-bold text-primary">@(Model.OrderPayments.Sum(x => x.PaidAmount).ToString("N2"))</td>
+                                            </tr>
+                                        </tfoot>
+                                    }
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            @*modal*@
+
+            <div class="modal fade" id="foodAddModal" tabindex="-1" role="dialog" aria-labelledby="foodAddModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content ">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel2">Add New Food To Order</h5>
+                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <input type="hidden" id="MOrderId" value="@Model.Id" />
+                                <div class="row">
+                                    <div class="col-md-3 mb-2">
+                                        <label class="col-form-label">Food Item</label>
+                                        <select id="MFoodId" asp-items="Model.FoodItemLookUp" class="dd-type"></select>
+                                    </div>
+                                    <div class="col-md-2 mb-2">
+                                        <label class="col-form-label">Quantity</label>
+                                        <input class="form-control" id="MQty" type="number" min="1">
+                                    </div>
+                                    <div class="col-md-2 mb-2">
+                                        <label class="col-form-label">Rate</label>
+                                        <input class="form-control" id="MRate" type="text" readonly>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <label class="col-form-label">Amount</label>
+                                        <input class="form-control" id="MAmount" type="text" readonly>
+                                    </div>
+                                    <div class="col-md-2 mb-2">
+                                        <label class="col-form-label">Action</label>
+                                        <button type='button' class='btn btn-outline-primary mb-1 w-100' id='itemAddBtn' title="Add-Item"><i class='fa fa-plus'></i></button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12" style="margin-top:50px;">
+                                        <div class="card">
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered" id="additemTable" style="width:100%">
+                                                    <thead>
+                                                        <tr style="background-color:#DFF0D8;">
+                                                            <th scope="col" class="text-center" style="width:35%">Food Item</th>
+                                                            <th scope="col" class="text-center" style="width:10%">Quantity</th>
+                                                            <th scope="col" class="text-center" style="width:25%">Rate</th>
+                                                            <th scope="col" class="text-center" style="width:25%">Amount</th>
+                                                            <th scope="col" class="text-center" style="width:5%">Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="additemTbody">
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </form>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" id="FoodAddBtn" type="button">Submit</button>
+                            <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            @*modal_end*@
+
+
+            @*discount_modal*@
+
+            <div class="modal fade" id="discountUpdateModal" tabindex="-1" role="dialog" aria-labelledby="discountUpdateModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel2">Update Discount Info</h5>
+                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <input type="hidden" id="U_OrderId" value="@Model.Id" />
+
+                                <div class="mb-2 row">
+                                    <label class="col-sm-3 col-form-label">Net Amount</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control" value="@(Model.NetAmount)" type="number" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="mb-2 row">
+                                    <label class="col-sm-3 col-form-label">Paid Amount</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control" value="@(Model.PaidAmount)" type="number" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="mb-2 row">
+                                    <label class="col-sm-3 col-form-label">Discount</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control" id="U_Discount" value="@(Model.Discount)" type="number">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" id="DiscountUpdateBtn" type="button">Update</button>
+                            <button class="btn btn-danger" type="button" data-bs-dismiss="modal">Close</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            @*modal_end*@
+
+            @*Room-Assign_modal*@
+
+            <div class="modal fade" id="roomAssignModal" tabindex="-1" role="dialog" aria-labelledby="roomAssignModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel2">Assign Booking Room To Order</h5>
+                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <input type="hidden" id="RM_OrderId" value="@Model.Id" />
+
+                                <div class="mb-2 row">
+                                    <div class="col-md-6">
+                                        <label class="col-form-label">Room</label>
+                                        <select asp-for="RoomId" asp-items="Model.RoomLookUp" class="dd-type"></select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="col-form-label">Customer</label>
+                                        <select asp-for="CustomerId" asp-items="Model.CustomerLookUp" class="dd-type"></select>
+                                    </div>
+                                </div>
+
+                                <div class="mb-2 row">
+                                    <div class="col-md-12">
+                                        <div class="media">
+                                            <div class="media-body col-md-7">
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input roomService" id="roomService" type="radio" name="IsRoomService" value="true" asp-for="IsRoomService">
+                                                    <label class="form-check-label" for="roomService">Room Service</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input roomService" id="tableService" type="radio" name="IsRoomService" value="false" asp-for="IsRoomService">
+                                                    <label class="form-check-label" for="tableService">Table Service</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </form>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" id="RoomAssignBtn" type="button">Update</button>
+                            <button class="btn btn-danger" type="button" data-bs-dismiss="modal">Close</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            @*modal_end*@
+
+
+            @*C-Type_Update_modal*@
+
+            <div class="modal fade" id="cTypeUpdateModal" tabindex="-1" role="dialog" aria-labelledby="cTypeUpdateModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel2">Update Customer Type</h5>
+                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <input type="hidden" id="CT_OrderId" value="@Model.Id" />
+
+                                <div class="mb-2 row">
+                                    <div class="col-md-12">
+                                        <label class="col-form-label">Customer Type</label>
+                                        <select id="CngCustomerTypeId" asp-items="Model.CustomerTypeWithoutHotelLookUp" class="dd-type"></select>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" id="typeUpdateBtn" type="button">Update</button>
+                            <button class="btn btn-danger" type="button" data-bs-dismiss="modal">Close</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            @*modal_end*@
+
+            @*C-Name_Update_modal*@
+
+            <div class="modal fade" id="cNameUpdateModal" tabindex="-1" role="dialog" aria-labelledby="cNameUpdateModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel2">Update Customer Name</h5>
+                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <input type="hidden" id="CN_OrderId" value="@Model.Id" />
+
+                                <div class="mb-2 row">
+                                    <div class="col-md-12">
+                                        <label class="col-form-label text-start">Customer Name</label>
+                                        <select id="CngCustomerId" asp-items="Model.CustomerLookUp" class="dd-type"></select>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" id="nameUpdateBtn" type="button">Update</button>
+                            <button class="btn btn-danger" type="button" data-bs-dismiss="modal">Close</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            @*modal_end*@
+
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+        var paidDate = @Model.PaidDateStr;
+
+
+        $(".datepicker-paid-date").datepicker({
+            setDate: paidDate,
+            dateFormat: 'dd/mm/yyyy',
+            autoClose: true
+        });
+
+        $('.datepicker-paid-date').on('changeDate', function (event) {
+            $(this).datepicker('hide');
+        });
+    </script>
+    @* <script src="~/js/ETL/FoodOrder/FoodOrderDetails.js"></script> *@
+    <script src="~/js/ETL/FoodOrder/FoodOrderDetails.js?v=@DateTime.UtcNow.Ticks"></script>
+}

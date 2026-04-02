@@ -1,0 +1,16 @@
+﻿@* PF *@
+
+<div class="scroll-bar-wrap">
+    <div class="visible-scroll scroll-demo h-25" style="border:none">
+        <div class="horz-scroll-content">
+            <div class="col-sm-12 m-2">
+                <button onclick="location.href='@Url.Action("Details", "PfSetting")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">PF Details</button>
+                <button onclick="location.href='@Url.Action("Search", "PfFundOpenning")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">PF Open</button>
+                <button onclick="location.href='@Url.Action("Report", "PfFundMst")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Generate PF</button>
+                <button onclick="location.href='@Url.Action("Search", "PfSettlement")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">Settlement</button>
+                <button onclick="location.href='@Url.Action("EmployeeSummary", "PfFundMst")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">PF List</button>
+                <button onclick="location.href='@Url.Action("PfScheduleReport", "PfFundMst")';return false;" type="button" class="btn btn-pill btn-primary btn-sm">PF Schedule</button>
+            </div>
+        </div>
+    </div>
+</div>

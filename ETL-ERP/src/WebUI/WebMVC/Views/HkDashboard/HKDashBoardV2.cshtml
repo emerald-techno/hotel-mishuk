@@ -1,0 +1,697 @@
+﻿@model Domain.ViewModel.Website.IndexRoomVm
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container-fluid general-widget">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header border-0 bg-light rounded-top shadow-sm py-3 px-4">
+                    <form>
+                        <div class="row align-items-center">
+                            <input asp-for="StrQueryDate" class="form-control query_dt d-none" type="hidden" />
+                            <!-- Title -->
+                            <div class="col-md-2 d-flex flex-column align-items-start">
+                                <h5 class="room-status mb-2 fw-semibold text-dark">
+                                    <i class="icofont icofont-hotel me-2 text-primary"></i>
+                                    Room Status
+                                </h5>
+
+                                <div class="d-flex align-items-center">
+                                    <h6 class="mb-0 fw-semibold text-dark me-2">Date:</h6>
+                                    <span class="mb-0 text-dark me-2">@Model.StrQueryDate</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 d-flex f-10">
+                                <div class="status-pill-container d-flex flex-wrap">
+
+                                    <div class="status-pill available" data-status="AVAILABLE">
+                                        <span class="dot"></span>
+                                        <div class="pill-text">
+                                            <span>Available</span>
+                                            <span id="available-count" class="count"></span>
+                                        </div>
+                                    </div>
+                                    <div class="status-pill occupied" data-status="OCCUPIED">
+                                        <span class="dot"></span>
+                                        <div class="pill-text">
+                                            <span>Occupied</span>
+                                            <span id="occupied-count" class="count"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="status-pill ooo" data-status="OUT_OF_ORDER">
+                                        <span class="dot"></span>
+                                        <div class="pill-text">
+                                            <span>Out Of Order</span>
+                                            <span id="ooo-count" class="count"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="status-pill cin" data-status="TODAY_CHECKIN">
+                                        <span class="dot"></span>
+                                        <div class="pill-text">
+                                            <span>Today's C/In</span>
+                                            <span id="cin-count" class="count"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="status-pill cout" data-status="EXPECTED_CHECKOUT">
+                                        <span class="dot"></span>
+                                        <div class="pill-text">
+                                            <span>Expected C/Out</span>
+                                            <span id="cout-count" class="count"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="status-pill all" data-status="ALL">
+                                        <span class="dot"></span>
+                                        <div class="pill-text">
+                                            <span>All</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="HouseKeeperStatus" value="-1" />
+                            </div>
+
+                            <div class="col-md-4 ">
+                                <div class="row d-flex justify-content-center align-items-end gap-2">
+
+                                    <div class="col-md-3">
+                                        <label class="form-label fw-semibold">Cleaning Status</label>
+                                        <select asp-for="@Model.CleaningStatus"
+                                                asp-items="@Model.CleanStatusLookUp"
+                                                class="form-select dd-type"></select>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label class="form-label fw-semibold">Room No</label>
+                                        <input type="text"
+                                               style="height:40px"
+                                               id="roomSearch"
+                                               class="form-control"
+                                               placeholder="Enter Room No..."
+                                               autocomplete="off" />
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        @* <button class="btn btn-outline-danger btn-sm px-3"
+                                                type="button"
+                                                id="outOfOrderBtn"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#OOOModal">
+                                            <i class="icofont icofont-minus-circle me-1"></i>
+                                            Make Out of Order
+                                        </button>
+
+                                        <button class="btn btn-outline-success btn-sm px-3"
+                                                type="button"
+                                                id="makeRoomAvailableBtn">
+                                            <i class="icofont icofont-check-alt me-1"></i>
+                                            Make Available
+                                        </button> *@
+
+                                        @* <div class="form-check ms-2">
+                                            <input class="form-check-input"
+                                                   type="checkbox"
+                                                   id="select-all">
+                                            <label class="form-check-label f-12 text-muted">
+                                                Select All
+                                            </label>
+                                        </div> *@
+                                        <div class="status-pill all d-block" id="extraBedReportBtn" data-bs-toggle="modal" data-bs-target="#extraBedReportModal">
+                                            <div class="pill-text">
+                                                <span class="text-center">Today Extra-Bed</span>
+                                                <span id="extra-bed-count" class="all text-center"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- Filter Header "Display None for Mishuk"-->
+                        @* <div class="card shadow-sm mb-3 filter-card">
+
+                            <!-- Header -->
+                            <div class="card-header d-flex justify-content-between align-items-center filter-header">
+                                <div>
+                                    <i class="icofont icofont-search me-2"></i>
+                                    <span class="fw-semibold">Room Filter & Actions</span>
+                                </div>
+
+                                <i class="icofont icofont-simple-down toggle-icon"></i>
+                            </div>
+
+                            <!-- Collapsible Body -->
+                            <div class="card-body filter-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="row">
+
+                                            <div class="col-md-2">
+                                                <label class="form-label fw-semibold">Room Category</label>
+                                                <select asp-for="@Model.RoomCategoryId"
+                                                        asp-items="@Model.RoomCategoryLookUp"
+                                                        class="form-select dd-type"></select>
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <label class="form-label fw-semibold">Cleaning Status</label>
+                                                <select asp-for="@Model.CleaningStatus"
+                                                        asp-items="@Model.CleanStatusLookUp"
+                                                        class="form-select dd-type"></select>
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <label class="form-label fw-semibold">House Keeper</label>
+                                                <select id="employeeId"
+                                                        asp-items="@Model.EmployeeLookUp"
+                                                        class="form-select dd-type"></select>
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <label class="form-label fw-semibold">Room No</label>
+                                                <input type="text"
+                                                       style="height:40px"
+                                                       id="roomSearch"
+                                                       class="form-control"
+                                                       placeholder="Enter Room No..."
+                                                       autocomplete="off" />
+                                            </div>
+
+                                            <div class="col-md-4 d-flex justify-content-end align-items-end gap-2">
+
+                                                <button class="btn btn-success btn-sm px-3"
+                                                        type="button"
+                                                        id="RoomSearchBtn">
+                                                    <i class="icofont icofont-refresh me-1"></i> Search
+                                                </button>
+
+                                                <button class="btn btn-outline-danger btn-sm px-3"
+                                                        type="button"
+                                                        id="outOfOrderBtn"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#OOOModal">
+                                                    <i class="icofont icofont-minus-circle me-1"></i>
+                                                    Make Out of Order
+                                                </button>
+
+                                                <button class="btn btn-outline-success btn-sm px-3"
+                                                        type="button"
+                                                        id="makeRoomAvailableBtn">
+                                                    <i class="icofont icofont-check-alt me-1"></i>
+                                                    Make Available
+                                                </button>
+
+                                                <div class="form-check ms-2">
+                                                    <input class="form-check-input"
+                                                           type="checkbox"
+                                                           id="select-all">
+                                                    <label class="form-check-label f-12 text-muted">
+                                                        Select All
+                                                    </label>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> *@
+
+                        @* <div class="row mt-1 gy-3" id="status-change-section">
+                            <div class="col-md-9">
+                                <div class="row">
+                                    <div class="col-md-3 mt-1" id="assignHouseKeeperSection">
+                                        <label class="form-label fw-semibold">Assign To</label>
+                                        <select id="houseKeeperId" asp-items="@Model.EmployeeLookUp" class="form-select dd-type"></select>
+                                    </div>
+                                    <div class="col-md-3 mt-1" id="changeCleaningStatusSection">
+                                        <label class="form-label fw-semibold">Change CleaningStatus To</label>
+                                        <select id="RoomStatus" asp-items="@Model.CleanStatusLookUpForUpdate" class="dd-type"></select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 d-flex justify-content-end align-items-end gap-2 mt-1">
+                                <button class="btn btn-success btn-sm px-3" type="button" id="submitBtn">
+                                    <i class="icofont icofont-check-alt me-1"></i> Submmit
+                                </button>
+                            </div>
+                        </div> *@
+                    </form>
+                </div>
+
+
+                <div class="card-body btn-showcase">
+                    @* <div class="col-sm-12 vertical-scroll scroll-demo" style="height:65vh" id="room-section">
+                    </div> *@
+                    <div class="col-sm-12" id="room-section">
+                    </div>
+
+                </div>
+            </div>
+            @*Room_modal_Start*@
+
+            <div class="modal fade" id="roomModalCenter" tabindex="-1" role="dialog" aria-labelledby="roomModalCenter" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header" id="rm_info_header">
+                            <h5 class="modal-title room-title">Room Info</h5>
+                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" id="room_info_sec">
+                        </div>
+                        <div class="modal-footer border-top pt-3">
+
+                            <div class="container-fluid px-0">
+
+                                <div class="row align-items-end gy-2">
+
+                                    <!-- LEFT SECTION -->
+                                    <div class="col-lg-8">
+                                        <form>
+                                            <div class="row align-items-end gy-2">
+
+                                                <!-- Assign Dropdown -->
+                                                <div class="col-md-4" id="assignHouseKeeperSection">
+                                                    <label class="form-label fw-semibold small mb-1">Assign To</label>
+                                                    <select id="houseKeeperId"
+                                                            asp-items="@Model.EmployeeLookUp"
+                                                            class="form-select form-select-sm dd-type">
+                                                    </select>
+                                                </div>
+
+                                                <!-- Clean Button -->
+                                                <div class="col-auto">
+                                                    <button class="btn btn-success btn-sm px-3"
+                                                            type="button"
+                                                            id="cleanBtn">
+                                                        <i class="icofont icofont-check-alt me-1"></i>
+                                                        Clean
+                                                    </button>
+                                                </div>
+
+                                                <!-- Assign Button -->
+                                                <div class="col-auto">
+                                                    <button class="btn btn-primary btn-sm px-3"
+                                                            type="button"
+                                                            id="assignBtn">
+                                                        <i class="icofont icofont-user me-1"></i>
+                                                        Assign
+                                                    </button>
+                                                </div>
+
+                                                <!-- Assign & Clean -->
+                                                <div class="col-auto">
+                                                    <button class="btn btn-warning btn-sm px-3"
+                                                            type="button"
+                                                            id="assignCleanBtn">
+                                                        <i class="icofont icofont-tasks me-1"></i>
+                                                        Assign & Clean
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                    <!-- RIGHT SECTION -->
+                                    <div class="col-lg-4 text-lg-end">
+
+                                        <button class="btn btn-outline-danger btn-sm px-3 me-2"
+                                                type="button"
+                                                id="outOfOrderBtn"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#OOOModal">
+                                            <i class="icofont icofont-minus-circle me-1"></i>
+                                            Out of Order
+                                        </button>
+
+                                        <button class="btn btn-outline-success btn-sm px-3"
+                                                type="button"
+                                                id="makeRoomAvailableBtn">
+                                            <i class="icofont icofont-check-alt me-1"></i>
+                                            Make Available
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            @*Room_modal_End*@
+            @*OOO modal*@
+            <div class="modal fade" id="OOOModal" tabindex="-2" role="dialog" aria-labelledby="OOOModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-right" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel2">Out of Order</h5>
+                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="mb-3">
+                                    <label class="col-form-label">Out of Order Remarks</label>
+                                    <textarea class="form-control" id="OOORemarks" type="text" rows="3"></textarea>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" id="outOfOrderSubmitBtn" type="button">Submit</button>
+                            <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            @*modal_end*@
+            @*Forecast_Report_Modal*@
+            <div class="modal fade" id="extraBedReportModal" tabindex="-1" role="dialog" aria-labelledby="extraBedReportModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document" style="max-width:80%">
+                    <div class="modal-content">
+                        <div class="modal-header py-0">
+                            <div class="row align-items-center" style="width:100%">
+                                <div class="col-md-2 d-flex justify-content-center">
+                                    <img src="~/misuk_logo.jpg" alt="Logo" style="height:120px;" />
+                                </div>
+                                <div class="col-md-8 text-center">
+                                    <h2>Hotel Mishuk Extra-Bed Report</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-body" style="overflow:auto; height:80vh;">
+                            <div class="row" id="report-section">
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            @*Forecast_Report_Modal_end*@
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/theme/assets/js/prism/prism.min.js"></script>
+    <script src="~/theme/assets/js/clipboard/clipboard.min.js"></script>
+    <script src="~/theme/assets/js/counter/jquery.waypoints.min.js"></script>
+    <script src="~/theme/assets/js/counter/jquery.counterup.min.js"></script>
+    <script src="~/theme/assets/js/counter/counter-custom.js"></script>
+    <script src="~/theme/assets/js/custom-card/custom-card.js"></script>
+    <script src="~/theme/assets/js/datepicker/date-picker/datepicker.js"></script>
+    <script src="~/theme/assets/js/datepicker/date-picker/datepicker.en.js"></script>
+    <script src="~/theme/assets/js/datepicker/date-picker/datepicker.custom.js"></script>
+    <script src="~/theme/assets/js/owlcarousel/owl.carousel.js"></script>
+    <script src="~/theme/assets/js/general-widget.js"></script>
+    <script src="~/theme/assets/js/height-equal.js"></script>
+    <script src="~/theme/assets/js/tooltip-init.js"></script>
+
+    <script>
+        var queryDate = @Model.StrQueryDate;
+
+        $(".query_dt").datepicker({
+            setDate: queryDate,
+            dateFormat: 'dd/mm/yyyy',
+            autoClose: true
+        });
+    </script>
+
+    @* <script src="~/js/ETL/HkDashboard/HkDashboard.js?v=@DateTime.UtcNow.Ticks"></script> *@
+    <script src="~/js/ETL/HkDashboard/HkDashboardV2.js"></script>
+}
+
+<style>
+    .scroll-demo {
+        padding: 10px;
+        position: relative;
+        border: 1px solid #e6edef;
+        overflow: auto;
+        height: 50%;
+    }
+
+    .card .card-header {
+        padding: 10px !important;
+    }
+
+    .card .card-body {
+        padding: 10px !important;
+    }
+
+    .room-title {
+        color: #fff !important;
+    }
+
+    .today-checkout {
+        padding: 0.350rem 1.50rem;
+        border: solid 8px !important;
+        border-color: #730502 !important;
+    }
+
+    /* #room-section {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 12px;
+                justify-content: flex-start;
+                align-items: flex-start;
+            } */
+
+    #room-section {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(145px, 0.5fr));
+        gap: 15px;
+    }
+
+    .room-card {
+        position: relative;
+        border-radius: 15px;
+        padding: 5px;
+        min-height: 70px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        transition: all 0.25s ease;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+        .room-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        }
+
+    .room-checkbox {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 18px;
+        height: 18px;
+        accent-color: #007bff;
+        cursor: pointer;
+    }
+
+    /* Container Spacing */
+    .status-pill-container {
+        gap: 10px;
+        padding: 10px 0;
+    }
+
+    /* Base Pill Style */
+    .status-pill {
+        display: flex;
+        align-items: center;
+        padding: 5px 10px;
+        border-radius: 50px;
+        /*  font-size: 1rem;
+                font-weight: 500; */
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border: 1px solid transparent;
+    }
+
+        .status-pill:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+    .pill-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.1;
+    }
+
+    .count {
+        font-size: 1rem;
+    }
+
+    .dot {
+        height: 20px;
+        width: 20px;
+        border-radius: 30%;
+        margin-right: 8px;
+    }
+
+    /* Color Variations */
+    .cout {
+        background-color: #fff8e1;
+        border-color: #ffc107;
+        color: #495057;
+    }
+
+        .cout .dot {
+            background-color: #ffc107;
+        }
+
+    .occupied {
+        background-color: #f9f2eb;
+        border-color: #1f6fb4;
+        color: #405d7e;
+    }
+
+        .occupied .dot {
+            background-color: #1f6fb4;
+        }
+
+    .available {
+        background-color: #e6f4f1;
+        border-color: #b2ddd4;
+        color: #0f5132;
+    }
+
+        .available .dot {
+            background-color: #2d7d6f;
+        }
+
+    .cin {
+        background-color: #fffdec;
+        border-color: #8e70e8;
+        color: #8e70e8;
+    }
+
+        .cin .dot {
+            background-color: #8e70e8;
+        }
+
+    .ooo {
+        background-color: #fff2f2;
+        border-color: #f5c2c2;
+        color: #842029;
+    }
+
+        .ooo .dot {
+            background-color: #dc3545;
+        }
+
+    .all {
+        background-color: #f8f9fa;
+        border-color: #dee2e6;
+        color: #212529;
+    }
+
+        .all .dot {
+            background-color: #212529;
+        }
+
+    .filter-card {
+        backdrop-filter: blur(10px);
+        background-color: #E6EDEF !important;
+        border: none !important;
+    }
+
+    .filter-body {
+        overflow: hidden;
+    }
+
+    .filter-header {
+        cursor: pointer;
+        color: black;
+        background-color: #DFE6E8 !important;
+    }
+
+    .toggle-icon {
+        transition: transform 0.3s ease;
+    }
+
+    .rotate {
+        transform: rotate(180deg);
+    }
+
+    .modal-dialog-right{
+        float : right;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        min-height: calc(100% - 3rem);
+        min-width: calc(100% - 75%);
+    }
+
+    .modal-dialog-left {
+        float: left;
+    }
+
+    .booked-room {
+        background-color: white;
+        position: relative;
+        border-radius: 8px;
+    }
+    .booked-room::before {
+        content: attr(data-label);
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        font-weight: bold;
+        font-size: 13px;
+        padding: 2px 6px;
+        transform: rotate(-10deg);
+        box-shadow: 1px 1px 4px rgba(0,0,0,0.2);
+    }
+
+    .cleaningStatusModal::before {
+        font-size: 18px;
+        border-radius: 10px
+    }
+
+    /* Status colors */
+    .status-clean::before {
+        background: #28A745; /* Green */
+        color: #fff;
+    }
+
+    .status-dirty::before {
+        background: #FFC107; /* Red */
+        color: #fff;
+    }
+
+    .status-ooo::before {
+        background: #DC3545; /* Gray */
+        color: #fff;
+    }
+
+    .status-o::before {
+        background: #BA895D; /* Gray */
+        color: #fff;
+    }
+
+</style>

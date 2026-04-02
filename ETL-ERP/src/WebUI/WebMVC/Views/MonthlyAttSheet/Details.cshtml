@@ -1,0 +1,151 @@
+﻿@model Domain.ViewModel.Attendance.MonthlyAttSheet.MonthlyAttSheetMstVm
+@using Domain.Utility
+@{
+    ViewData["Title"] = "Attendance Sheet Details";
+}
+
+@section Styles{
+    <style>
+        .fixTableHead {
+            overflow-y: auto;
+            height: 600px;
+        }
+
+            .fixTableHead thead th {
+                position: sticky;
+                top: 0;
+            }
+
+        #AttendanceTable {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+            #AttendanceTable th,
+            td {
+                border: 2px solid #529432;
+            }
+
+            #AttendanceTable th {
+                background-color: #24695c !important;
+                color: #fff;
+            }
+    </style>
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkPayroll" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h5 class="text-center">ATTENDANCE REPORT</h5>
+                <h5 class="text-center">THE MONTH OF @Utility.GetMonthName(Model.Month)-@(Model.Year)</h5>
+            </div>
+            <div class="setting-list">
+                <a asp-action="MonthlyAttendanceReportPrint" asp-controller="MonthlyAttSheet" asp-route-id="@Model.Id" class="btn btn-primary" target="_blank">PDF Print</a>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <div class="fixTableHead">
+                        <table id="AttendanceTable" class="table table-bordered" style="width:100%; text-align: center;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%">Serial</th>
+                                    <th>Employee Name</th>
+                                    <th>Employee Code</th>
+                                    <th>Department</th>
+                                    <th>Designation</th>
+                                    <th>Total Days</th>
+                                    <th>W. Holidays</th>
+                                    <th>Festival Holidays</th>
+                                    <th>Present</th>
+                                    <th>Absent</th>
+                                    <th>Leave</th>
+                                    <th>Late</th>
+                                    <th>Pay Days</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.MonthlyAttendanceSheetDtls.Count > 0)
+                                {
+                                    var groupedDepartments = Model.MonthlyAttendanceSheetDtls.GroupBy(x => new { x.EmpDepartment, x.EmpDepartmentCode })
+                                                .OrderBy(g => g.Key.EmpDepartmentCode);
+
+                                    foreach (var departmentGroup in groupedDepartments)
+                                    {
+                                        var departmentName = departmentGroup.Key.EmpDepartment;
+
+                                        <!-- Department Heading Row -->
+                                        <tr>
+                                            <td colspan="14" style="font-weight: bold; background-color: #f2f2f2;">
+                                                @departmentName
+                                            </td>
+                                        </tr>
+
+                                        foreach (var (employee, i) in departmentGroup.OrderBy(x => x.EmpDesignationCode).GetItemWithIndex())
+                                        {
+                                            <tr>
+                                                <td style="width: 5%">@(i + 1)</td>
+                                                <td>
+                                                    <input type="hidden" name="MonthlyAttendanceSheetDtls[@i].EmployeeId" value="@employee.EmployeeId" />
+                                                    @employee.EmployeeName
+                                                </td>
+                                                <td>
+                                                    @employee.EmployeeCode
+                                                </td>
+                                                <td>
+                                                    @employee.EmpDepartment
+                                                </td>
+                                                <td>
+                                                    @employee.EmpDesignation
+                                                </td>
+                                                <td>
+                                                    <input type="hidden" name="MonthlyAttendanceSheetDtls[@i].TotalDays" value="@employee.TotalDays" />
+                                                    @employee.TotalDays
+                                                </td>
+                                                <td>
+                                                    <input type="hidden" name="MonthlyAttendanceSheetDtls[@i].OffDays" value="@employee.OffDays" />
+                                                    @employee.OffDays
+                                                </td>
+                                                <td>
+                                                    <input type="hidden" name="MonthlyAttendanceSheetDtls[@i].Holidays" value="@employee.Holidays" />
+                                                    @employee.Holidays
+                                                </td>
+                                                <td>
+                                                    <input type="hidden" name="MonthlyAttendanceSheetDtls[@i].PresentDays" value="@employee.PresentDays" />
+                                                    @employee.PresentDays
+                                                </td>
+                                                <td>
+                                                    <input type="hidden" name="MonthlyAttendanceSheetDtls[@i].AbsentDays" value="@employee.AbsentDays" />
+                                                    @employee.AbsentDays
+                                                </td>
+                                                <td>
+                                                    <input type="hidden" name="MonthlyAttendanceSheetDtls[@i].LeaveDays" value="@employee.LeaveDays" />
+                                                    @employee.LeaveDays
+                                                </td>
+                                                <td>
+                                                    <input type="hidden" name="MonthlyAttendanceSheetDtls[@i].LateDays" value="@employee.LateDays" />
+                                                    @employee.LateDays
+                                                </td>
+                                                <td>
+                                                    <input type="hidden" name="MonthlyAttendanceSheetDtls[@i].PayDays" value="@employee.PayDays" />
+                                                    @employee.PayDays
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td style="text-align:center" colspan="8"><b>No Employee Attendance Found</b></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

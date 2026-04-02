@@ -1,0 +1,61 @@
+select 'RESERVATION' BookingType, bs.Id BookingId,bs.BookingNo,bs.BookingDate, g.Id GuestId,g.FirstName+' '+isnull(g.LastName,'') GuestName,cp.Id CompanyId,cp.Name CompanyName
+,min(hr.CheckInTime) CheckInTime,min(hr.ActualCheckInTime) ActualCheckInTime,max(hr.CheckOutTime) CheckOutTime,min(hr.ActualCheckOutTime) ActualCheckOutTime
+,(string_agg(cast(r.RoomNo as nvarchar(max)), ', ') within group (order by r.RoomNo)) RoomNoList,ab.Amount,bs.NetRent,ab.MrNoList
+from HtBookingServices bs
+inner join HtBookingRooms hr on hr.BookingId = bs.Id
+inner join HtRoomInfos r on r.Id = hr.RoomId
+inner join HtRoomCategories rc on rc.Id = r.RoomCategoryId
+left join (select max(GuestId)GuestId,BookingId from HtBookingGuests where IsMain = 1 group by BookingId ) bg on bg.BookingId = bs.Id
+left join HtGuestInfos g on g.Id= bg.GuestId
+left join ClientCompanies cp on cp.Id = g.CompanyId
+inner join (select sum(PaidAmount) Amount,BookingId,(string_agg(cast(TransactionNo as nvarchar(max)), ', ') within group (order by TransactionNo)) MrNoList
+from HtBookingPayments where BillingId is null group by BookingId) ab on ab.BookingId = bs.Id
+where bs.BookingStatus = 1 and cast(bs.BookingDate as Date) >= '01/Dec/2024' and ab.Amount > 0 and bs.IsDeleted = 0
+group by bs.Id,bs.BookingNo,bs.BookingDate, g.Id,g.FirstName+' '+isnull(g.LastName,''),ab.Amount,cp.id,cp.Name,bs.NetRent,ab.MrNoList
+--order by bs.BookingDate
+union all
+select 'ROOM ADVANCE' BookingType, bs.Id BookingId,bs.BookingNo,bs.BookingDate, g.Id GuestId,g.FirstName+' '+isnull(g.LastName,'') GuestName,cp.Id CompanyId,cp.Name CompanyName
+,min(hr.CheckInTime) CheckInTime,min(hr.ActualCheckInTime) ActualCheckInTime,max(hr.CheckOutTime) CheckOutTime,min(hr.ActualCheckOutTime) ActualCheckOutTime
+,(string_agg(cast(r.RoomNo as nvarchar(max)), ', ') within group (order by r.RoomNo)) RoomNoList,ab.Amount,bs.NetRent,ab.MrNoList
+from HtBookingServices bs
+inner join HtBookingRooms hr on hr.BookingId = bs.Id
+inner join HtRoomInfos r on r.Id = hr.RoomId
+inner join HtRoomCategories rc on rc.Id = r.RoomCategoryId
+left join (select max(GuestId)GuestId,BookingId from HtBookingGuests where IsMain = 1 group by BookingId ) bg on bg.BookingId = bs.Id
+left join HtGuestInfos g on g.Id= bg.GuestId
+left join ClientCompanies cp on cp.Id = g.CompanyId
+inner join (select sum(PaidAmount) Amount,BookingId,(string_agg(cast(TransactionNo as nvarchar(max)), ', ') within group (order by TransactionNo)) MrNoList
+from HtBookingPayments where BillingId is null group by BookingId) ab on ab.BookingId = bs.Id
+where bs.BookingStatus = 2 and cast(bs.BookingDate as Date) >= '01/Dec/2024' and ab.Amount > 0 and bs.IsDeleted = 0
+group by bs.Id,bs.BookingNo,bs.BookingDate, g.Id,g.FirstName+' '+isnull(g.LastName,''),ab.Amount,cp.id,cp.Name,bs.NetRent,ab.MrNoList
+union all
+select 'RESERVATION' BookingType, bs.Id BookingId,bs.BookingNo,bs.BookingDate, g.Id GuestId,g.FirstName+' '+isnull(g.LastName,'') GuestName,cp.Id CompanyId,cp.Name CompanyName
+,min(bs.CheckInTime) CheckInTime,null ActualCheckInTime,max(bs.CheckOutTime) CheckOutTime,null ActualCheckOutTime
+,(string_agg(cast(r.HallName as nvarchar(max)), ', ') within group (order by r.HallName)) RoomNoList,ab.Amount,bs.NetRent,ab.MrNoList
+from HtBookingServices bs
+inner join HtBookingHalls hr on hr.BookingId = bs.Id
+inner join HtHallInfos r on r.Id = hr.HallId
+left join (select max(GuestId)GuestId,BookingId from HtBookingGuests where IsMain = 1 group by BookingId ) bg on bg.BookingId = bs.Id
+left join HtGuestInfos g on g.Id= bg.GuestId
+left join ClientCompanies cp on cp.Id = g.CompanyId
+inner join (select sum(PaidAmount) Amount,BookingId,(string_agg(cast(TransactionNo as nvarchar(max)), ', ') within group (order by TransactionNo)) MrNoList
+from HtBookingPayments where BillingId is null group by BookingId) ab on ab.BookingId = bs.Id
+where bs.BookingStatus = 1 and cast(bs.CheckInTime as date) < '18/Jan/2025' and ab.Amount > 0 and bs.IsDeleted = 0
+and cast(bs.BookingDate as Date) >= '01/Dec/2024'
+group by bs.Id,bs.BookingNo,bs.BookingDate, g.Id,g.FirstName+' '+isnull(g.LastName,''),ab.Amount,cp.id,cp.Name,bs.NetRent,ab.MrNoList
+union all
+select 'HALL ADVANCE' BookingType, bs.Id BookingId,bs.BookingNo,bs.BookingDate, g.Id GuestId,g.FirstName+' '+isnull(g.LastName,'') GuestName,cp.Id CompanyId,cp.Name CompanyName
+,min(bs.CheckInTime) CheckInTime,null ActualCheckInTime,max(bs.CheckOutTime) CheckOutTime,null ActualCheckOutTime
+,(string_agg(cast(r.HallName as nvarchar(max)), ', ') within group (order by r.HallName)) RoomNoList,ab.Amount,bs.NetRent,ab.MrNoList
+from HtBookingServices bs
+inner join HtBookingHalls hr on hr.BookingId = bs.Id
+inner join HtHallInfos r on r.Id = hr.HallId
+left join (select max(GuestId)GuestId,BookingId from HtBookingGuests where IsMain = 1 group by BookingId ) bg on bg.BookingId = bs.Id
+left join HtGuestInfos g on g.Id= bg.GuestId
+left join ClientCompanies cp on cp.Id = g.CompanyId
+inner join (select sum(PaidAmount) Amount,BookingId,(string_agg(cast(TransactionNo as nvarchar(max)), ', ') within group (order by TransactionNo)) MrNoList
+from HtBookingPayments where BillingId is null group by BookingId) ab on ab.BookingId = bs.Id
+where bs.BookingStatus = 1 and cast(bs.CheckInTime as date) >= '18/Jan/2025' and ab.Amount > 0 and bs.IsDeleted = 0
+and cast(bs.BookingDate as Date) >= '01/Dec/2024'
+group by bs.Id,bs.BookingNo,bs.BookingDate, g.Id,g.FirstName+' '+isnull(g.LastName,''),ab.Amount,cp.id,cp.Name,bs.NetRent,ab.MrNoList
+

@@ -1,0 +1,106 @@
+﻿@model Domain.ViewModel.Attendance.ShiftManagement.ShiftManagementVm
+@{
+    ViewData["Title"] = "Shift Setup";
+
+    var startYear = DateTime.Now.Year;
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Employee Shift Setup</h5>
+                <div class="setting-list">
+                    @*<a asp-action="Search" asp-controller="SupplierInfo" class="btn btn-primary">Search Shift</a>*@
+                    <a asp-action="Create" asp-controller="ShiftManagement" class="btn btn-primary">Month Shift Setup</a>
+                </div>
+            </div>
+            <form asp-action="EmployeeShift" class="form theme-form" id="EmployeeShiftSetupForm" data-parsley-validate enctype="multipart/form-data">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-2">
+                            <label class="form-label">Year</label>
+                            @Html.DropDownListFor(model => model.SelectYear, Enumerable.Range(startYear, 10).Select(x => new SelectListItem { Value = x.ToString(), Text = x.ToString() }), "Select Year", new { @class = "form-control dd-type" })
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Month</label>
+                            @Html.DropDownListFor(model => model.SelectMonth, Enumerable.Range(1, 12).Select(x => new SelectListItem { Value = x.ToString(), Text = System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(x) }), "Select Month", new { @class = "form-control dd-type" })
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Employee</label>
+                            <select asp-for="EmployeeId" asp-items="Model.EmployeeLookUp" class="dd-type"></select>
+                        </div>
+                        <div class="col-md-3"></div>
+                    </div>
+
+                    <br />
+                    <hr />
+                    <br />
+
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">Start Date *</label>
+                            <input class="datepicker-start-date form-control" id="start-date" type="text" data-language="en">
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">End Date *</label>
+                            <input class="datepicker-end-date form-control" id="end-date" type="text" data-language="en">
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <label class="form-label">Permanent Shift *</label>
+                            <select id="PermanentShiftId" asp-items="Model.PermanentShiftLookUp" class="dd-type"></select>
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <label class="form-label">Duty Shift *</label>
+                            <select id="DutyShiftId" asp-items="Model.DutyShiftLookUp" class="dd-type"></select>
+                        </div>
+                        <div class="col-md-2 mb-3 d-flex justify-content-end align-items-end">
+                            <button type="button" id="AddShiftBtn" class="btn btn-primary">Add Shift</button>
+                        </div>
+                    </div>
+
+                    <div class="row mt-5">
+                        <table class="table table-bordered" style="text-align: center">
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%">#</th>
+                                    <th style="width: 30%">Start Date</th>
+                                    <th style="width: 30%">End Date</th>
+                                    <th style="width: 15%">Permanent Shift</th>
+                                    <th style="width: 15%">Duty Shift</th>
+                                    <th style="width: 5%">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ShiftTableTbody">
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="button" id="EmpSetupSubmitBtn">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script>
+        $(".datepicker-start-date").datepicker({
+            dateFormat: 'dd/mm/yyyy',
+            autoClose: true
+        });
+        $(".datepicker-end-date").datepicker({
+            dateFormat: 'dd/mm/yyyy',
+            autoClose: true
+        });
+    </script>
+
+    <script src="~/js/ETL/ShiftManagement/EmployeeShiftSetup.js"></script>
+}

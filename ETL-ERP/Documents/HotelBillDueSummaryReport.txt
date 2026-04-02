@@ -1,0 +1,27 @@
+select b.Id BillId,b.BillNumber,convert(Date,b.BillDate)BillDate,b.BillStatus,bs.Id BookingId,bs.BookingNo,convert(date,bs.BookingDate) BookingDate,bs.BookingStatus,bs.PaymentStatus,bs.TotalGuest,bs.BookingType,bs.VisitPurpose
+,sum(bd.Amount) TotalAmount,sum(isnull(bd.VAT,0)) + isnull(b.Vat,0) Vat,sum(isnull(bd.Discount,0)) + isnull(b.Discount,0) Discount,sum(isnull(bd.Tax,0)) + isnull(b.Tax,0) Tax
+,isnull(sum(bd.ServiceCharge),0) ServiceCharge,isnull(sum(bd.ExtraBedCharge),0) ExtraBedCharge
+,sum(bd.Amount) - (sum(isnull(bd.Discount,0)) + isnull(b.Discount,0)) + (sum(isnull(bd.VAT,0)) + isnull(b.Vat,0)) 
++ sum(isnull(bd.Tax,0)) + isnull(b.Tax,0)+isnull(sum(bd.ServiceCharge),0) + isnull(sum(bd.ExtraBedCharge),0)
+ActualNetAmount,b.NetAmount,isnull(max(bp.PaidAmount),0) PaidAmount
+,(sum(bd.Amount) - (sum(isnull(bd.Discount,0)) + isnull(b.Discount,0)) + (sum(isnull(bd.VAT,0)) + isnull(b.Vat,0)) 
++ sum(isnull(bd.Tax,0)) + isnull(b.Tax,0)+isnull(sum(bd.ServiceCharge),0) + isnull(sum(bd.ExtraBedCharge),0)) - isnull(max(bp.PaidAmount),0) DueAmount
+
+--,b.PaidAmount
+from  HtBillings b 
+inner join HtBillingDetails bd on bd.BillId = b.Id
+inner join HtBookingServices bs on bs.id = b.BookingId
+left join (select BookingId,sum(PaidAmount) PaidAmount from HtBookingPayments where IsDeleted = 0 group by BookingId) bp on bp.BookingId = bs.Id
+where bs.BookingStatus != 4 and bd.IsComplimentary = 0
+group by b.Id,b.BillNumber,convert(Date,b.BillDate),b.BillStatus,b.TotalAmount,b.Vat,b.Discount,b.Tax,b.NetAmount,b.PaidAmount
+,bs.Id,bs.BookingNo,convert(date,bs.BookingDate),bs.BookingStatus,bs.PaymentStatus,bs.TotalGuest,bs.BookingType,bs.VisitPurpose
+
+having (sum(bd.Amount) - (sum(isnull(bd.Discount,0)) + isnull(b.Discount,0)) + (sum(isnull(bd.VAT,0)) + isnull(b.Vat,0)) 
++ sum(isnull(bd.Tax,0)) + isnull(b.Tax,0)+isnull(sum(bd.ServiceCharge),0) + isnull(sum(bd.ExtraBedCharge),0)) - isnull(max(bp.PaidAmount),0)  > 0
+
+--order by convert(Date,b.BillDate) desc,b.Id desc
+order by (sum(bd.Amount) - (sum(isnull(bd.Discount,0)) + isnull(b.Discount,0)) + (sum(isnull(bd.VAT,0)) + isnull(b.Vat,0)) 
++ sum(isnull(bd.Tax,0)) + isnull(b.Tax,0)+isnull(sum(bd.ServiceCharge),0) + isnull(sum(bd.ExtraBedCharge),0)) - isnull(max(bp.PaidAmount),0)
+
+
+

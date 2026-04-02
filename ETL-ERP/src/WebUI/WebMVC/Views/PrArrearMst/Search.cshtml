@@ -1,0 +1,37 @@
+﻿@model Domain.ViewModel.Payroll.PrArrearMst.PrArrearMstSearchVm
+@{
+    ViewData["Title"] = "Arrear List";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkPayroll" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h4>Arrear List</h4>
+                <div class="setting-list">
+                    <a asp-action="Create" asp-controller="PrArrearMst" class="btn btn-primary">New Arrear</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <table id="ArrearSearchTable" class="display" style="width:100%; text-align: left">
+                    <thead>
+                        <tr>
+                            <th style="width: 5%">Serial</th>
+                            <th style="width: 30%">Year</th>
+                            <th style="width: 30%">Month</th>
+                            <th style="width: 25%">Employee Count</th>
+                            <th style="width: 10%">Action</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/ETL/ArrearMst/ArreareMstSearch.js"></script>
+}

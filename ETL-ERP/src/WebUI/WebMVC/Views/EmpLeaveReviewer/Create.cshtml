@@ -1,0 +1,97 @@
+﻿@model Domain.ViewModel.Leave.EmpLeaveReviewer.EmpLeaveReviewerSearchVm
+@{
+    ViewData["Title"] = "Employee Leave Reviewer";
+}
+
+<div class="col-md-12">
+    <div class="row">
+        <div class="col-sm-12 mb-1">
+            <div class="card">
+                <div class="card-header">
+                    <h4> Employee Reviewer</h4>
+                </div>
+                <form  class="theme-form mega-form" enctype="multipart/form-data">
+                    <div class="card-body">
+                        <div class="row mb-2">
+                            <div class="col-md-4">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="col-form-label">Employee</label>
+                                <select asp-for="EmployeeId" asp-items="Model.EmployeeLookUp" class="dd-type"></select>
+                                <span asp-validation-for="EmployeeId" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4"></div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label class="col-form-label">Reviewer </label>
+                                <select asp-for="ReviewerId" asp-items="Model.ReviewerLookUp" class="dd-type"></select>
+                                <span asp-validation-for="ReviewerId" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="col-form-label">Alternate Reviewer</label>
+                                <select asp-for="AltReviewerId" asp-items="Model.AltReviewerLookUp" class="dd-type"></select>
+                                <span asp-validation-for="AltReviewerId" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="col-form-label">Approval Serial No</label>
+                                <select asp-for="SlNo" asp-items="Model.SLNoLookUp" class="dd-type"></select>
+                                <span asp-validation-for="SlNo" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-4">
+                                <div class="media">
+                                    <label class="col-form-label m-r-10">Is Final Reviewer</label>
+                                    <div class="media-body icon-state">
+                                        <label class="switch">
+                                            <input type="checkbox" data-val="true" data-val-required="IsFinalReviewer" id="isFinalReviewer" name="isFinalReviewer" value="true" data-bs-original-title="" title=""><span class="switch-state"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <span asp-validation-for="IsFinalReviewer" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-end">
+                        <div class="col-sm-9 offset-sm-3">
+                            <button class="btn btn-primary" id="emp-reviewer-submit-btn" type="submit" data-bs-original-title="" title="">Submit</button>
+                            <input class="btn btn-light" type="reset" value="Clear" data-bs-original-title="" title="">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header p-2">
+                    <h4>Employee Leave Reviewer List</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive table-bordered">
+                        <table id="EmpLeaveReviewerSearchTable" class="display" style="width:100%;">
+                            <thead class="text-center">
+                                <tr>
+                                    <th style="width: 5%">Serial</th>
+                                    <th>Reviewer</th>
+                                    <th>Alternate Reviewer</th>
+                                    <th>Is Final Reviewer</th>
+                                    <th>Serial No</th>
+                                    <th style="text-align:center;">Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/js/ETL/EmpLeaveReviewer/EmpLeaveReviewerSearch.js"></script>
+    <script src="~/js/ETL/EmpLeaveReviewer/EmpLeaveReviewerCreate.js"></script>
+}

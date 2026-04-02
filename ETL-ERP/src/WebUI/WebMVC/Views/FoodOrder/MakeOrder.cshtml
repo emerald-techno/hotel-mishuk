@@ -1,0 +1,398 @@
+﻿@model Domain.ViewModel.Restaurant.FoodOrder.FoodOrderVm
+
+@{
+    Layout = "_PosLayout";
+    ViewData["Title"] = "Restaurant POS";
+    var categoryFlag = 0; /* 0 = Slider,1 = Dropdown */
+}
+
+@section styles {
+    <style>
+        .custom-scroll {
+            height: 37vh;
+            overflow-x: hidden;
+            overflow-y: auto;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        .scrollable-div {
+            height: 67vh;
+            overflow-y: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+
+        #CartTable td {
+            padding: 0px;
+            padding-right: 2px;
+            padding-bottom: 5px;
+            height: 75px;
+        }
+
+        .item-box {
+            border: 1px solid #000000;
+            max-width: 185px;
+            margin-left: 5px;
+            margin-bottom: 5px;
+            padding: 0px;
+            text-align: center;
+            height: 20vh;
+        }
+
+        .item-content {
+            height: 50% !important;
+        }
+
+            .item-content p {
+                margin-bottom: 2px !important;
+            }
+
+        .category_btn {
+            width: 100% !important;
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        /* Chrome, Safari, Edge, Opera */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        .input-group-text {
+            padding: 0.375rem 0.3rem !important;
+        }
+
+        .slider {
+            width: 100%;
+            margin: 50px auto;
+        }
+
+        .slick-slide {
+            /* margin: 0px 20px; */
+            transition: all ease-in-out .3s;
+            opacity: 0.7;
+        }
+
+            .slick-slide img {
+                width: 100%;
+            }
+
+        .slick-prev:before,
+        .slick-next:before {
+            color: black;
+        }
+
+
+        .slick-list {
+            height: 6vh;
+        }
+
+        .slick-active {
+            opacity: .7;
+        }
+
+        .slick-current {
+            opacity: 1;
+        }
+
+        .slick_btn {
+            height: 6vh !important;
+            font-size: 0.9rem;
+        }
+
+        .badge {
+            white-space: normal;
+        }
+
+        @@media (max-width: 1440px) {
+            .custom-scroll {
+                height: 20vh !important;
+            }
+
+            .scrollable-div {
+                height: 65vh !important;
+            }
+        }
+    </style>
+
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" />
+}
+
+<div class="row m-0 h-75 w-100">
+    <form asp-action="MakeOrder" id="FoodOrderForm">
+
+        <input type="hidden" asp-for="OrderType" />
+
+        <div class="col-md-12">
+            <div class="card p-2 mb-1">
+                <div class="row">
+                    <div class="col-3">
+                        <label class="col-form-label">Customer Type</label>
+                        <select asp-for="CustomerTypeId" asp-items="Model.CustomerTypeLookUp" class="dd-type"></select>
+                    </div>
+                    <div class="col-3">
+                        <label class="col-form-label">Room</label>
+                        <select asp-for="RoomId" asp-items="Model.RoomLookUp" class="dd-type"></select>
+                    </div>
+                    <div class="col-3">
+                        <label class="col-form-label d-flex justify-content-between">
+                            Customer
+                            <span>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#customerEntryModal"> New Customer </a>
+                            </span>
+                        </label>
+                        <select asp-for="CustomerId" asp-items="Model.CustomerLookUp" class="dd-type"></select>
+                    </div>
+                    <div class="col-3">
+                        <label class="col-form-label">Table</label>
+                        <select asp-for="TableId" asp-items="Model.TableLookUp" class="dd-type" id="tableSelect"></select>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-md-4">
+                        @* <label class="form-label">Bill Date *</label> *@
+                        <input class="datepicker-bill-date form-control" asp-for="OrderDateStr" type="text" data-language="en">
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="icon-search"></i>
+                            </span>
+                            <input type="text" placeholder="Search Item Here...." id="item-search" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <input asp-for="OrderDesc" type="text" placeholder="Enter Remarks Here.." class="form-control" />
+                    </div>
+                </div>
+
+
+                @*modal*@
+
+                <div class="modal fade" id="customerEntryModal" tabindex="-1" role="dialog" aria-labelledby="customerEntryModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel2">New Customer</h5>
+                                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+
+                                <div class="mb-3">
+                                    <label class="col-form-label">Customer Name:</label>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <input class="form-control" id="salutation" placeholder="Salutation" />
+                                        </div>
+                                        <div class="col-md-5 p-0">
+                                            <input class="form-control" id="first-name" placeholder="First Name" />
+                                        </div>
+                                        <div class="col-md-5">
+                                            <input class="form-control" id="last-name" placeholder="Last Name" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="col-form-label">Mobile:</label>
+                                    <input class="form-control" id="mobile" placeholder="Ex. 01521450553" />
+                                </div>
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button class="btn btn-primary" id="CustomerEntryBtn" type="button">Entry</button>
+                                <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                @*modal_end*@
+            </div>
+
+            <div class="row">
+                <div class="col-md-9">
+
+                    @if (categoryFlag == 0)
+                    {
+
+                        <div class="col-sm-12 m-2 d-flex category-section slider" id="category-section"></div>
+
+                    }
+                    @if (categoryFlag == 1)
+                    {
+                        <div class="col-3">
+                            <label class="col-form-label">Category</label>
+                            <select id="CategoryId" class="dd-type"></select>
+                        </div>
+                    }
+                    @* <div class="scroll-bar-wrap">
+                    <div class="visible-scroll always-visible scroll-demo" style="height:auto; border:none">
+                    <div class="horz-scroll-content" style="height:12vh;">
+                    <div class="col-sm-12 m-2 d-flex category-section slider" id="category-section">
+                    </div>
+                    </div>
+                    </div>
+                    </div> *@
+                    <div class="row scrollable-div" id="item-section">
+                    </div>
+                </div>
+
+                <div class="col-md-3" style="background-color:#F5F7FB;border:0.2px solid #80808063;border-radius:20px">
+                    <div style="border:none">
+                        <div class="row text-center p-1">
+                            <h6>Order No: @(Model.OrderNo)</h6>
+                        </div>
+
+                        <div class="row">
+                            <div class="custom-scroll rounded p-2">
+                                <table class="table table-borderless p-0" id="CartTable" style="width:100%;border:none;color:white">
+                                    <thead style="background-color:#CFE2FF">
+                                        <tr>
+                                            <th style="width:5%"></th>
+                                            <th style="width:35%; color:black">Item</th>
+                                            <th style="width:25%; color:black;text-align:center;">Quantity</th>
+                                            <th style="width:15%; color:black">Prize</th>
+                                        </tr>
+
+                                    </thead>
+                                    <tbody id="cart-section">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="mb-2 row" id="service-type-sec">
+                            <div class="col-md-12">
+                                <div class="media">
+                                    <div class="media-body col-md-7">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input roomService" id="roomService" type="radio" name="IsRoomService" value="true" asp-for="IsRoomService">
+                                            <label class="form-check-label" for="roomService">Room Service</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input roomService" id="tableService" type="radio" name="IsRoomService" value="false" asp-for="IsRoomService">
+                                            <label class="form-check-label" for="tableService">Table Service</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-1">
+                            <label class="col-md-5 align-self-center">Waiter:</label>
+                            <div class="col-md-7">
+                                <select asp-for="WaiterId" asp-items="Model.WaiterLookUp" class="dd-type"></select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row mb-1">
+                                    <label class="col-md-5 align-self-center">Sub Total:</label>
+                                    <div class="col-md-7">
+                                        <input type="number" class="form-control text-end" asp-for="OrderAmount" id="sub-total" value="0" readonly />
+                                    </div>
+                                </div>
+                                <div class="row mb-1">
+                                    <label class="col-md-5 align-self-center">VAT:</label>
+                                    <div class="col-md-7">
+                                        <input type="number" class="form-control text-end" asp-for="VAT" />
+                                    </div>
+                                </div>
+                                <div class="row mb-1">
+                                    <label class="col-md-5 align-self-center">Service Charge:</label>
+                                    <div class="col-md-7">
+                                        <input type="number" class="form-control text-end" asp-for="ServiceCharge" value="0" />
+                                    </div>
+                                </div>
+                                <div class="row mb-1">
+                                    <label class="col-md-5 align-self-center">Discount:</label>
+                                    <div class="col-md-7">
+                                        @*<input type="number" class="form-control text-end" id="" value="0" />
+                                        <div class="input-group input-group-sm mb-3">
+                                        <input type="number" asp-for="Discount" value="0" class="form-control text-end" aria-label="Default" aria-describedby="inputGroup-sizing-sm">
+                                        <div class="input-group-prepend">
+                                        <span class="input-group-text" id="discount-info"></span>
+                                        </div>
+                                        </div>*@
+                                        <div class="row">
+                                            <div class="col-md-6" style="padding-right:1px;">
+                                                <div class="input-group input-group-sm mb-3">
+                                                    <input type="number" class="form-control" id="discount-info">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">%</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6" style="padding-left:1px;">
+                                                <input type="number" asp-for="Discount" value="0" class="form-control text-end">
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="row mb-1">
+                                    <label class="col-md-5 align-self-center">Net Amount:</label>
+                                    <div class="col-md-7">
+                                        <input type="number" class="form-control text-end" asp-for="NetAmount" value="0" readonly />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="col-form-label">Pay Method</label>
+                                <select asp-for="PayMode" asp-items="Model.PayModeLookUp" class="dd-type"></select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="col-form-label">Paid Amount</label>
+                                <input type="number" class="form-control text-end" asp-for="PaidAmount" value="0" />
+                            </div>
+                        </div>
+
+                        <div class="row py-2">
+                            <div class="col-md-12">
+                                <button type="button" id="OrderPaymentSubmitBtn" class="btn btn-warning btn-lg btn-block" style="width:100%;">Order & Pay</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+@section Scripts
+{
+    <script>
+        var currentDate = "@Model.OrderDateStr";
+
+        $(".datepicker-bill-date").datepicker({
+            setDate: currentDate,
+            dateFormat: 'dd/mm/yyyy',
+            autoClose: true
+        });
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+
+    @*<script src="~/js/ETL/FoodOrder/MakeOrder.js"></script>*@
+     <script src="~/js/ETL/FoodOrder/MakeOrder.js?v=@DateTime.UtcNow.Ticks"></script> 
+}

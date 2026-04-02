@@ -1,0 +1,275 @@
+﻿@model Domain.ViewModel.HotelManagement.RoomBooking.HtBookingServiceVm
+@{
+    ViewData["Title"] = "Room Booking Service";
+}
+@section styles
+{
+    <style>
+        .input-group .btn {
+            padding: 0.375rem 1.25rem !important;
+            width: 40%;
+        }
+
+        #RoomTableTbody tr td {
+            font-size: smaller;
+        }
+
+        #GuestTableTbody tr td {
+            font-size: smaller;
+        }
+
+        .custom-modal-size .modal-dialog {
+            max-width: 1200px; /* Adjust the maximum width as needed */
+        }
+
+        .custom-modal-size .modal-content {
+            width: 100%; /* Make sure the content fills the modal */
+        }
+    </style>
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkHt" />
+        <div class="card">
+            <form asp-action="HallBooking" class="form theme-form" id="HallBookingForm">
+                <div class="card-header p-4">
+                    <h5>Hall Booking</h5>
+                    <div class="setting-list">
+                        <a asp-action="HallSearch" asp-controller="BookingService" class="btn btn-primary">Booked Hall List</a>
+                        <button class="btn btn-primary" type="button" id="BookingSubmitBtn">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+                <div class="card-body py-3">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="row mt-2">
+                                <label class="col-sm-3 col-form-label">Booking Date *</label>
+                                <div class="col-sm-9">
+                                    <input class="datepicker-booking-date form-control" asp-for="BookingDateStr" type="text" data-language="en">
+                                    <span asp-validation-for="BookingDateStr" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <label class="col-sm-3 col-form-label">Booking Perpose</label>
+                                <div class="col-sm-9">
+                                    <textarea class="form-control" rows="1" asp-for="VisitPurpose" type="text" placeholder="Enter Booking Perpose Here"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4"></div>
+
+                        <div class="col-md-4">
+                            <div class="row">
+                                <label class="col-sm-3 col-form-label">Guest Info</label>
+                                <div class="col-sm-9">
+                                    <select id="GuestId" name="BookingGuestVms[0].GuestId" class="dd-type"></select>
+                                    <input class="form-control" name="BookingGuestVms[0].IsMain" value="true" type="hidden" />
+                                    <span>
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#guestEntryModal"> New Guest </a>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <label class="col-sm-3 col-form-label">Total Person</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="TotalGuest" type="number" />
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <label class="col-sm-3 col-form-label">Remarks</label>
+                                <div class="col-sm-9">
+                                    <textarea class="form-control" rows="1" asp-for="Remarks" type="text">Enter If There Any Discount And Other Info</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <br />
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-bordered" id="HallTable">
+                                <thead>
+                                    <tr>
+                                        <th colspan="7">
+                                            <h4>Booked Hall List</h4>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th style="width: 2%">#</th>
+                                        <th style="width: 18%">Booking Date</th>
+                                        <th style="width: 15%">Shift</th>
+                                        <th style="width: 20%">Hall Name</th>
+                                        <th style="width: 20%">Cost</th>
+                                        <th style="width: 15%">Remarks</th>
+                                        <th style="width: 10%">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="HallTableTbody">
+                                </tbody>
+                                <tfoot id="HallTableFoot">
+                                    <tr>
+                                        <th colspan="4" style="text-align: right">Net Total</th>
+                                        <td style="font-weight: bold">
+                                            <input class="form-control" id="net-total" readonly />
+                                        </td>
+                                        <td colspan="2"></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+
+                        <h4>Payment Info</h4>
+
+                        <div class="col-md-2">
+                            <label class="col-form-label">Pay Date</label>
+                            <input class="datepicker-paid-date form-control" asp-for="PaidDateStr" type="text" data-language="en">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="col-form-label">Pay Mode</label>
+                            <select asp-for="PaymentVm.PayMode" asp-items="Model.PayModeLookUp" class="dd-type"></select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="col-form-label">Pay Amount</label>
+                            <input class="form-control" asp-for="PaymentVm.PaidAmount" type="text">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label">Transaction Number</label>
+                            <input class="form-control" asp-for="PaymentVm.TransactionNo" type="text">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label">Account Number</label>
+                            <input class="form-control" asp-for="PaymentVm.AccountNo" type="text">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="button" id="BookingSubmitBtn">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+
+
+            @*modal*@
+
+            <div class="modal fade" id="guestEntryModal" tabindex="-1" role="dialog" aria-labelledby="guestEntryModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel2">New Guest</h5>
+                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="mb-3">
+                                    <label class="col-form-label">Guest Name:</label>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <input class="form-control" id="salutation" placeholder="Salutation" />
+                                        </div>
+                                        <div class="col-md-5 p-0">
+                                            <input class="form-control" id="first-name" placeholder="First Name" />
+                                        </div>
+                                        <div class="col-md-5">
+                                            <input class="form-control" id="last-name" placeholder="Last Name" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="col-form-label">Mobile:</label>
+                                    <input class="form-control" id="mobile" placeholder="Ex. 01521450553" />
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" id="GuestEntryBtn" type="button">Entry</button>
+                            <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            @*modal_end*@
+
+            @*hall_range_modal*@
+
+            <div class="modal fade custom-modal-size" id="hallModal" tabindex="-1" role="dialog" aria-labelledby="hallModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel2">Date Range Wise Hall Booking</h5>
+                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="col-form-label">Shift</label>
+                                        <select id="MShiftId" asp-items="Model.HallBookingShiftLookUp" class="dd-type"></select>
+                                    </div>
+                                    @*<div class="col-md-6">
+                                        <label class="col-form-label">Hall</label>
+                                        <select id="MHallId" asp-items="Model." class="dd-type"></select>
+                                    </div>*@
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" id="DateRangeHallSelectBtn" type="button">Submit</button>
+                            <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            @*hall_range_modal_end*@
+
+        </div>
+    </div>
+</div>
+
+
+@section scripts
+{
+    <script>
+        var currentDate = @Model.BookingDateStr;
+        var paidDate = @Model.PaidDateStr;
+
+        $(".datepicker-booking-date").datepicker({
+            setDate: currentDate,
+            dateFormat: 'dd/mm/yyyy',
+            autoClose: true
+        });
+
+        $('.datepicker-booking-date').on('changeDate', function (event) {
+            $(this).datepicker('hide');
+        });
+
+        $(".datepicker-paid-date").datepicker({
+            setDate: paidDate,
+            dateFormat: 'dd/mm/yyyy',
+            autoClose: true
+        });
+
+        $('.datepicker-paid-date').on('changeDate', function (event) {
+            $(this).datepicker('hide');
+        });
+    </script>
+
+    <script src="~/js/ETL/BookingService/HallBookingEntry.js"></script>
+}
+

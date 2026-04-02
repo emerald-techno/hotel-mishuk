@@ -1,0 +1,59 @@
+﻿@model Domain.ViewModel.HotelManagement.RoomInfo.HtHallInfoSearchVm
+@{
+    ViewData["Title"] = "Hall Info Search";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkHt" />
+        <form>
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Hall Info</h5>
+                    <div class="setting-list">
+                        <input class="btn btn-primary" type="button" id="HallSearchBtn" value="Search" />
+                        <a asp-action="Create" asp-controller="HallInfo" class="btn btn-primary">New Hall</a>
+                        @*<input type="button" id="LedgerReportBtn" class="btn btn-primary" value="Search" />*@
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Hall List</h5>
+                    <div class="setting-list">
+                        <a href="#" id="ExcelBtn" class="btn btn-primary">Excel File</a>
+                        <a href="#" id="printBtn" class="btn btn-primary">PDF Print</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table table-responsive">
+                        <table id="HallSearchTable" class="display" style="width:100%; text-align: left">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th style="width: 5%">Sl</th>
+                                    <th>Photo</th>
+                                    <th>Hall Name</th>
+                                    <th>Hall Info</th>
+                                    <th>Other Info</th>
+                                    <th>Rent</th>
+                                    <th>Vat</th>
+                                    <th>Service Charge</th>
+                                    <th>Total Rent</th>
+                                    <th>Remarks</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+     <script src="~/js/ETL/HallInfo/HallInfoSearch.js"></script>
+}

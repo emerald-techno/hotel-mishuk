@@ -1,0 +1,216 @@
+﻿@model Domain.ViewModel.HotelManagement.OnlineBooking.OnlineBookingVm
+@using Domain.Utility
+@{
+    ViewData["Title"] = "MakeReservation";
+}
+
+@section styles{
+    <style>
+        .selected-reservation-room {
+            overflow: hidden;
+            padding: 12px 10px 12px 20px;
+            background-color: azure;
+            margin-bottom: 2px;
+        }
+
+        .room-count-input {
+            height: 30px !important;
+            width: 30% !important;
+        }
+
+        .total-input {
+            height: 30px !important;
+            width: 100% !important;
+            text-align: end;
+        }
+    </style>
+}
+
+<!-- SUB BANNER -->
+<section class="section-sub-banner bg-9">
+
+    <div class="awe-overlay"></div>
+
+    <div class="sub-banner">
+        <div class="container">
+            <div class="text text-center">
+                <h2>RESERVATION</h2>
+                <p>Planning your perfect getaway is a breeze with our seamless hotel reservation process. </p>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+<!-- END / SUB BANNER -->
+<!-- RESERVATION -->
+<section class="section-reservation-page bg-white">
+
+    <div class="container">
+        <div class="reservation-page">
+
+            <div class="reservation_step">
+                <ul>
+                    <li><a><span>1.</span> Choose Room</a></li>
+                    <li class="active"><a><span>2.</span> Make a Reservation</a></li>
+                    <li><a><span>3.</span> Confirmation</a></li>
+                </ul>
+            </div>
+
+            <form asp-controller="Home" asp-action="MakeReservationEntry" method="post" data-parsley-validate>
+
+                <div class="row">
+
+                    <div class="col-md-4">
+
+                        <div class="reservation-sidebar">
+                            @*<div class="reservation-date bg-gray">
+                                    <h2 class="reservation-heading">Dates</h2>
+                                    <ul>
+                                        <li>
+                                            <span>Check-In</span>
+                                            <span>@(Utility.ConvertDateToStr(Model.ArrivalDate))</span>
+                                        </li>
+                                        <li>
+                                            <span>Check-Out</span>
+                                            <span>@(Utility.ConvertDateToStr(Model.DepartureDate))</span>
+                                        </li>
+                                        <li>
+                                            <span>Total Nights</span>
+                                            <span id="totalNights">@(AppUtility.DaysDiffernce(Model.DepartureDate, Model.ArrivalDate))</span>
+                                        </li>
+                                    </ul>
+                                </div>*@
+
+                            <!-- ROOM SELECT -->
+                            <div class="reservation-room-selected bg-gray">
+
+                                <!-- HEADING -->
+                                <h2 class="reservation-heading">Selected Room</h2>
+                                <!-- END / HEADING -->
+                                <!-- ITEM -->
+
+                                @if (Model.OnlineBookingDetails.Count > 0)
+                                {
+                                    foreach (var (room, i) in Model.OnlineBookingDetails.GetItemWithIndex())
+                                    {
+
+                                        <div class="selected-reservation-room">
+                                            <input type="hidden" name="OnlineBookingDetails[@i].RoomCategoryId" value="@room.RoomCategoryId" />
+                                            <input type="hidden" name="OnlineBookingDetails[@i].CheckInDate" value="@room.CheckInDate" />
+                                            <input type="hidden" name="OnlineBookingDetails[@i].CheckOutDate" value="@room.CheckOutDate" />
+                                            <input type="hidden" name="OnlineBookingDetails[@i].RoomRent" value="@(room.RoomRent)" />
+                                            <input type="hidden" name="OnlineBookingDetails[@i].TotalDays" value="@room.TotalDays" />
+                                            <input type="hidden" name="OnlineBookingDetails[@i].Adult" value="@room.Adult" />
+                                            <input type="hidden" name="OnlineBookingDetails[@i].RoomCount" value="@room.RoomCount" />
+                                            <input type="hidden" name="OnlineBookingDetails[@i].TotalRent" value="@room.TotalRent" />
+
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <h5>@(room.RoomCategoryName)</h5>
+                                                    <span>@(room.CheckInDate.ToString("dd/MM/yyyy")) to @(room.CheckOutDate.ToString("dd/MM/yyyy"))</span>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <b>@(room.RoomRent) BDT</b><br />
+                                                    <b>@(room.TotalDays) nights</b>
+                                                </div>
+                                            </div>
+                                            <div class="row" style="display:flex;align-items:baseline;padding-top:5px;padding-bottom:2px;">
+                                                <div class="col-md-8">
+                                                    <div class="row" style="display:flex;align-items:baseline;">
+                                                        <label class="col-sm-3 col-form-label">Rooms: </label>
+                                                        <div class="col-sm-9">
+                                                            <input class="form-control-sm room-count-input" type="number" value="@(room.RoomCount)" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <b>@(room.TotalRent) BDT</b>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    }
+                                }
+
+                                <!-- END / ITEM -->
+                                <!-- TOTAL -->
+                                <div class="reservation-room-seleted_total bg-blue">
+                                    <label>TOTAL</label>
+
+                                    <span class="reservation-total">৳@(Model.NetRent.ToString("N2"))</span>
+                                </div>
+                                <!-- END / TOTAL -->
+
+                            </div>
+                            <!-- END / ROOM SELECT -->
+
+                        </div>
+
+                    </div>
+                    <!-- END / SIDEBAR -->
+                    <!-- CONTENT -->
+                    <div class="col-md-8">
+
+                        <div class="reservation_content">
+                            <div class="reservation-billing-detail">
+
+                                <input type="hidden" asp-for="ArrivalDate" />
+                                <input type="hidden" asp-for="DepartureDate" />
+                                <input type="hidden" asp-for="NetRent" />
+
+                                <h4>RESERVATION DETAILS</h4>
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <label>Guest Name<sup>*</sup></label>
+                                        <input id="Name" type="text" class="input-text" asp-for="GuestName">
+                                    </div>
+                                </div>
+
+                                <label>Mobile<sup>*</sup></label>
+                                <input id="Mobile" type="text" asp-for="GuestMobile" class="input-text" placeholder="Ex. 01521402256">
+
+                                <label>Email<sup>*</sup></label>
+                                <input id="Email" type="email" asp-for="GuestEmail" class="input-text" placeholder="Ex. demo@mail.com">
+
+                                <label>Address<sup>*</sup></label>
+                                <input id="Address" type="text" asp-for="GuestAddress" class="input-text" placeholder="Street Address">
+
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <label>Room Count</label>
+                                        <input type="number" id="TotalRoomCount" class="input-text" asp-for="RoomCount">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label>Adult</label>
+                                        <input type="number" id="Adult" class="input-text" asp-for="Adult">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label>Child</label>
+                                        <input type="number" id="Child" class="input-text" asp-for="Child">
+                                    </div>
+                                </div>
+
+                                <br><br>
+                                <input type="text" class="input-text" asp-for="Remarks" placeholder="Let Us Know Anything. (Optional)">
+
+                                <button class="awe-btn awe-btn-13" type="submit">Confirm Reservation</button>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- END / CONTENT -->
+
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</section>
+<!-- END / RESERVATION -->
+
+@section Scripts{
+    <script src="~/js/ETL/MakeReservation/MakeReservation.js"></script>
+}

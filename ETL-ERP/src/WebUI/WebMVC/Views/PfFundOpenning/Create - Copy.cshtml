@@ -1,0 +1,72 @@
+﻿@model Domain.ViewModel.Pf.PfFundOpenning.PfFundOpenningVm
+@{
+    ViewData["Title"] = "Provident Fund Openning";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Employe Provident Fund Open</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="PfFundOpenning" class="btn btn-primary">Employe Provident Funds</a>
+                </div>
+            </div>
+            <form asp-action="Create" class="form theme-form">
+                <div class="card-body py-3">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="col-form-label">Employee</label>
+                            <select asp-for="EmployeeId" asp-items="Model.EmployeeLookup" class="dd-type"></select>
+                            <span asp-validation-for="EmployeeId" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-2"></div>
+                        <div class="col-md-6" id="EmpCardSec"></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="col-form-label">Fund Start Date *</label>
+                            <input class="datepicker-here form-control" asp-for="PfStartDateStr" type="text" data-language="en">
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label class="col-form-label">Employee Contribution(%) *</label>
+                            <input class="form-control" asp-for="EmpCon" type="number" placeholder="Employee Contribution In Percent">
+                            <span asp-validation-for="EmpCon" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label class="col-form-label">Company Contribution(%) *</label>
+                            <input class="form-control" asp-for="CompCon" type="number" placeholder="Enter Account Number">
+                            <span asp-validation-for="CompCon" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="col-form-label">Interest(%)</label>
+                            <input class="form-control" asp-for="Interest" type="number" placeholder="Enter Account Number">
+                            <span asp-validation-for="Interest" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="col-form-label">Remarks</label>
+                            <textarea class="form-control" rows="4" asp-for="Remarks"></textarea>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+}

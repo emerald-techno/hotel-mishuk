@@ -1,0 +1,77 @@
+﻿@model Domain.ViewModel.Restaurant.Waiter.WaiterVm
+
+@{
+    ViewData["Title"] = "Create Waiter";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Create Waiter</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="Waiter" class="btn btn-primary">Search Waiter</a>
+                </div>
+            </div>
+            <form asp-action="Create" class="form theme-form">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Name *</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="Name" type="text" placeholder="Enter Waiter name">
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Code *</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="Code" type="text" placeholder="Enter Waiter code">
+                                    <span asp-validation-for="Code" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Mobile *</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="Mobile" type="number" placeholder="Enter Waiter mobile number">
+                                    <span asp-validation-for="Mobile" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Email</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="Email" type="email" placeholder="Enter Waiter email">
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Salary</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="Salary" type="number" placeholder="Enter Waiter salary">
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Date of Birth</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control datepicker-here" asp-for="DobStr" type="text" data-language="en">
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Joining Date</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control datepicker-here" asp-for="JoinDateStr" type="text" data-language="en">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,83 @@
+﻿@model Domain.ViewModel.HouseKeeping.TaskAssign.TaskAssignSearchVm
+
+@{
+    ViewData["Title"] = "Assign Task List";
+    Layout = "_Layout";
+
+    var currentUser = User.Identity;
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <h4>Assign Task List</h4>
+                <div class="setting-list">
+                    @if (currentUser.HasPermission(Permissions.SuperAdmin, Permissions.TaskAssigns.Create))
+                    {
+                        <a asp-action="AssignTask" asp-controller="TaskAssign" class="btn btn-primary">Assign Task</a>
+                    }
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="AssignTaskTable" class="display" style="width:100%; text-align: left">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%">Serial</th>
+                                <th style="width: 10%">Room Info</th>
+                                <th style="width: 10%">Assign By</th>
+                                <th style="width: 10%">Assign Date</th>
+                                <th style="width: 45%">Task List</th>
+                                <th style="width: 5%">Total Task</th>
+                                <th style="width: 10%">Status</th>
+                                <th style="width: 5%">Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+
+            @*modal*@
+
+            <div class="modal fade" id="statusUpdateModal" tabindex="-1" role="dialog" aria-labelledby="statusUpdateModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel2">Update Status</h5>
+                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <table class="table table-bordered" id="UpdateStatusTable">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 5%">#</th>
+                                        <th style="width: 60%">Task Name</th>
+                                        <th style="width: 35%">Complete Remarks</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="UpdateStatusTableTbody">
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" id="UpdateStatusBtn" type="button">Submit</button>
+                            <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            @*modal_end*@
+
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/js/ETL/TaskAssign/MyAssignTaskSearch.js"></script>
+}

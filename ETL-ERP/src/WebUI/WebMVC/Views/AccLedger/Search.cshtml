@@ -1,0 +1,70 @@
+﻿@model Domain.ViewModel.Accounting.AccLedger.AccLedgerSearchVm
+@{
+    ViewData["Title"] = "Account Ledger Search";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkAccounts" />
+        <form>
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Ledger List</h5>
+                    <div class="setting-list">
+                        <input class="btn btn-primary" type="button" id="AccLedgerSearchBtn" value="Search" />
+                        <a asp-action="Create" asp-controller="AccLedger" class="btn btn-primary">New Ledger</a>
+                    </div>
+                </div>
+                <div class="card-body table-responsive">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="col-form-label">Head</label>
+                                    <select asp-for="HeadId" asp-items="Model.HeadLookUp" class="form-control dd-type"></select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="col-form-label">Ledger Name</label>
+                                    <input asp-for="LedgerName" type="text" class="form-control" placeholder="Enter Ledger Name">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="col-form-label">Ledger Code</label>
+                                    <input asp-for="LedgerCode" type="text" class="form-control" placeholder="Enter Ledger Code">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Ledger List</h5>
+                    <div class="setting-list">
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table table-responsive">
+                        <table id="AccLedgerSearchTable" class="display" style="width:100%; text-align: left">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th style="width: 5%">Serial</th>
+                                    <th>Head Code</th>
+                                    <th>Account Head</th>
+                                    <th>Ledger Code</th>
+                                    <th>Account Ledger Name</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/js/ETL/AccLedger/AccLedgerSearch.js"></script>
+}

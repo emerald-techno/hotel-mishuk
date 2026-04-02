@@ -1,0 +1,83 @@
+﻿@model Domain.ViewModel.Admin.SetHoliday.SetHolidayVm
+@{
+    ViewData["Title"] = "New Holiday Create";
+    Layout = "_Layout";
+}
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Create Holiday</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="SetHoliday" class="btn btn-primary">Search Holiday</a>
+                </div>
+            </div>
+            <form asp-controller="SetHoliday" asp-action="Create" method="post" class="form theme-form">
+                @Html.Hidden("InitName", Model.HolidayName)
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Holiday Year *</label>
+                                <div class="col-sm-9">
+                                    <select asp-for="HolidayYear" asp-items="Model.YearLookUp" class="form-control dd-type"></select>
+                                    <span asp-validation-for="HolidayYear" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Holiday Name *</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="HolidayName" type="text" placeholder="Enter holiday name">
+                                    <span asp-validation-for="HolidayName" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Type *</label>
+                                <div class="col-sm-9">
+                                    <select asp-for="Type" asp-items="Model.TypeLookUp" class="form-control dd-type"></select>
+                                    <span asp-validation-for="Type" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Start Date *</label>
+                                <div class="col-sm-9">
+                                    <input class="datepicker-here form-control" asp-for="StartDateStr" type="text" data-language="en">
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">End Date</label>
+                                <div class="col-sm-9">
+                                    <input class="datepicker-here form-control" asp-for="EndDateStr" type="text" data-language="en">
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Length (Day)</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="Length" type="number" placeholder="Enter length" readonly>
+                                    <span asp-validation-for="Length" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/js/ETL/SetHoliday/SetHolidayCreate.js"></script>
+}

@@ -1,0 +1,127 @@
+﻿@model Domain.ViewModel.Attendance.MonthlyAttSheet.MonthlyAttSheetMstVm
+@using Domain.Utility
+@*<link rel="stylesheet" type="text/css" href="~/theme/assets/css/scrollable.css">*@
+<link rel="stylesheet" type="text/css" href="~/theme/assets/css/scrollable.css">
+
+<style>
+    .fixTableHead {
+        overflow-y: auto;
+        height: 600px;
+    }
+
+        .fixTableHead thead th {
+            position: sticky;
+            top: 0;
+        }
+
+    #MonthlyAttendanceTable {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+        #MonthlyAttendanceTable th,
+        td {
+            border: 2px solid #529432;
+        }
+
+        #MonthlyAttendanceTable th {
+            background-color: #24695c !important;
+            color: #fff;
+        }
+</style>
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <form asp-controller="MonthlyAttSheet" asp-action="CreateReport" method="post" id="MonthlyAttSheetForm">
+                <div class="card-header p-4">
+                    <h5>Monthly Attendance Report</h5>
+                </div>
+                <div class="card-body">
+                    <input type="hidden" asp-for="Year" />
+                    <input type="hidden" asp-for="Month" />
+                    <input type="hidden" asp-for="DateForm" />
+                    <input type="hidden" asp-for="DateTo" />
+                    <div class="table-responsive">
+                        <div class="fixTableHead">
+                            <table id="MonthlyAttendanceTable" class="table table-bordered" style="width:100%; text-align: center">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 5%">Serial</th>
+                                        <th>Employee Name</th>
+                                        <th>Employee Code</th>
+                                        <th>Department</th>
+                                        <th>Designation</th>
+                                        <th>Total Days</th>
+                                        <th>Present</th>
+                                        <th>Absent</th>
+                                        <th>Leave</th>
+                                        <th>Pay Days</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.MonthlyAttendanceSheetDtls.Count > 0)
+                                    {
+                                        foreach (var (employee, i) in Model.MonthlyAttendanceSheetDtls.GetItemWithIndex())
+                                        {
+                                            <tr>
+                                                <td style="width: 5%">@(i + 1)</td>
+                                                <td>
+                                                    <input type="hidden" name="MonthlyAttendanceSheetDtls[@i].EmployeeId" value="@employee.EmployeeId" />
+                                                    @employee.EmployeeName
+                                                </td>
+                                                <td>
+                                                    @employee.EmployeeCode
+                                                </td>
+                                                <td>
+                                                    @employee.EmpDepartment
+                                                </td>
+                                                <td>
+                                                    @employee.EmpDesignation
+                                                </td>
+                                                <td>
+                                                    <input type="hidden" id="TotalDays_@i" name="MonthlyAttendanceSheetDtls[@i].TotalDays" value="@employee.TotalDays" />
+                                                    <input type="hidden" name="MonthlyAttendanceSheetDtls[@i].Holidays" value="@employee.Holidays" />
+                                                    <input type="hidden" name="MonthlyAttendanceSheetDtls[@i].OffDays" value="@employee.OffDays" />
+                                                    <input type="hidden" name="MonthlyAttendanceSheetDtls[@i].UnPaidLeaveDays" value="@employee.UnPaidLeaveDays" />
+                                                    @employee.TotalDays
+                                                </td>
+                                                <td>
+                                                    <input type="number" class="form-control cal-pay" data-index="@i" id="PresentDays_@i" name="MonthlyAttendanceSheetDtls[@i].PresentDays" value="@employee.PresentDays" />
+                                                </td>
+                                                <td>
+                                                    <input type="number" class="form-control cal-pay" data-index="@i" id="AbsentDays_@i" name="MonthlyAttendanceSheetDtls[@i].AbsentDays" value="@employee.AbsentDays" readonly/>
+                                                </td>
+                                                <td>
+                                                    <input type="number" class="form-control cal-pay" data-index="@i" id="LeaveDays_@i" name="MonthlyAttendanceSheetDtls[@i].LeaveDays" value="@employee.LeaveDays" />
+                                                </td>
+                                                <td>
+                                                    <input type="number" class="form-control" data-index="@i" id="PayDays_@i" name="MonthlyAttendanceSheetDtls[@i].PayDays" value="@employee.PayDays" readonly/>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td style="text-align:center" colspan="10"><b>No Employee Found</b></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="button" id="MonthAttSheetSubmitBtn" class="btn btn-primary float-left">Save Monthly Report</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="~/theme/assets/js/scrollable/perfect-scrollbar.min.js"></script>
+<script src="~/theme/assets/js/scrollable/scrollable-custom.js"></script>
+<script src="~/theme/assets/js/sweet-alert/sweetalert.min.js"></script>
+<script src="~/js/ETL/MonthlyAttSheet/MonthlyManualAttSheetSave.js"></script>

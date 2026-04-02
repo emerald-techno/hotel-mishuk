@@ -1,0 +1,84 @@
+﻿@model Domain.ViewModel.HotelManagement.Booking.HallAvaliableReportVm
+@{
+    ViewData["Title"] = "Available Hall For Booking";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkHt" />
+        <form>
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Available Hall For Booking Report</h5>
+                    <div class="setting-list">
+                        <input type="button" id="ShowReportBtn" class="btn btn-primary" value="Show Report" />
+                    </div>
+                </div>
+                <div class="card-body table-responsive">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label class="col-form-label">Hall *</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <select asp-for="HallId" asp-items="Model.HallLookUp" class="dd-type"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label class="col-form-label">From Date *</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input class="form-control from_dt" asp-for="FromDateStr" placeholder="Enter from date" data-language="en" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label class="col-form-label">To Date *</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input class="form-control to_dt" asp-for="ToDateStr" placeholder="Enter to date" data-language="en" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Date Wise List</h5>
+                    <div class="setting-list">
+                        <button class="btn btn-primary" id="ReportPrintBtn">PDF</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <dvi class="table-responsive">
+                        <div id="ReportContainer"></div>
+                    </dvi>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+    {
+        <script>
+            $(".from_dt").datepicker({
+                dateFormat: 'dd/mm/yyyy',
+                autoClose: true
+            });
+
+            $(".to_dt").datepicker({
+                dateFormat: 'dd/mm/yyyy',
+                autoClose: true
+            });
+        </script>
+    <script src="~/js/ETL/BookingService/HallAvailibityReport.js"></script>
+}

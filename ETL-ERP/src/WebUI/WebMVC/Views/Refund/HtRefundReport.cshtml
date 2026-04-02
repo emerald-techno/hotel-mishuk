@@ -1,0 +1,73 @@
+﻿@model Domain.ViewModel.HotelManagement.RefundReport.RefundReportVm
+@{
+    ViewData["Title"] = "Hotel Refund Report";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <form>
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Hotel Refund Report</h5>
+                    <div class="setting-list">
+                        <input type="button" id="ShowReportBtn" class="btn btn-primary" value="Show Report" />
+                    </div>
+                </div>
+                <div class="card-body table-responsive">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="col-form-label">From Refund Date</label>
+                            <input class="form-control query_dt" asp-for="StrFromDate" placeholder="Enter start date" data-language="en" />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label">To Refund Date</label>
+                            <input class="form-control query_dt" asp-for="StrToDate" placeholder="Enter start date" data-language="en" />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label">Guest</label>
+                            <select asp-for="GuestId" asp-items="Model.GuestLookUp" class="form-control dd-type"></select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label">Company</label>
+                            <select asp-for="CompanyId" asp-items="Model.CompayLookUp" class="form-control dd-type"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Statement of Hotel Refund Amount</h5>
+                    <div class="setting-list">
+                        <button type="button" class="btn btn-primary" id="ReportPrintBtn">PDF</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <dvi class="table-responsive">
+                        <div style="text-align: center;">
+                            <div style="text-align: center; font-weight: bold; font-size: 16px; line-height: 20px">Hotel Refund report</div>
+                            <div style="text-align: center; font-weight: bold; font-size: 11px; line-height: 16px">
+                                <div id="ltReportFilter" runat="server" Text=""></div>
+                            </div>
+                        </div>
+                        <div id="ReportContainer"></div>
+                    </dvi>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        var queryDate = @Model.StrFromDate;
+
+        $(".query_dt").datepicker({
+            setDate: queryDate,
+            dateFormat: 'dd/mm/yyyy',
+        });
+    </script>
+    <script src="~/js/ETL/RefundReport/RefundReport.js"></script>
+}

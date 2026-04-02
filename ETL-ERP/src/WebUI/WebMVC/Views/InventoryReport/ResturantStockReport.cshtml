@@ -1,0 +1,60 @@
+﻿@model Domain.ViewModel.Report.DepartmentStockVm
+@{
+    ViewData["Title"] = "Resturant Stock Info";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkInventory" />
+        <form>
+            <input type="hidden" asp-for="DepartmentId" />
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Resturant Item Stock Report</h5>
+                    <div class="setting-list">
+                        <input type="button" id="ShowReportBtn" class="btn btn-primary" value="Show Report" />
+                    </div>
+                </div>
+                <div class="card-body table-responsive">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="col-form-label">Category</label>
+                            <select asp-for="CategoryId" asp-items="Model.CategoryLookUp" class="form-control dd-type"></select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label">Item</label>
+                            <select asp-for="ItemId" asp-items="Model.ItemLookUp" class="form-control dd-type"></select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label">Stock Status</label>
+                            <select asp-for="StockStatus" asp-items="Model.StockStatusLookUp" class="form-control dd-type"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Resturant Item Stock Report</h5>
+                    <div class="setting-list">
+                        <button class="btn btn-primary" id="ReportPrintBtn">PDF</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <dvi class="table-responsive">
+                        <div style="text-align: center;">
+                            <div style="text-align: center; font-weight: bold; font-size: 16px; line-height: 20px">RESTURANT ITEM STOCK REPORT</div>
+                        </div>
+                        <div id="ReportContainer"></div>
+                    </dvi>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/ETL/InventoryReport/DepartmentStockReport.js"></script>
+}

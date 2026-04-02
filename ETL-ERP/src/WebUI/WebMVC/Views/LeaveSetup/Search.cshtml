@@ -1,0 +1,42 @@
+﻿@model Domain.ViewModel.Leave.LeaveSetup.LeaveSetupSearchVm
+@{
+    ViewData["Title"] = "Leave Setup Search";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkLeave" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h4>Leave Setup List</h4>
+                <div class="setting-list">
+                    <a asp-action="Create" asp-controller="LeaveSetup" class="btn btn-primary">Add LeaveSetup</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="LeaveSetupSearchTable" class="display" style="width:100%; text-align: left">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%">Serial</th>
+                                <th>Leave Type</th>
+                                <th>Leave Limit Type</th>
+                                <th>Leave Balance</th>
+                                <th>Gender</th>
+                                <th>IsCarryForword</th>
+                                <th>Leave After</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/js/ETL/LeaveSetup/LeaveSetupSearch.js"></script>
+}

@@ -1,0 +1,42 @@
+﻿@model Domain.ViewModel.Inventory.ItemConversion.ItemConvertionSearchVm
+@{
+    ViewData["Title"] = "Food Convertion List";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <form>
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Food Convertion List</h5>
+                    <div class="setting-list">
+                        <a asp-action="Create" asp-controller="ItemConvertion" class="btn btn-primary">New Item Convertion</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table table-responsive">
+                        <table id="FoodItemSearchTable" class="display" style="width:100%; text-align: left">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th style="width: 5%">Serial</th>
+                                    <th>Item</th>
+                                    <th class="text-center">Base Unit</th>
+                                    <th class="text-center">Converted Unit</th>
+                                    <th class="text-center">Convertion</th>
+                                    <th class="text-center">IsActive</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/ETL/ItemConvertion/ItemConvertion.js"></script>
+}

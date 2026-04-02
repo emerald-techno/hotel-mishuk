@@ -1,0 +1,124 @@
+﻿@model Domain.ViewModel.Inventory.ItemInfo.ItemInfoVm
+@{
+    ViewData["Title"] = "Item Info Edit";
+}
+@section styles {
+    <style>
+        /* Chrome, Safari, Edge, Opera */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkInventory" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Edit Item</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="ItemInfo" class="btn btn-primary">Search Item</a>
+                </div>
+            </div>
+            <form asp-action="Edit" class="form theme-form" data-parsley-validate enctype="multipart/form-data">
+                @Html.HiddenFor(c => c.Id)
+                @Html.HiddenFor(c => c.PhotoDocUrl)
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Item Name</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="ItemName" type="text" placeholder="Enter Item name">
+                                    <span asp-validation-for="ItemName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Item Code</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="ItemCode" type="text" readonly>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Category Type</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control dd-type" asp-for="CategoryId" asp-items="Model.CategoryLookUp"></select>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Unit Type</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control dd-type" asp-for="UnitId" asp-items="Model.UnitLookUp"></select>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Reorder Qunatity</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" id="ReorderQty" asp-for="ReorderQty" type="number" placeholder="Enter Reorder Item quantity">
+                                    <span asp-validation-for="ReorderQty" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Max Qunatity</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" id="MaxQty" asp-for="MaxQty" type="number" placeholder="Enter Max Item quantity">
+                                    <span asp-validation-for="MaxQty" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Minimum Qunatity</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" id="MinQty" asp-for="MinQty" type="number" placeholder="Enter Minimum Item quantity">
+                                    <span asp-validation-for="MinQty" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Alternative Qunatity</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" id="AlertQty" asp-for="AlertQty" type="number" placeholder="Enter Alternative Item quantity">
+                                    <span asp-validation-for="AlertQty" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Lead Day</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" id="LeadDay" asp-for="LeadDay" type="number" placeholder="Enter Lead day">
+                                    <span asp-validation-for="LeadDay" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Photo File</label>
+                                <div class="col-sm-9">
+                                    <div class="form-group">
+                                        <input asp-for="PhotoFile" class="form-control" type="file" name="PhotoFile">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Remarks</label>
+                                <div class="col-sm-9">
+                                    <textarea class="form-control" rows="4" asp-for="Remarks"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,41 @@
+﻿@model Domain.ViewModel.Leave.LvAppReviewer.LvAppReviewerSearchVm
+@{
+    ViewData["Title"] = "Review App List";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <input type="hidden" asp-for="ReviewerId" />
+
+            <div class="card-header p-4">
+                <h4>Review Leave Applications</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="ReviewEmpLeaveAppSearchTable" class="display" style="width:100%;">
+                        <thead class="text-center">
+                            <tr>
+                                <th style="width: 5%">Serial</th>
+                                <th>Employee</th>
+                                <th>Application</th>
+                                <th>From Date</th>
+                                <th>To Date</th>
+                                <th>App Status</th>
+                                <th>Serial</th>
+                                <th>Review Status</th>
+                                <th style="text-align:center;">Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/js/ETL/LvAppReviewer/LvReviewerSearch.js"></script>
+}

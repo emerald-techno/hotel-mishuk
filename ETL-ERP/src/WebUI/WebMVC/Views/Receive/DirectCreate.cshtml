@@ -1,0 +1,195 @@
+﻿@model Domain.ViewModel.Inventory.Transaction.TransactionVm
+
+@{
+    ViewData["Title"] = "Receive Order (Direct)";
+}
+
+@section styles{
+    <style>
+        /* Chrome, Safari, Edge, Opera */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            /*-webkit-appearance: none;*/
+            margin: 0;
+        }
+
+        /* Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
+}
+
+<div class="col-sm-12 default-according">
+    <div class="card">
+        <div class="card-header d-flex justify-content-between">
+            <h5>Receive Order - (Direct)</h5>
+            <div class="setting-list">
+                <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#itemEntryModal"> New Item </a>
+            </div>
+        </div>
+        <form id="CreateDirectReceiveForm" asp-action="DirectCreate" class="form theme-form">
+            <div class="card-body">
+
+                <input type="hidden" asp-for="TranType" />
+
+                <div class="mt-3 row g-3">
+                    <div class="col-md-4 d-flex align-items-center">
+                        <label class=" col-md-4 text-start pe-2">Receive No. *</label>
+                        <div class="col-md-8">
+                            <input class="form-control" asp-for="TranNo" readonly />
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 d-flex align-items-center">
+                        <label class=" col-md-4 text-start pe-2">Suppiler *</label>
+                        <div class="col-md-8">
+                            <select class="form-select dd-type" asp-for="SupplierId" asp-items="Model.SupplierLookUp"></select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 d-flex align-items-center">
+                        <label class=" col-md-4 text-start pe-2">Remarks</label>
+                        <div class="col-md-8">
+                            <textarea class="form-control" asp-for="Remarks" type="text" rows="1"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="mt-3 row g-3">
+
+                    <div class="col-md-4 d-flex align-items-center">
+                        <label class=" col-md-4 text-start pe-2">Receive Date *</label>
+                        <div class="col-md-7">
+                            <input class="form-control datepickerVcDate" asp-for="TranDateStr" type="text" data-language="en">
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 d-flex align-items-center">
+                        <label class=" col-md-4 text-start pe-2">Receive For *</label>
+                        <div class="col-md-8">
+                            <select class="form-select dd-type" asp-for="LedgerId" asp-items="Model.LedgerLookUp"></select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="media">
+                                    <label class="col-form-label m-r-10">Auto Pay</label>
+                                    <div class="media-body col-md-7 text-end icon-state">
+                                        <label class="switch">
+                                            <input type="checkbox" asp-for="IsReceiveAutoPay"><span class="switch-state bg-primary"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="media">
+                                    <label class="col-form-label m-r-10">Auto Requsition Create</label>
+                                    <div class="media-body col-md-6 text-end icon-state">
+                                        <label class="switch">
+                                            <input type="checkbox" asp-for="IsReqAuto"><span class="switch-state bg-primary"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+                <div class="col-sm-12" style="margin-top:50px;">
+                    <div class="card">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="DirectReceiveTable" style="width:100%">
+                                <thead>
+                                    <tr style="background-color:#DFF0D8;">
+                                        <th scope="col" class="text-center" style="width:35%">Item</th>
+                                        <th scope="col" class="text-center" style="width:10%">Stock</th>
+                                        <th scope="col" class="text-center" style="width:15%">Unit</th>
+                                        <th scope="col" class="text-center" style="width:15%">Receive Qty</th>
+                                        <th scope="col" class="text-center" style="width:10%">Rate</th>
+                                        <th scope="col" class="text-center" style="width:10%">Total</th>
+                                        <th scope="col" class="text-center" style="width:5%">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="directReceiveTbody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer text-end">
+                <div>
+                    <button class="btn btn-primary" id="DirectReceiveSubmitBtn" type="button">Submit</button>
+                    <input class="btn btn-light" type="reset" value="Clear">
+                </div>
+            </div>
+        </form>
+
+
+        @*modal*@
+
+        <div class="modal fade" id="itemEntryModal" tabindex="-1" role="dialog" aria-labelledby="itemEntryModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel2">New Item</h5>
+                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="mb-3">
+                                <label class="col-form-label">Item Name:</label>
+                                <input class="form-control" id="EntryItemName" placeholder="Ex. Onion" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="col-form-label">Unit:</label>
+                                <div class="row">
+                                    <select class="form-select dd-type" id="EntryUnitId" asp-items="Model.UnitLookUp"></select>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="col-form-label">Category:</label>
+                                <div class="row">
+                                    <select class="form-select dd-type" id="EntryCategoryId" asp-items="Model.ItemCategoryLookUp"></select>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" id="ItemEntryBtn" type="button">Entry</button>
+                        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        @*modal_end*@
+    </div>
+</div>
+
+@section Scripts
+{
+    @* <script src="~/js/ETL/Transaction/DirectReceiveCreate.js"></script> *@
+
+    <script src="~/js/ETL/Transaction/DirectReceiveCreate.js?v=@DateTime.UtcNow.Ticks"></script>
+
+    <script>
+
+		var currentDate = @Model.TranDateStr;
+
+		$(".datepickerVcDate").datepicker({
+			setDate: currentDate,
+			dateFormat: 'dd/mm/yy',
+		});
+
+    </script>
+}

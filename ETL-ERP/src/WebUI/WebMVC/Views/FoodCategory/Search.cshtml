@@ -1,0 +1,41 @@
+﻿@model Domain.ViewModel.Restaurant.FoodCategory.FoodCategorySearchVm
+@{
+    ViewData["Title"] = "Food Category List";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <form>
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Food Category List</h5>
+                    <div class="setting-list">
+                        <a asp-action="Create" asp-controller="FoodCategory" class="btn btn-primary">New Category</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table table-responsive">
+                        <table id="FoodCategorySearchTable" class="display" style="width:100%; text-align: left">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th style="width: 5%">Serial</th>
+                                    <th>Head Category</th>
+                                    <th>Category Name</th>
+                                    <th>Image</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/ETL/FoodCategory/FoodCategorySearch.js"></script>
+}

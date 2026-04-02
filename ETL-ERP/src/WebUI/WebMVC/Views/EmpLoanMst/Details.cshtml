@@ -1,0 +1,236 @@
+﻿@model Domain.ViewModel.Pf.EmpLoan.EmpLoanMstVm
+@using Domain.Utility
+@{
+    ViewData["Title"] = "Employee Loan Details";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <h3>Loan Details</h3>
+                <div class="setting-list">
+                    @if (Model.Status == 0)
+                    {
+                        <a asp-action="LoanHeld" asp-controller="EmpLoanMst" asp-route-id="@Model.Id" class="btn btn-warning">Held Loan</a>
+                    }
+                    else if (Model.Status == 2)
+                    {
+                        <a asp-action="LoanStart" asp-controller="EmpLoanMst" asp-route-id="@Model.Id" class="btn btn-primary">Start Loan</a>
+                    }
+                    <a asp-action="Search" asp-controller="EmpLoanMst" class="btn btn-primary">Search Employee Loan</a>
+                    <a asp-action="EmpLoanDetailsReportPrint" asp-controller="EmpLoanMst" asp-route-id="@Model.Id" class="btn btn-primary" target="_blank">Print PDF</a>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td>Employee</td>
+                                    <td>@(Model.EmployeeName)</td>
+                                    <td>Loan Pass Date</td>
+                                    <td>@Utility.ConvertDateToStr(Model.LoanPassDate)</td>
+                                </tr>
+                                <tr>
+                                    <td>Loan Pay Date</td>
+                                    <td>@Utility.ConvertDateToStr(Model.LoanPayDate)</td>
+                                    <td>Loan Amount</td>
+                                    <td>@Model.LoanAmount</td>
+                                </tr>
+                                <tr>
+                                    <td>Interest Rate (%)</td>
+                                    <td>@Model.InterestRate</td>
+                                    <td>Instalment Amount</td>
+                                    <td>@Model.InsAmount</td>
+                                </tr>
+                                <tr>
+                                    <td>First Instalment Date</td>
+                                    <td>@Utility.ConvertDateToStr(Model.FirstInsDate)</td>
+                                    <td>Remarks</td>
+                                    <td>@Model.Remarks</td>
+                                </tr>
+                                @{
+                                    var ststusBadge = Model.Status == 0 ? "badge badge-info" : Model.Status == 1 ? "badge badge-success" : Model.Status == 2 ? "badge badge-warning" : "";
+                                }
+                                <tr>
+                                    <td>Loan Status</td>
+                                    <td><span class="@ststusBadge">@Model.StatusText</span></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row mt-5">
+                    <div class="col-md-12">
+                        <div class="row mb-3 d-flex justify-content-between">
+                            <h3>Instalment Dates</h3>
+                            <button class="btn btn-primary mr-2" type="button" data-bs-toggle="modal" data-bs-target="#advanceModal">Advance Payment</button>
+                        </div>
+
+                        <div class="row">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 5%">Serial</th>
+                                        <th class="text-center">Instalment Date</th>
+                                        <th class="text-center">Instalment</th>
+                                        <th class="text-center">Interest</th>
+                                        <th class="text-center">Net Amount</th>
+                                        <th class="text-center">Loan Due Amount</th>
+                                        <th class="text-center">Payment Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.EmpLoanDtls.Count > 0)
+                                    {
+                                        double totalInterest = 0;
+                                        var lastSkipedList = Model.EmpLoanDtls.SkipLast(1);
+                                        var lastPrev = lastSkipedList.LastOrDefault();
+                                        foreach (var (loanIns, i) in Model.EmpLoanDtls.GetItemWithIndex())
+                                        {
+                                            <tr>
+                                                <td>@(i+1)</td>
+                                                <td>@Utility.ConvertDateToStr(loanIns.InsDate)</td>
+                                                <td class="text-end">@(loanIns.InsAmount - loanIns.InterestAmount)</td>
+                                                <td class="text-end">@(loanIns.InterestAmount)</td>
+                                                <td class="text-end">@(loanIns.InsAmount)</td>
+                                                <td class="text-end">@(loanIns.LoanAmount)</td>
+                                                @if (loanIns.IsPaid)
+                                                {
+                                                    <td class="text-success text-center"><b>Paid</b></td>
+                                                }
+                                                else
+                                                {
+                                                    @*<td class="text-info text-center"><b>Incomplete</b></td>*@
+                                                    <td class="text-info text-center">
+                                                        @*<a asp-action="MarkAsPaid" asp-controller="EmpLoanMst" asp-route-id="@loanIns.Id" class="btn btn-primary"><i class="fa fa-check"></i></a>*@
+                                                        <a href="#" data-id="@loanIns.Id" data-amount="@loanIns.InsAmount" class="btn btn-primary pay-instalment" data-bs-toggle="modal" data-bs-target="#paidModal"><i class="fa fa-check"></i></a>
+                                                    </td>
+                                                }
+                                            </tr>
+                                        }
+                                        <tr>
+                                            <td colspan="2" class="text-end"><b>Total</b></td>
+                                            <td class="text-end"><b>@Model.LoanAmount</b></td>
+                                            <td class="text-end"><b>@(totalInterest)</b></td>
+                                            <td class="text-end"><b>@Model.EmpLoanDtls.Sum(c => c.InsAmount)</b></td>
+                                            <td colspan="2"></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+
+            @*modal*@
+
+            <div class="modal fade" id="advanceModal" tabindex="-1" role="dialog" aria-labelledby="advanceModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel2">Loan Advance Amount</h5>
+                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <input type="hidden" id="LoanId" asp-for="@Model.Id" />
+                                <div class="mb-3">
+                                    <label class="col-form-label">Advance Amount:</label>
+                                    <input class="form-control" type="number" id="AdvAmount" />
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" id="AdvanceBtn" type="button">Submit</button>
+                            <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            @*modal_end*@
+
+            @*modal|_Paid*@
+
+            <div class="modal fade" id="paidModal" tabindex="-1" role="dialog" aria-labelledby="paidModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel2">Loan Payment</h5>
+                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <input type="hidden" id="InsId" />
+
+                                <div class="mb-2 row">
+                                    <label class="col-sm-5 col-form-label">Paid Date</label>
+                                    <div class="col-sm-7">
+                                        <input class="datepicker-paid-date form-control" asp-for="PaidDateStr" type="text" data-language="en">
+                                    </div>
+                                </div>
+
+                                <div class="mb-2 row">
+                                    <label class="col-sm-5 col-form-label">Instalment Amount</label>
+                                    <div class="col-sm-7">
+                                        <input class="form-control" id="InsAmount" type="number" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="mb-2 row">
+                                    <label class="col-sm-5 col-form-label">Waiver Amount</label>
+                                    <div class="col-sm-7">
+                                        <input class="form-control" value="0" id="WaiverAmount" type="number">
+                                    </div>
+                                </div>
+
+                                <div class="mb-2 row">
+                                    <label class="col-sm-5 col-form-label">Remarks</label>
+                                    <div class="col-sm-7">
+                                        <input class="form-control" id="DtlRemarks" type="text">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" id="PaidBtn" type="button">Pay Now</button>
+                            <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            @*modal_end_Paid*@
+
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+	    var currentDate = @Model.PaidDateStr;
+
+        $(".datepicker-paid-date").datepicker({
+		    setDate: currentDate,
+		    dateFormat: 'dd/mm/yyyy',
+		    autoClose: true
+	    });
+    </script>
+    <script src="~/js/ETL/EmpLoan/EmpLoanAdvance.js"></script>
+}

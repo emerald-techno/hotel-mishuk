@@ -1,0 +1,202 @@
+﻿@model Domain.ViewModel.Hr.Employees.EmployeeVm
+@{
+    ViewData["Title"] = "Employee Add";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkHr" />
+        <div class="card">
+            <div class="card-header pb-4">
+                <h5>New Employee Add</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="Employee" class="btn btn-primary">Back</a>
+                </div>
+            </div>
+            
+            <div class="card-body">
+                <form class="f1" asp-action="Create" method="post" data-parsley-validate enctype="multipart/form-data">
+                    <div class="f1-steps">
+                        <div class="f1-progress">
+                            <div class="f1-progress-line" data-now-value="16.66" data-number-of-steps="2"></div>
+                        </div>
+                        <div class="f1-step active">
+                            <div class="f1-step-icon"><i class="fa fa-user"></i></div>
+                            <p>Personal</p>
+                        </div>
+                        <div class="f1-step">
+                            <div class="f1-step-icon"><i class="fa fa-briefcase"></i></div>
+                            <p>Job Info</p>
+                        </div>
+                    </div>
+                    <fieldset>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Employee Name</label>
+                                    <input class="form-control c_check" asp-for="Name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Employee Code</label>
+                                    <input class="form-control" asp-for="Code" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label>Gender</label>
+                                    <select asp-for="Gender" asp-items="Model.GenderLookUp" class="form-control dd-type"></select>
+                                    <span asp-validation-for="Gender" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label>Religion</label>
+                                    <select asp-for="Religion" asp-items="Model.ReligionLookUp" class="form-control dd-type"></select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Photo File</label>
+                                    <input class="form-control" type="file" name="PhotoFile">
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label">Permanent Address</label>
+                                    <textarea id="perAddress" class="form-control" asp-for="PerAddress" type="text" rows="4"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Father Name</label>
+                                    <input class="form-control c_check" asp-for="FatherName">
+                                </div>
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input class="form-control" asp-for="Email">
+                                </div>
+                                <div class="form-group">
+                                    <label>Nationality</label>
+                                    <input class="form-control" asp-for="Nationality" type="text" placeholder="Ex: Bangladeshi">
+                                </div>
+                                <div class="form-group">
+                                    <label>Blood Group</label>
+                                    <select asp-for="BloodGroup" asp-items="Model.BloodGroupLookUp" class="form-control dd-type"></select>
+                                </div>
+                                <div class="form-group">
+                                    <label>NID File</label>
+                                    <input class="form-control" type="file" name="NidFile">
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label">Present Address <span><input type="checkbox" id="sameAsPermanentAddrs" /> Same As Permanent Address</span></label>
+                                    <textarea id="preAddress" class="form-control" asp-for="PreAddress" type="text" rows="4"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Mother Name</label>
+                                    <input class="form-control" asp-for="MotherName">
+                                </div>
+                                <div class="form-group">
+                                    <label>Mobile</label>
+                                    <input class="form-control c_check" asp-for="Mobile">
+                                </div>
+                                <div class="form-group">
+                                    <label>Date Of Birth</label>
+                                    <input class="datepicker-here form-control" asp-for="DobStr" type="text" data-language="en">
+                                </div>
+                                <div class="form-group">
+                                    <label>National ID</label>
+                                    <input class="form-control" asp-for="NID" type="text">
+                                </div>
+                                <div class="form-group">
+                                    <label>Marital Status</label>
+                                    <select asp-for="MaritalStatus" asp-items="Model.MaritalStatusLookUp" class="form-control dd-type"></select>
+                                </div>
+                                <div class="media">
+                                    <label class="col-form-label m-r-10">Is Pf Member</label>
+                                    <div class="media-body icon-state">
+                                        <label class="switch">
+                                            <input type="checkbox" asp-for="IsPfMember"><span class="switch-state"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="f1-buttons">
+                            <button class="btn btn-primary btn-next" type="button">Next</button>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Designation</label>
+                                    <select asp-for="DesignationId" asp-items="Model.DesignationLookUp" class="form-control dd-type"></select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Join Date</label>
+                                    <input class="datepicker-here form-control c_check" asp-for="JoinDateStr" type="text" data-language="en">
+                                </div>
+                                <div class="form-group">
+                                    <label>Probation Date</label>
+                                    <input class="datepicker-here form-control" asp-for="ProbationDateStr" type="text" data-language="en">
+                                </div>
+                                <div class="form-group">
+                                    <label>Salary Type</label>
+                                    <select asp-for="SalaryType" asp-items="Model.SalaryTypeLookUp" class="form-control dd-type"></select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Basic Salary</label>
+                                    <input class="form-control" asp-for="Salary" type="text">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Official Department</label>
+                                    <select asp-for="DepartmentId" asp-items="Model.DepartmentLookUp" class="form-control dd-type"></select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Employee Status</label>
+                                    <select asp-for="EmployeeStatus" asp-items="Model.EmployeeStatusLookUp" class="form-control dd-type"></select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Confirmation Date</label>
+                                    <input class="datepicker-here form-control" asp-for="ConfirmationDateStr" type="text" data-language="en">
+                                </div>
+                                <div class="form-group">
+                                    <label>Bank Account Number</label>
+                                    <input class="form-control" asp-for="BankAccNo" type="text">
+                                </div>
+                                <div class="form-group">
+                                    <label>Permanent Duty Shift</label>
+                                    <select asp-for="DutyShiftId" asp-items="Model.DutyShiftLookUp" class="form-control dd-type"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="f1-buttons">
+                            <button class="btn btn-primary btn-previous" type="button">Previous</button>
+                            <button class="btn btn-primary btn-submit" type="submit">Submit</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/theme/assets/js/form-wizard/form-wizard-three.js"></script>
+    <script src="~/theme/assets/js/form-wizard/jquery.backstretch.min.js"></script>
+
+    <script>
+        $("#sameAsPermanentAddrs").change(function() {
+            if (this.checked) {
+                const value = $("#perAddress").val();
+                $("#preAddress").val(value);
+            } else {
+                $("#preAddress").val("");
+            }
+        });
+                //$(document.body).on("change", "#DesignationId", function() {
+                //    const desId = $(this).val();
+                //    if (desId > 0) {
+                //        _dropdownManager.getDepartmentByDesignationId(desId, "#DepartmentId", null, null);
+                //    }
+                //});
+    </script>
+}

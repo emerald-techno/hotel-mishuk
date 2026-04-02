@@ -1,0 +1,67 @@
+﻿@model Domain.ViewModel.Inventory.BillPayment.InventoryBillPaymentSearchVm
+@{
+    ViewData["Title"] = "Inventory Bill Payment Search";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkInventory" />
+        <form>
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Inventory Bill Payment List</h5>
+                    <div class="setting-list">
+                        <input class="btn btn-primary" type="button" id="InventoryBillPaymentSearchBtn" value="Search" />
+                        <a asp-action="Create" asp-controller="Order" class="btn btn-primary">New Inventory Bill Payment</a>
+                        @*<input type="button" id="LedgerReportBtn" class="btn btn-primary" value="Search" />*@
+                    </div>
+                </div>
+                <div class="card-body table-responsive">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="col-form-label">Order Info</label>
+                                    <select asp-for="OrderMstId" asp-items="Model.OrderLookUp" class="dd-type"></select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="col-form-label">Supplier Info</label>
+                                    <select asp-for="SupplierId" asp-items="Model.SupplierLookUp" class="dd-type"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header p-4">
+                    <h5>Inventory BillPayment List</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table table-responsive">
+                        <table id="InventoryBillPaymentSearchTable" class="display" style="width:100%; text-align: left">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th style="width: 5%">Serial</th>
+                                    <th>Bill Info</th>
+                                    <th>Order Info</th>
+                                    <th>Supplier Name</th>
+                                    <th>Bill By</th>
+                                    <th>Bill Amount</th>
+                                    <th>Pay Mode</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/ETL/InventoryBillPayment/InventoryBillPaymentSearch.js"></script>
+}

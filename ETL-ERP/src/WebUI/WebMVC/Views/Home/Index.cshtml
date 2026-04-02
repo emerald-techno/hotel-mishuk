@@ -1,0 +1,174 @@
+﻿@model Domain.ViewModel.Website.IndexRoomVm
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container-fluid general-widget">
+    <div class="row">
+        <div class="col-md-12" id="online-book-sec">
+            @*<div class="alert alert-success" role="alert">
+                <div>
+                    <span><i class="fa fa-info-circle"></i></span>
+                    You Have Pending Online Booking To Attend..!!
+                </div>
+            </div>*@
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header pb-0">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <h5 class="room-status">Room Status </h5>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="row">
+                                <label class="col-form-label col-md-2">Date</label>
+                                <div class="col-md-7">
+                                    <input asp-for="StrQueryDate" class="form-control query_dt" placeholder="Enter end date" data-language="en" />
+                                </div>
+                                <div class="col-md-1">
+                                    <button class="btn btn-outline-primary btn-sm" id="SearchBtn"><i class="fa fa-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1"></div>
+                        <div class="col-md-6 d-flex f-10">
+                            <p style="margin-right:5px;margin-left:auto;" onclick="getRoomDataByStatus(1,0)"><span class="badge rounded-pill badge-info">&nbsp;&nbsp;</span>&nbsp; Booked &nbsp; <span id="booked-count"></span></p>
+                            <p style="margin-right:5px;margin-left:auto;" onclick="getRoomDataByStatus(2,0)"><span class="badge rounded-pill badge-secondary">&nbsp;&nbsp;</span>&nbsp; Occupied &nbsp; <span id="occupied-count"></span></p>
+                            <p style="margin-right:5px;margin-left:auto;" onclick="getRoomDataByStatus(3,0)"><span class="badge rounded-pill badge-primary">&nbsp;&nbsp;</span>&nbsp; Available &nbsp; <span id="available-count"></span></p>
+                            <p style="margin-right:5px;margin-left:auto;" onclick="getRoomDataByStatus(5,1)"><span class="badge rounded-pill badge-warning">&nbsp;&nbsp;</span>&nbsp; VD &nbsp; <span id="vd-count"></span></p>
+                            <p style="margin-right:5px;margin-left:auto;" onclick="getRoomDataByStatus(4,4)"><span class="badge rounded-pill badge-danger">&nbsp;&nbsp;</span>&nbsp; Out Of Order &nbsp; <span id="ooo-count"></span></p>
+                            <p style="margin-right:5px;margin-left:auto;" onclick="getRoomDataByStatus(0,0)"><span class="badge rounded-pill badge-dark">&nbsp;&nbsp;</span>&nbsp; All</p>
+                        </div>
+                    </div>
+
+                    @*Room_modal_Start*@
+
+                    <div class="modal fade" id="roomModalCenter" tabindex="-1" role="dialog" aria-labelledby="roomModalCenter" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header" id="rm_info_header">
+                                    <h5 class="modal-title room-title">Room Info</h5>
+                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body" id="room_info_sec">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @*Room_modal_End*@
+
+                </div>
+                <div class="card-body btn-showcase">
+                    <div class="col-sm-12 vertical-scroll scroll-demo" id="room-section">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/theme/assets/js/prism/prism.min.js"></script>
+    <script src="~/theme/assets/js/clipboard/clipboard.min.js"></script>
+    <script src="~/theme/assets/js/counter/jquery.waypoints.min.js"></script>
+    <script src="~/theme/assets/js/counter/jquery.counterup.min.js"></script>
+    <script src="~/theme/assets/js/counter/counter-custom.js"></script>
+    <script src="~/theme/assets/js/custom-card/custom-card.js"></script>
+    <script src="~/theme/assets/js/datepicker/date-picker/datepicker.js"></script>
+    <script src="~/theme/assets/js/datepicker/date-picker/datepicker.en.js"></script>
+    <script src="~/theme/assets/js/datepicker/date-picker/datepicker.custom.js"></script>
+    <script src="~/theme/assets/js/owlcarousel/owl.carousel.js"></script>
+    <script src="~/theme/assets/js/general-widget.js"></script>
+    <script src="~/theme/assets/js/height-equal.js"></script>
+    <script src="~/theme/assets/js/tooltip-init.js"></script>
+
+    <script>
+        var queryDate = @Model.StrQueryDate;
+
+        $(".query_dt").datepicker({
+            setDate: queryDate,
+            dateFormat: 'dd/mm/yyyy',
+            autoClose: true
+        });
+    </script>
+
+    <script src="~/js/ETL/HtDashboard/HtDashboard.js?v=@DateTime.UtcNow.Ticks"></script>
+    @* <script src="~/js/ETL/HtDashboard/HtDashboard.js"></script> *@
+}
+
+<style>
+    .scroll-demo {
+        padding: 10px;
+        position: relative;
+        border: 1px solid #e6edef;
+        overflow: auto;
+        height: 50%;
+    }
+
+    .card .card-header {
+        padding: 10px !important;
+    }
+
+    .card .card-body {
+        padding: 10px !important;
+    }
+
+    .room-title {
+        color: #fff !important;
+    }
+
+    .today-checkout {
+        padding: 0.350rem 1.50rem;
+        border: solid 8px !important;
+        border-color: #730502 !important;
+    }
+
+    .booked-room {
+        background-color: white;
+        position: relative;
+        border-radius: 8px;
+    }
+
+        /* Base badge */
+        .booked-room::before {
+            content: attr(data-label);
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            font-weight: bold;
+            font-size: 13px;
+            padding: 2px 6px;
+            transform: rotate(-10deg);
+            box-shadow: 1px 1px 4px rgba(0,0,0,0.2);
+        }
+
+    .cleaningStatusModal::before {
+        font-size: 18px;
+        border-radius: 10px
+    }
+    /* Status colors */
+    .status-clean::before {
+        background: #28A745; /* Green */
+        color: #fff;
+    }
+
+    .status-dirty::before {
+        background: #FFC107; /* Red */
+        color: #fff;
+    }
+
+    .status-ooo::before {
+        background: #DC3545; /* Gray */
+        color: #fff;
+    }
+
+    .status-o::before {
+        background: #BA895D; /* Gray */
+        color: #fff;
+    }
+
+</style>

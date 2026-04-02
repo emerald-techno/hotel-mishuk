@@ -1,0 +1,55 @@
+﻿@model Domain.ViewModel.HotelManagement.RoomInfo.HtHallInfoVm
+@{
+    ViewData["Title"] = "Hall Detail";
+    Layout = "_Layout";
+}
+
+<div class="container-fluid">
+    <div>
+        <div class="row product-page-main p-0">
+            <div class="col-sm-12">
+                <partial name="_QuickLinkHt" />
+            </div>
+            <div class="col-xl-5 col-md-6 box-col-12 xl-50">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xl-12 product-main">
+                                <div class="pro-slide-single">
+                                    <div><img class="img-fluid" src="@Model.PhotoUrl" alt=""></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-7 box-col-6 proorder-xl-3 xl-100">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="pro-group pt-0 border-0">
+                            <div class="product-page-details mt-0">
+                                <h3>@Model.HallName</h3>
+                            </div>
+                            <div class="product-price">
+                                <p>Price: @Model.TotalRent <span> &#40;Rent: @Model.Rent, Vat: @Model.Vat&#37;, SC: @Model.ServiceCharge &#41;</span> </p>
+                            </div>
+                            @* <a class="btn btn-secondary mt-0" asp-controller="BookingService" asp-action="Booking"><i class="fa fa-shopping-cart me-2"></i>Book Now</a> *@
+                        </div>
+                        <div class="pro-group">
+                            <h5>Hall Information</h5>
+                            <p>@Model.HallInformation</p>
+                        </div>
+                        <div class="pro-group">
+                            <h5>Other Information</h5>
+                            <p>@Model.OtherInfo</p>
+                        </div>
+                        <div class="pro-group">
+                            <h5>Remarks</h5>
+                            <p>@Model.Remakrs</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

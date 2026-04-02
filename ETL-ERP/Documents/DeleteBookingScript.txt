@@ -1,0 +1,10 @@
+delete from HtBookingGuests
+delete from AccTranDtls;
+delete from AccTranMsts;
+delete from HtBookingPayments;
+delete from HtBillingDetails;
+delete from HtBillings;
+delete from HtBookingRooms;
+delete from HtAdvanceRefunds;
+delete from HtBookingServices;
+update HtRoomInfos set BookingStatus = 0,CleaningStatus = 0;

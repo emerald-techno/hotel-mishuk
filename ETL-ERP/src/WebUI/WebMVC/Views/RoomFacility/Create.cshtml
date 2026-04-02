@@ -1,0 +1,54 @@
+﻿@model Domain.ViewModel.HotelManagement.RoomFacility.HtRoomFacilityVm
+@{
+    ViewData["Title"] = "Room Facility Create";
+    Layout = "_Layout";
+}
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkHt" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Create Room Facility</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="RoomFacility" class="btn btn-primary">Search Room Facility</a>
+                </div>
+            </div>
+            <form asp-action="Create" class="form theme-form">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Facility Category</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control dd-type" asp-for="FacilityCategoryId" asp-items="Model.FacilitCategoryLookUp"></select>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Room Facility Name</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="FacilityName" type="text" placeholder="Enter room facility name">
+                                    <span asp-validation-for="FacilityName" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Description</label>
+                                <div class="col-sm-9">
+                                    <textarea class="form-control" rows="4" asp-for="Description"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

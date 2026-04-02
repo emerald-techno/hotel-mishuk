@@ -1,0 +1,160 @@
+﻿@model Domain.ViewModel.Inventory.Order.OrderVm
+@using Domain.Utility
+@{
+    ViewBag.Title = "Order Review";
+}
+
+@section styles
+{
+
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <div class="card-header p-4">
+                <h3>Review Order</h3>
+            </div>
+            <div class="card-body">
+                @Html.HiddenFor(c => c.Id)
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <label asp-for="ActionBy" class="col-md-4 col-form-label">
+                                Order By <span class="required">: </span>
+                            </label>
+                            <div class="col-md-8 col-form-label">
+                                @Html.DisplayTextFor(m => m.ActionBy)
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label asp-for="OrderNo" class="col-md-4 col-form-label">
+                                Order No <span class="required">: </span>
+                            </label>
+                            <div class="col-md-8 col-form-label">
+                                @Html.DisplayTextFor(c => c.OrderNo)
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label asp-for="OrderDate" class="col-md-4 col-form-label">
+                                Order Date <span class="required">: </span>
+                            </label>
+                            <div class="col-md-8 col-form-label">
+                                @Html.DisplayTextFor(c => c.OrderDate)
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label asp-for="DeliveryDeadline" class="col-md-4 col-form-label">
+                                Delivery Deadline <span class="required">: </span>
+                            </label>
+                            <div class="col-md-8 col-form-label">
+                                @Html.DisplayTextFor(c => c.DeliveryDeadline)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <label asp-for="RequsitionNo" class="col-md-4 col-form-label">
+                                Requsition No <span class="required">: </span>
+                            </label>
+                            <div class="col-md-8 col-form-label">
+                                @Html.DisplayTextFor(c => c.RequsitionNo)
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label asp-for="SupplierName" class="col-md-4 col-form-label">
+                                Supplier<span class="required">: </span>
+                            </label>
+                            <div class="col-md-8 col-form-label">
+                                @Html.DisplayTextFor(c => c.SupplierName)
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label asp-for="Remarks" class="col-md-4 col-form-label">
+                                Remarks<span class="required">: </span>
+                            </label>
+                            <div class="col-md-8 col-form-label">
+                                @Html.DisplayTextFor(c => c.Remarks)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br />
+                <hr />
+                <br />
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-bordered" style="width:100%;text-align:center;">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th style="width:5%;">Sl.</th>
+                                    <th style="width:30%;">Item</th>
+                                    <th style="width:15%;">Unit</th>
+                                    <th style="width:10%;">Item Rate</th>
+                                    <th style="width:10%;">Quantity</th>
+                                    <th style="width:10%">Approve Order Quantity</th>
+                                    <th style="width:15%;">Sub-Total</th>
+                                    <th style="width:5%;">Stock</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    double netTotal = 0;
+
+                                    foreach (var (item, index) in Model.OrderDtls.GetItemWithIndex())
+                                    {
+                                        <tr>
+                                            <td>@(index + 1)</td>
+                                            <td>@(item?.ItemName ?? "N/A")</td>
+                                            <td>@(item?.ItemUnitName ?? "N/A")</td>
+                                            <td>@(item?.Rate)</td>
+                                            <td>@(item?.OrderQty ?? 0)</td>
+                                            <td>
+                                                <input type="number" class="form-control ApproveQty" id="ApproveQty_@(index)" data-index="@(index)" data-id="@(item.Id)" value="@(item?.OrderQty ?? 0)" />
+                                            </td>
+                                            <td>
+                                                <input type="number" class="form-control text-end" id="SubTotal_@(index)" value="@(item.Rate * item.OrderQty)" readonly />
+                                            </td>
+                                            <td>@(item?.Stock ?? 0)</td>
+                                        </tr>
+
+                                        netTotal += (item.Rate * item.OrderQty);
+                                    }
+
+                                    <tr>
+                                        <td colspan="6" class="text-end"><b>Total</b></td>
+                                        <td>
+                                            <input type="number" class="form-control text-end" id="net-total" value="@(netTotal)" readonly />
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                }
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-lg-12" align="right">
+                        <button type="button" id="ApproveBtn" class="btn btn-success btn-size">Approve</button>
+                        <button type="button" id="RejectBtn" class="btn btn-danger btn-size">Reject</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts
+{
+    <script src="~/js/ETL/Order/OrderApproval.js"></script>
+}

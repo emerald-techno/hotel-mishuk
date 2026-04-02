@@ -1,0 +1,43 @@
+﻿@model Domain.ViewModel.Leave.EmpLeaveApplication.EmpLeaveApplicationSearchVm
+@{ 
+    ViewData["Title"] = "Employees App List";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkLeave" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h4>Leave Applications</h4>
+                @*<div class="setting-list">
+                    <a asp-action="Apply" asp-controller="EmpLeaveAppOnline" class="btn btn-primary">New Application</a>
+                </div>*@
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="EmpLeaveAppOnlineSearchTable" class="display" style="width:100%;">
+                        <thead class="text-center">
+                            <tr>
+                                <th style="width: 5%">Serial</th>
+                                <th>Employee</th>
+                                <th>Leave Type</th>
+                                <th>Submit Date</th>
+                                <th>From Date</th>
+                                <th>To Date</th>
+                                <th>Status</th>
+                                <th>File</th>
+                                <th style="text-align:center;">Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/js/ETL/EmpLeaveApp/LeaveAppSearch.js"></script>
+}

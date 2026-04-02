@@ -1,0 +1,111 @@
+﻿@model List<Domain.ViewModel.HotelManagement.HotelReport.BookingHallReportVm>
+@using Domain.Enums.AppEnums
+@using Domain.Utility
+@using Domain.Utility.Common
+@{
+    var isSuperAdmin = User.Claims.Any(x => x.Type == CustomClaimType.Permission &&
+                                                        x.Value == Permissions.SuperAdmin &&
+                                                        x.Issuer == "LOCAL AUTHORITY");
+}
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <div class="card">
+            <form>
+                <div class="card-header p-4">
+                    <h5>
+                        Hall Audit Report
+                        <span style="margin-left:15px;font-size:small;">
+                            <input type="checkbox" id="selectAll_Hall" /> Select All
+                        </span>
+                    </h5>
+
+                    <div class="setting-list">
+                        <button type="button" id="Hall_ApproveBtn" class="btn btn-primary float-left">Approve</button>
+                        <button class="btn btn-primary" id="HallAuditPrintBtn">PDF</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table id="ReportTable" class="table table-bordered repo" style="width:100%; text-align: center">
+                        <thead>
+
+                            <tr>
+                                <th style='width:5%;text-align:center;'>SL.</th>
+                                <th style='width:10%;text-align:center;'>Booking Info</th>
+                                <th style='width:10%;text-align:center;'>Guest Info</th>
+                                <th style='width:10%;text-align:center;'>Party Date</th>
+                                <th style='width:10%;text-align:center;'>Hall Name</th>
+                                <th style='width:8%;text-align:center;'>Hall Shift</th>
+                                <th style='width:8%;text-align:center;'>Hall Rent</th>
+                                <th style='width:8%;text-align:center;'>Service Charge</th>
+                                <th style='width:8%;text-align:center;'>VAT</th>
+                                <th style='width:8%;text-align:center;'>Discount</th>
+                                <th style='width:8%;text-align:center;'>Net Rent</th>
+                                <th style='width:10%;'>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var (obj, i) in Model.GetItemWithIndex())
+                            {
+                                string bookingLink = string.IsNullOrEmpty(obj.BookingNo)
+                                ? ""
+                                : $"<a href='../../BookingService/HallDetails/{obj.BookingId}' target='_blank' " +
+                                $"style='color:#2980b9;text-decoration:none;font-weight:600;'>{obj.BookingNo}</a>";
+
+                                <tr>
+                                    <td style='text-align:center;'>
+                                        @(i + 1)
+                                        @if (obj.AuditDate == null)
+                                        {
+                                            <input type="checkbox" value="@obj.BookingHallId" class="hall_checkbox" onclick="addHallAuditId(this);" />
+                                        }
+                                    </td>
+                                    <td style='text-align:center;font-weight:600;'>@(Html.Raw(bookingLink)) <br />@(obj.BookingDate.ToString("dd/MMM/yyyy")) </td>
+                                    <td style='text-align:center;'>@(obj.GuestName) <br />@(obj.Mobile) </td>
+
+                                    <td style='text-align:center;'>@(obj.PartyDate.ToString("dd/MMM/yyyy"))</td>
+                                    <td style='text-align:center;'>@(System.Net.WebUtility.HtmlEncode(obj.HallName))</td>
+                                    <td style='text-align:center;'>@(obj.HallShift)</td>
+
+                                    <td style='text-align:right;'>@(obj.HallRent.ToString("N2"))</td>
+                                    <td style='text-align:right;'>@(obj.ServiceCharge.ToString("N2"))</td>
+                                    <td style='text-align:right;'>@(obj.Vat.ToString("N2"))</td>
+                                    <td style='text-align:right;'>@(obj.Discount.ToString("N2"))</td>
+                                    <td style='text-align:right;font-weight:600;'>@(obj.NetRent.ToString("N2"))</td>
+                                    <!-- Action -->
+                                    <td style="text-align:center;">
+                                        @if (obj.AuditDate == null && isSuperAdmin)
+                                        {
+                                            <a href="#" class="hall_single_apr_btn" data-index="@(i)" data-audit-id="@(obj.BookingHallId)"><i class="icofont icofont-check-circled text-primary" style="font-size: 26px;"></i></a>
+                                            <a href="#"><i class="icofont icofont-close-circled text-danger" style="font-size: 26px;"></i></a>
+                                        }
+                                        else
+                                        {
+                                            <a class="badge badge-primary" href="#" data-bs-original-title="" title="">--</a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+
+                            <tr style='font-weight:700;background-color:#f8f9fa;'>
+                                <td colspan='6' style='text-align:right;'>Grand Totals:</td>
+                                <td style='text-align:right;'>@Model.Sum(x => x.HallRent).ToString("N2")</td>
+                                <td style='text-align:right;'>@Model.Sum(x => x.ServiceCharge).ToString("N2")</td>
+                                <td style='text-align:right;'>@Model.Sum(x => x.Vat).ToString("N2")</td>
+                                <td style='text-align:right;'>@Model.Sum(x => x.Discount).ToString("N2")</td>
+                                <td style='text-align:right;'>@Model.Sum(x => x.NetRent).ToString("N2")</td>
+                                <td style='text-align:right;'></td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="~/theme/assets/js/scrollable/perfect-scrollbar.min.js"></script>
+<script src="~/theme/assets/js/scrollable/scrollable-custom.js"></script>
+<script src="~/theme/assets/js/sweet-alert/sweetalert.min.js"></script>

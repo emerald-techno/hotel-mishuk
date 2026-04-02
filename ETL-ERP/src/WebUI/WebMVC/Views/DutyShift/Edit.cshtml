@@ -1,0 +1,73 @@
+﻿@model Domain.ViewModel.Attendance.DutyShift.DutyShiftVm
+
+@{
+    ViewData["Title"] = "Duty Shift Edit";
+}
+
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkHt" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Edit Duty Shift</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="DutyShift" class="btn btn-primary">Search Duty Shift</a>
+                </div>
+            </div>
+            <form asp-action="Edit" class="form theme-form">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Duty Shift Name</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="ShiftName" type="text" placeholder="Enter duty shift name">
+                                    <span asp-validation-for="ShiftName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Duty Shift Code</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="ShiftCode" type="text" placeholder="Enter duty shift code" readonly>
+                                    <span asp-validation-for="ShiftCode" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Duty Shift Type</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control dd-type" asp-for="ShiftType" asp-items="Model.ShiftTypeLookUp"></select>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Duty Shift Start Time</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="StartTime" type="time" placeholder="Enter duty shift start time">
+                                    <span asp-validation-for="StartTime" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Duty Shift End Time</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="EndTime" type="time" placeholder="Enter duty shift end time">
+                                    <span asp-validation-for="EndTime" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Duty Shift Pay Type</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control dd-type" asp-for="PayType" asp-items="Model.PayTypeLookUp"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

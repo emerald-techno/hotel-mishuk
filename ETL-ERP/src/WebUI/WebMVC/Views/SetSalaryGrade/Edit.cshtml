@@ -1,0 +1,61 @@
+﻿@model Domain.ViewModel.Payroll.SetSalaryGrade.SetSalaryGradeVm
+@{
+    ViewData["Title"] = "New Salary Grade Edit";
+    Layout = "_Layout";
+}
+<div class="row">
+    <div class="col-sm-12 default-according">
+        <partial name="_QuickLinkPayroll" />
+        <div class="card">
+            <div class="card-header p-4">
+                <h5>Edit Salary Grade</h5>
+                <div class="setting-list">
+                    <a asp-action="Search" asp-controller="SetSalaryGrade" class="btn btn-primary">Search Salary Grade</a>
+                </div>
+            </div>
+            <form asp-action="Edit" class="form theme-form">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Salary Grade Name *</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="GradeName" type="text" placeholder="Enter salary grade name">
+                                    <span asp-validation-for="GradeName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Starting Basic</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="StartingBasic" type="number" placeholder="Enter starting basic">
+                                    <span asp-validation-for="StartingBasic" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Maximum Amount</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" asp-for="MaxAmount" type="number" placeholder="Enter maximum amount">
+                                    <span asp-validation-for="MaxAmount" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Remarks</label>
+                                <div class="col-sm-9">
+                                    <textarea class="form-control" rows="4" asp-for="Remarks"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button class="btn btn-primary" type="submit">Update</button>
+                        <input class="btn btn-light" type="reset" value="Clear">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
